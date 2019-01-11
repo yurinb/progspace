@@ -6,14 +6,10 @@ socket.on("connect", function () {
 
 socket.on("player", function (data) {
     player = data
-    console.log('PLAYERRRRR ', data);
-
 });
 
 socket.on("ships", function (data) {
     ships = data
-    console.log('SHIPS ', data);
-
 });
 socket.on("bullets", function (data) {
     bullets = data
@@ -59,7 +55,7 @@ function emitKeyPress(key) {
 function emitKeyRelease(key) {
     setTimeout(() => {
         socket.emit("playerKeyRelease_" + key);
-    }, timeout);
+    }, 0);
 }
 
 function emitFire() {

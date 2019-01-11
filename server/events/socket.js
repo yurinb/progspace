@@ -12,7 +12,10 @@ module.exports = function (client) {
         console.log('READY PLAYER : ', player);
         
         client.player = player
-        global.gameObjects.ships.push(player.ship)
+        if (!global.gameObjects.ships.includes(player)) {
+            global.gameObjects.ships.push(player.ship)    
+        }
+        
         client.socket.emit('player', client.player)
     })
 

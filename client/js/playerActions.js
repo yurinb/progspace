@@ -1,4 +1,10 @@
-function shot() {
+let count = 0
+
+function shot(evt) {
+    count++
+    evt.preventDefault()
+    console.log('fire ' + count);
+
     playShotSound()
     emitFire()
 }
@@ -14,11 +20,14 @@ let up = false;
 let down = false;
 
 var map = {};
-onkeydown = onkeyup = function(e){
+onkeydown = onkeyup = function (e) {
+    count++
+    console.log('KEY PRESS ', count);
+
     e = e || event; // to deal with IE
     map[e.keyCode] = e.type == 'keydown';
 
-    if (map[38] /* up */ || map[87] /* w */) {
+    if (map[38] /* up */ || map[87] /* w */ ) {
         if (!up) {
             emitKeyPress('w')
             up = true;
@@ -31,7 +40,7 @@ onkeydown = onkeyup = function(e){
         }
     }
 
-    if (map[38] == false /* up */ || map[87]  == false /* w */) {
+    if (map[38] == false /* up */ || map[87] == false /* w */ ) {
         emitKeyRelease('w')
         up = false;
     }

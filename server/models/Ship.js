@@ -7,7 +7,7 @@ module.exports = {
     newShip: function (username) {
         let ship = {
             username: username,
-            size: 15,
+            size: 2,
             speed: 0,
             energy: 100,
             reactorSpeed: 5,
