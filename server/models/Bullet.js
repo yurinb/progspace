@@ -4,18 +4,20 @@ module.exports = {
 
 
     newBullet: function () {
+        let physicBullet = PhysicObjectFactory.newPhysicObject()
+
         let bullet = {
             damage: 10,
-            speed: 15,
+            speed: 30,
             lifeTime: 3000,
             color: 'white',
-            w: 2,
-            h: 20,
+            w: 20,
+            h: 2
         }
-        let physicBullet = Object.assign(bullet,
-            PhysicObjectFactory.newPhysicObject()
+
+        return Object.assign(physicBullet,
+            bullet
         )
-        return physicBullet
     }
 
 

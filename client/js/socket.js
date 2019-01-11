@@ -1,4 +1,4 @@
-const socket = io.connect("http://localhost:9000");
+const socket = io.connect("http://192.168.15.15:9000");
 
 socket.on("connect", function () {
     console.log('Client connected.');
@@ -38,28 +38,18 @@ function emitReady() {
 
 function emitAngle() {
     if (player.ship.angle) {
-        setTimeout(() => {
-            socket.emit("playerAngle", {
-                angle: player.ship.angle
-            });
-        }, 0);
+        socket.emit("playerAngle", player.ship.angle);
     }
 }
 
 function emitKeyPress(key) {
-    setTimeout(() => {
-        socket.emit("playerKeyPress_" + key);
-    }, 0);
+    socket.emit("playerKeyPress_" + key);
 }
 
 function emitKeyRelease(key) {
-    setTimeout(() => {
-        socket.emit("playerKeyRelease_" + key);
-    }, 0);
+    socket.emit("playerKeyRelease_" + key);
 }
 
 function emitFire() {
-    setTimeout(() => {
-        socket.emit("playerFires");
-    }, 0);
+    socket.emit("playerFires");
 }

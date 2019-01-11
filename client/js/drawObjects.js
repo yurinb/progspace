@@ -7,10 +7,6 @@ function writeObjects() {
     drawStars()
     drawShips()
     drawBullets()
-
-    //drawPlayer()
-
-
 }
 
 function drawStars() {
@@ -31,34 +27,34 @@ function drawStars() {
 }
 
 function drawShips() {
-    //console.log('player = ', isEmpty(player));
-
     if (ships.length > 0 && !isEmpty(player)) {
-
-        ships.forEach(elem => {
-            if (elem.id == player.ship.id) {
-                player.ship = elem
-            }
-            c.save();
-            c.beginPath();
-            let screenPosition = convertPosToPixel(elem.x, elem.y, player.ship)
-            c.translate(screenPosition.x, screenPosition.y);
-            c.rotate(elem.angle * Math.PI / 180);
-            c.fillStyle = "gray";
-            c.rect(-(elem.w * elem.size / 2), -(elem.h * elem.size / 2), elem.w * elem.size, elem.h * elem.size);
-            //c.drawImage(ele.img, -15, -15, 30, 30);
-            c.fill();
-            c.restore();
-
-            c.save();
-            c.beginPath();
-            c.font = "15px Arial";
-            c.fillStyle = "green";
-            c.translate(screenPosition.x, screenPosition.y + 30);
-            c.textAlign = "center";
-            c.fillText(elem.username, 0, 0)
-            c.restore();
-        })
+        if (player.isConnected) {
+            ships.forEach(elem => {
+                if (elem.id == player.ship.id) {
+                    player.ship = elem
+                }
+                c.save();
+                c.beginPath();
+                let screenPosition = convertPosToPixel(elem.x, elem.y, player.ship)
+                c.translate(screenPosition.x, screenPosition.y);
+                c.rotate(elem.angle * Math.PI / 180);
+                c.fillStyle = "white";
+                c.rect(-(elem.w * elem.size / 2), -(elem.h * elem.size / 2), elem.w * elem.size, elem.h * elem.size);
+                //c.drawImage(ele.img, -15, -15, 30, 30);
+                c.fill();
+                c.restore();
+                
+                // username
+                c.save();
+                c.beginPath();
+                c.font = "15px Arial";
+                c.fillStyle = "green";
+                c.translate(screenPosition.x, screenPosition.y + 30);
+                c.textAlign = "center";
+                c.fillText(elem.username, 0, 0)
+                c.restore();
+            })
+        }
     }
 }
 
@@ -71,24 +67,10 @@ function drawBullets() {
             c.translate(screenPosition.x, screenPosition.y);
             c.rotate(elem.angle * Math.PI / 180);
             c.fillStyle = elem.color
+            c.fillStyle = '#FF5500'
             c.rect(-(elem.w / 2), -(elem.h / 2), elem.w, elem.h);
             c.fill();
             c.restore();
         })
-    }
-}
-
-function drawPlayer() {
-    if (isEmpty(player)) {
-        let screenPosition = convertPosToPixel(player.ship.x, player.ship.y, player.ship)
-        c.save();
-        c.beginPath();
-        c.translate(screenPosition.x, screenPosition.y);
-        c.rotate(player.ship.angle * Math.PI / 180);
-        c.fillStyle = "blue";
-        c.rect(-(player.ship.w / 2), -(player.ship.h / 2), player.ship.w, player.ship.h);
-        //c.drawImage(img, -(player.ship.w /2), -(player.ship.h /2), player.ship.w, player.ship.h);
-        c.fill();
-        c.restore();
     }
 }
