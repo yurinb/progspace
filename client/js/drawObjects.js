@@ -10,15 +10,15 @@ function writeObjects() {
 }
 
 function drawStars() {
-    if (isEmpty(player)) {
+    if (!isEmpty(player)) {
         stars.forEach(element => {
             element.stars.forEach(elem => {
                 c.save();
-                c.beginPath();
-                c.fillStyle = "rgba(" + elem.r + ", " + elem.g + ", " + elem.b + ", " + elem.z * 0.25 + ")"
+                //c.beginPath();
+                c.fillStyle = "rgba(" + elem.r + ", " + elem.g + ", " + elem.b + ", " + elem.z * (Math.random() * 0.25) + ")"
                 let screenPosition = convertPosToPixel(elem.x, elem.y, player.ship)
                 c.translate(screenPosition.x, screenPosition.y);
-                c.fillRect(screenPosition.x, screenPosition.y, elem.s + Math.random() * 2, elem.s + Math.random() * 2)
+                c.fillRect(0, 0, elem.s, elem.s)
                 //c.fillText(elem.x + ' ' + elem.y, screenPosition.x, screenPosition.y)
                 c.restore();
             })
@@ -43,7 +43,7 @@ function drawShips() {
                 //c.drawImage(ele.img, -15, -15, 30, 30);
                 c.fill();
                 c.restore();
-                
+
                 // username
                 c.save();
                 c.beginPath();

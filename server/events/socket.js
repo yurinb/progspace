@@ -1,5 +1,7 @@
 const PlayerFactory = require('../models/Player')
 const BulletFactory = require('../models/Bullet')
+const spawnStars = require('../actions/spawnStars')
+
 
 module.exports = function (client) {
     client.socket.on('disconnect', () => {
@@ -18,7 +20,9 @@ module.exports = function (client) {
         if (!global.gameObjects.ships.includes(player)) {
             global.gameObjects.ships.push(player.ship)
         }
-
+        spawnStars.getQuadrantByPosition(player.ship.x, player.ship.y)
+        client.socket.emit('stars', global.gameObjects.starsQuadrant)
+        
         client.socket.emit('player', client.player)
     })
 

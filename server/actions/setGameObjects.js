@@ -6,4 +6,4 @@ global.gameObjects.ships = []
 
 global.gameObjects.bullets = []
 
-global.gameObjects.stars = []
+global.gameObjects.starsQuadrant = []

@@ -16,9 +16,7 @@ socket.on("bullets", function (data) {
 });
 
 socket.on("stars", function (data) {
-    if (stars.length == 0) {
         stars = data
-    }
 });
 
 socket.on("score", function (data) {
