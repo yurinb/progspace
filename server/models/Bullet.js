@@ -9,10 +9,11 @@ module.exports = {
         let bullet = {
             damage: 0,
             speed: 15,
-            lifeTime: 1000,
+            lifeTime: 2500,
             color: '#FF5500',
             w: 5,
             h: 5,
+            energyCost: 10,
             username,
             explosion: {
                 particles : 30, 

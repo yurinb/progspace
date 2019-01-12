@@ -68,15 +68,19 @@ module.exports = function (client) {
 
     // attack
 
-    client.socket.on('playerFires', () => {
+    client.socket.on('playerFires', (data, callback) => {
         if (client.player) {
             //console.log('*Player FIRES!');
-            let bullet = BulletFactory.newLaser(client.player.username)
-            bullet.x = client.player.ship.x + 20 * Math.cos((client.player.ship.angle) * Math.PI / 180)
-            bullet.y = client.player.ship.y + 20 * Math.sin((client.player.ship.angle) * Math.PI / 180)
-            bullet.angle = client.player.ship.angle
-
-            global.gameObjects.bullets.push(bullet)
+            let energyCost = client.player.ship.weapons[client.player.ship.currentWeapon].bullet.energyCost
+            if (client.player.ship.energy >= energyCost) {
+                let bullet = BulletFactory.newLaser(client.player.username)
+                bullet.x = client.player.ship.x + 20 * Math.cos((client.player.ship.angle) * Math.PI / 180)
+                bullet.y = client.player.ship.y + 20 * Math.sin((client.player.ship.angle) * Math.PI / 180)
+                bullet.angle = client.player.ship.angle
+                client.player.ship.energy -= energyCost
+                global.gameObjects.bullets.push(bullet)
+                callback()
+            }
         }
     })
 }

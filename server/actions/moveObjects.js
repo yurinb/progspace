@@ -35,7 +35,7 @@ function moveShips(element) {
 function explodeElement(elem) {
     if (elem.explosion) {
         for (let index = 0; index < elem.explosion.particles; index++) {
-            let bullet = BulletFactory.newExplosionParticle(elem.x + (Math.random() * 25 - Math.random() * 25), elem.y + (Math.random() * 25 - Math.random() * 25), elem.explosion)
+            let bullet = BulletFactory.newExplosionParticle(elem.x + ( 10 +Math.random() * 15 - Math.random() * 25), elem.y + (10 + Math.random() * 15 - Math.random() * 25), elem.explosion)
             global.gameObjects.bullets.push(bullet)
         }
     }

@@ -23,6 +23,7 @@ app.get('/', function (req, res) {
 require('./actions/setGameObjects')
 require('./actions/handleSocketsConnection')
 require('./actions/moveObjects')
+require('./events/timed')
 
 
 const PORT = 9000

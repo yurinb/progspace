@@ -1,12 +1,15 @@
 function writeObjects() {
     setTimeout(() => {
         drawStars()
-    }, 10);
+    }, 0);
     setTimeout(() => {
         drawShips()
-    }, 20);
+    }, 10);
     setTimeout(() => {
         drawBullets()
+    }, 20);
+    setTimeout(() => {
+        drawInterface()
     }, 30);
 }
 
@@ -19,10 +22,12 @@ function drawStars() {
             backgroundC.clearRect(0, 0, screenWidth, screenHeight)
             backgroundC.restore();
 
+            let count = 0
             player.stars.forEach(elem => {
                 elem.stars.forEach(ele => {
                     let screenPosition = convertPosToPixel(ele.x, ele.y, player.ship)
-                    if (screenPosition.x <= screenWidth || screenPosition.y <= screenHeight) {
+                    if (screenPosition.x * zoom <= screenWidth && screenPosition.y * zoom <= screenHeight) {
+                        count++
                         //backgroundC.save();
                         //backgroundC.beginPath();
                         backgroundC.fillStyle = "rgba(" + ele.r + ", " + ele.g + ", " + ele.b + ", " + ele.z * Math.random() + ")"
@@ -34,6 +39,7 @@ function drawStars() {
                     }
                 });
             })
+            console.log('drawing stars: ', count);
         }
     }, 30);
 }
@@ -55,14 +61,14 @@ function drawShips() {
                     shipsC.beginPath();
                     shipsC.translate(screenPosition.x, screenPosition.y);
                     shipsC.fillStyle = '#020202';
-                    shipsC.strokeStyle = "lightblue";
+                    shipsC.strokeStyle = "#42f4c5";
                     energyShieldSizeEffect += 0.25 * q * energyShieldSizeEffectMultipler
                     shipsC.arc(0, 0, 10 * zoom + energyShieldSizeEffect, 0, 2 * Math.PI);
                     if (energyShieldSizeEffect >= 2) {
-                        energyShieldSizeEffectMultipler = -1
+                        energyShieldSizeEffectMultipler = -q
                     }
                     if (energyShieldSizeEffect <= 0) {
-                        energyShieldSizeEffectMultipler = 1
+                        energyShieldSizeEffectMultipler = q
                     }
                     shipsC.stroke();
                     shipsC.restore();
@@ -84,16 +90,15 @@ function drawShips() {
                 // username
                 shipsC.save();
                 shipsC.beginPath();
-                shipsC.font = "15px Arial";
-                shipsC.fillStyle = "green";
-                shipsC.translate(screenPosition.x, screenPosition.y + 10 + 35 * zoom );
+                shipsC.font = "15px Lucida Console";
+                shipsC.fillStyle = "#42f4c5";
+                shipsC.translate(screenPosition.x, screenPosition.y + 10 + 35 * zoom);
                 shipsC.textAlign = "center";
                 shipsC.fillText(elem.username, 0, 0)
                 shipsC.restore();
             })
         } else {
             shipsC.clearRect(0, 0, screenWidth, screenHeight)
-
         }
     }, 30);
 }
@@ -117,5 +122,39 @@ function drawBullets() {
             bulletsC.clearRect(0, 0, screenWidth, screenHeight)
         }
     }, 30);
+
+}
+
+function drawInterface() {
+    setInterval(() => {
+        if (!isEmpty(player)) {
+            interfaceC.clearRect(0, 0, screenWidth, screenHeight)
+            interfaceC.save();
+            interfaceC.beginPath();
+
+            interfaceC.font = "15px Lucida Console";
+            interfaceC.textAlign = "center";
+
+            let x = screenWidth / 2
+            let y = screenHeight / 2 + screenHeight / 3
+
+            interfaceC.fillStyle = "#42f4c5";
+            interfaceC.fillText('energy', x, y - 10)
+            let energyBarSize = screenWidth / 4
+
+            // background energy bar
+            interfaceC.strokeStyle = "#42f4c5";
+            interfaceC.strokeRect(x - energyBarSize / 2, y, energyBarSize, 10)
+
+            // current state energy bar
+            interfaceC.fillStyle = "#42f4c5";
+            interfaceC.fillRect(x - energyBarSize / 2, y, energyBarSize * player.ship.energy / player.ship.maxEnergy, 10)
+
+            interfaceC.fill();
+            interfaceC.restore();
+        } else {
+            interfaceC.clearRect(0, 0, screenWidth, screenHeight)
+        }
+    }, 100);
 
 }
