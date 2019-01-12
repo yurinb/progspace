@@ -50,7 +50,7 @@ document.body.addEventListener('mousemove', function (evt) {
 
 
 
-const modal = document.getElementById('myModal');
+const modal = document.getElementById('login-container');
 
 function showLoginModal() {
     modal.style.display = "block";
@@ -58,6 +58,7 @@ function showLoginModal() {
 
 function hideLoginModal() {
     modal.style.display = "none";
+    document.body.removeChild(modal)
 }
 
 showLoginModal()
@@ -66,6 +67,7 @@ function userLoggedIn() {
     hideLoginModal()
     document.body.appendChild(shipsCanvas);
     document.body.appendChild(bulletsCanvas);
+    canvas.x = 0
     setTimeout(() => {
         writeObjects()
     }, 10);

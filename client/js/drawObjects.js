@@ -39,6 +39,8 @@ function drawStars() {
 }
 
 function drawShips() {
+    let energyShieldSizeEffect = 0
+    let energyShieldSizeEffectMultipler = 1
     setInterval(() => {
         if (ships.length > 0 && !isEmpty(player)) {
             shipsC.clearRect(0, 0, screenWidth, screenHeight)
@@ -46,27 +48,52 @@ function drawShips() {
                 if (elem.id == player.ship.id) {
                     player.ship = elem
                 }
+                let screenPosition = convertPosToPixel(elem.x, elem.y, player.ship)
+                // energy shield
+                for (let q = 0; q < 3; q++) {
+                    shipsC.save();
+                    shipsC.beginPath();
+                    shipsC.translate(screenPosition.x, screenPosition.y);
+                    shipsC.fillStyle = '#020202';
+                    shipsC.strokeStyle = "lightblue";
+                    energyShieldSizeEffect += 0.25 * q * energyShieldSizeEffectMultipler
+                    shipsC.arc(0, 0, 10 * zoom + energyShieldSizeEffect, 0, 2 * Math.PI);
+                    if (energyShieldSizeEffect >= 2) {
+                        energyShieldSizeEffectMultipler = -1
+                    }
+                    if (energyShieldSizeEffect <= 0) {
+                        energyShieldSizeEffectMultipler = 1
+                    }
+                    shipsC.stroke();
+                    shipsC.restore();
+                }
+
+                // ship
                 shipsC.save();
                 shipsC.beginPath();
-                let screenPosition = convertPosToPixel(elem.x, elem.y, player.ship)
                 shipsC.translate(screenPosition.x, screenPosition.y);
                 shipsC.rotate(elem.angle * Math.PI / 180);
                 shipsC.fillStyle = "white";
-                shipsC.rect(-(elem.w * elem.size * zoom / 2), -(elem.h * elem.size * zoom / 2), elem.w * elem.size * zoom, elem.h * elem.size * zoom);
+                shipsC.rect(-(elem.w * zoom / 2), -(elem.h * zoom / 2), elem.w * zoom, elem.h * zoom);
                 //backgroundC.drawImage(ele.img, -15, -15, 30, 30);
+                shipsC.stroke();
                 shipsC.fill();
                 shipsC.restore();
+
 
                 // username
                 shipsC.save();
                 shipsC.beginPath();
                 shipsC.font = "15px Arial";
                 shipsC.fillStyle = "green";
-                shipsC.translate(screenPosition.x, screenPosition.y + 30);
+                shipsC.translate(screenPosition.x, screenPosition.y + 10 + 35 * zoom );
                 shipsC.textAlign = "center";
                 shipsC.fillText(elem.username, 0, 0)
                 shipsC.restore();
             })
+        } else {
+            shipsC.clearRect(0, 0, screenWidth, screenHeight)
+
         }
     }, 30);
 }
@@ -82,11 +109,12 @@ function drawBullets() {
                 bulletsC.translate(screenPosition.x, screenPosition.y);
                 bulletsC.rotate(elem.angle * Math.PI / 180);
                 bulletsC.fillStyle = elem.color
-                bulletsC.fillStyle = '#FF5500'
-                bulletsC.rect(-(elem.w / 2), -(elem.h / 2), elem.w * zoom, elem.h * zoom);
+                bulletsC.rect(-(elem.w * zoom / 2), -(elem.h * zoom / 2), elem.w * zoom, elem.h * zoom);
                 bulletsC.fill();
                 bulletsC.restore();
             })
+        } else {
+            bulletsC.clearRect(0, 0, screenWidth, screenHeight)
         }
     }, 30);
 

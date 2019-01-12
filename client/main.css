@@ -1,50 +1,49 @@
 * {
-    padding: 0px;
-    margin: 0px;
-  }
-  
-  html, body {
-    height: 100%;
-    width: 100%;
-  }
-  
-  canvas {
-    position:absolute;
+  padding: 0px;
+  margin: 0px;
+  text-align: center;
+  border: none;
+  color: rgb(236, 236, 236);
+  font-family: 'Courier New', Courier, monospace;
+  width: 150px;
 }
 
-/* The Modal (background) */
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: #020202;
-  }
-  
-  /* Modal Content/Box */
-  .modal-content {
-    background-color: #020202;
-    margin: 30% auto; /* 15% from the top and centered */
-    padding: 0px;
-    border: 1px solid #888;
-    width: 38%; /* Could be more or less, depending on screen size */
-  }
-  
-  /* The Close Button */
-  .close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-  }
-  
-  .close:hover,
-  .close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-  }
+html,
+body {
+  height: 100%;
+  width: 100%;
+}
+
+canvas {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+}
+
+input {
+  background-color:#020202 !important;
+  border-bottom: 1px;
+  border-bottom-color: whitesmoke;
+}
+
+#login-container {
+  position: absolute;
+
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex: 1;
+  z-index: 4;
+}
+
+#login-input {
+  position: absolute;
+  width: 150px;
+  margin: auto;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+}

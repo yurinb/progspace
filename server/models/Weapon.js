@@ -1,9 +1,9 @@
 const BulletFactory = require('../models/Bullet')
 
-function newWeapon() {
+function newWeapon(username) {
     let weapon = {
         name: '',
-        bullet: BulletFactory.newBullet(),
+        bullet: BulletFactory.newLaser(username),
         energyCost: 10,
         canalizeTime: 1000,
         cooldawn: 500

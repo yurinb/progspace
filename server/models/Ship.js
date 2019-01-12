@@ -7,16 +7,21 @@ module.exports = {
     newShip: function (username) {
         let ship = {
             username: username,
-            size: 1.5,
-            speed: 0,
+            w: 15,
+            h: 10,
+            speed: 10,
+            aceleration: 1,
+            acelerated: 0,
+            engineOn: false,
             energy: 100,
             reactorSpeed: 5,
             weapons: [WeaponFactory.laser()],
             currentWeapon: 0
         }
-        let physicShip = Object.assign(ship,
-            PhysicObjectFactory.newPhysicObject()
-        )
+        let physicObject = PhysicObjectFactory.newPhysicObject()
+
+        let physicShip = Object.assign(physicObject, ship)
+        
         return physicShip
     }
 

@@ -11,9 +11,9 @@ module.exports = {
             y: 0,
             w: 10,
             h: 10,
-            state: 'iddle',
             angle: 0,
-            animations: []
+            state: 'alive',
+            lifeTime: 3000
         }
         return object
     }
