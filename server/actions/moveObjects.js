@@ -35,7 +35,7 @@ function moveShips(element) {
 function explodeElement(elem) {
     if (elem.explosion) {
         for (let index = 0; index < elem.explosion.particles; index++) {
-            let bullet = BulletFactory.newExplosionParticle(elem.x, elem.y, elem.explosion)
+            let bullet = BulletFactory.newExplosionParticle(elem.x + (Math.random() * 25 - Math.random() * 25), elem.y + (Math.random() * 25 - Math.random() * 25), elem.explosion)
             global.gameObjects.bullets.push(bullet)
         }
     }
@@ -43,28 +43,64 @@ function explodeElement(elem) {
 }
 
 function elementCollidesWithShip(element) {
-
-    let ships = global.gameObjects.ships
-    let eMinX = element.x - element.w / 2
-    let eMaxX = element.x + element.w / 2
-    let eMinY = element.y - element.h / 2
-    let eMaxY = element.y + element.h / 2
-    for (let index = 0; index < ships.length; index++) {
-        let sMinX = ships[index].x - ships[index].w / 2
-        let sMaxX = ships[index].x + ships[index].w / 2
-        let sMinY = ships[index].y - ships[index].h / 2
-        let sMaxY = ships[index].y + ships[index].h / 2
-        if (
-            eMaxX >= sMinX &&
-            eMinX <= sMaxX &&
-            eMaxY >= sMinY &&
-            eMinY <= sMaxY
-        ) {
+    let eC = {
+        x: element.x,
+        y: element.y,
+        r: (element.w + element.h) / 2
+    }
+    for (let i = 0; i < global.gameObjects.ships.length; i++) {
+        let sC = {
+            x: global.gameObjects.ships[i].x,
+            y: global.gameObjects.ships[i].y,
+            r: (global.gameObjects.ships[i].w + global.gameObjects.ships[i].h) / 2
+        }
+        
+        if (collision(eC.x, eC.y, eC.r, sC.x, sC.y, sC.r)) {
             return true
         }
     }
     return false
 }
+function collision(p1x, p1y, r1, p2x, p2y, r2) {
+    var a;
+    var x;
+    var y;
+  
+    a = r1 + r2;
+    x = p1x - p2x;
+    y = p1y - p2y;
+  
+    if (a > Math.sqrt((x * x) + (y * y))) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+//collides rectangle
+// function elementCollidesWithShip(element) {
+
+//     let ships = global.gameObjects.ships
+//     let eMinX = element.x - element.w / 2
+//     let eMaxX = element.x + element.w / 2
+//     let eMinY = element.y - element.h / 2
+//     let eMaxY = element.y + element.h / 2
+//     for (let index = 0; index < ships.length; index++) {
+//         let sMinX = ships[index].x - ships[index].w / 2
+//         let sMaxX = ships[index].x + ships[index].w / 2
+//         let sMinY = ships[index].y - ships[index].h / 2
+//         let sMaxY = ships[index].y + ships[index].h / 2
+//         if (
+//             eMaxX >= sMinX &&
+//             eMinX <= sMaxX &&
+//             eMaxY >= sMinY &&
+//             eMinY <= sMaxY
+//         ) {
+//             return true
+//         }
+//     }
+//     return false
+// }
 
 setTimeout(() => {
     setInterval(function shipsMove() {

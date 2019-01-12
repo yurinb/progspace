@@ -1,7 +1,7 @@
 const StarFactory = require('../models/Star')
 
-const quadrantSize = 1000
-const starsByQuadrant = 30
+const quadrantSize = 3000
+const starsByQuadrant = 50
 
 let tests = {
     quadrantFactory: [{
@@ -165,6 +165,29 @@ function getNewQuadrant(x, y) {
 }
 
 function getNewVisibleQuadrants(x, y, playerQuadrants) {
+
+    let quadrants = []
+
+    quadrants = getQuadrant(x, y, playerQuadrants)
+
+    if (quadrants.length == 0) {
+        quadrants = getQuadrant(x + quadrantSize / 2, y, playerQuadrants)
+    }
+    if (quadrants.length == 0) {
+        quadrants = getQuadrant(x - quadrantSize / 2, y, playerQuadrants)
+    }
+    if (quadrants.length == 0) {
+        quadrants = getQuadrant(x, y - quadrantSize / 2, playerQuadrants)
+    }
+    if (quadrants.length == 0) {
+        quadrants = getQuadrant(x, y - quadrantSize / 2, playerQuadrants)
+    }
+
+    return quadrants
+
+}
+
+function getQuadrant(x, y, playerQuadrants) {
     let quadrants = []
     let startX = x
     let startY = y
@@ -199,7 +222,6 @@ function getNewVisibleQuadrants(x, y, playerQuadrants) {
             quadrants.push(newQuadrant)
         }
     }
-
     return quadrants
 }
 

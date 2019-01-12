@@ -8,7 +8,7 @@ module.exports = {
 
         let bullet = {
             damage: 0,
-            speed: 25,
+            speed: 15,
             lifeTime: 1000,
             color: '#FF5500',
             w: 5,
@@ -18,10 +18,10 @@ module.exports = {
                 particles : 30, 
                 maxDamage : 10, 
                 minSize : 1, 
-                maxSize : 5, 
-                minSpeed: 5, 
-                maxSpeed: 30,
-                maxLifeTime: 50,
+                maxSize : 3, 
+                minSpeed: 25, 
+                maxSpeed: 35,
+                maxLifeTime: 100,
                 color: '#FF5500',
                 username
             }
