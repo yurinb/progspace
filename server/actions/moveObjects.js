@@ -23,15 +23,9 @@ setInterval(() => {
 }, intervalMS);
 
 setInterval(() => {
-    global.gameObjects.ships.forEach(element => {
-        global.gameObjects.clients.forEach(elem => {
-            if (elem.player) {
-                if (elem.player.ship == element) {
-                    spawnStars.getQuadrantByPosition(element.x, element.y)
-                    elem.socket.emit('stars', global.gameObjects.starsQuadrant)
-                }
-            }
-        });
-    });
-
-}, 250);
+    global.gameObjects.clients.forEach(elem => {
+        if (elem.player) {
+            elem.socket.emit('stars', spawnStars.getNewVisibleQuadrants(elem.player.ship.x, elem.player.ship.y, elem.player.stars))
+        }
+    })
+}, 100);

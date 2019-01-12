@@ -16,7 +16,10 @@ socket.on("bullets", function (data) {
 });
 
 socket.on("stars", function (data) {
-        stars = data
+    if (data.length > 0) {
+        stars.push(data)
+        console.log(stars);
+    }
 });
 
 socket.on("score", function (data) {
@@ -35,9 +38,11 @@ function emitReady() {
 }
 
 function emitAngle() {
-    if (player.ship.angle) {
-        socket.emit("playerAngle", player.ship.angle);
-    }
+    setInterval(() => {
+        if (player.ship.angle) {
+            socket.emit("playerAngle", player.ship.angle);
+        }
+    }, 10);
 }
 
 function emitKeyPress(key) {

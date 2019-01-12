@@ -20,8 +20,8 @@ module.exports = function (client) {
         if (!global.gameObjects.ships.includes(player)) {
             global.gameObjects.ships.push(player.ship)
         }
-        spawnStars.getQuadrantByPosition(player.ship.x, player.ship.y)
-        client.socket.emit('stars', global.gameObjects.starsQuadrant)
+        
+        client.socket.emit('stars', spawnStars.getNewVisibleQuadrants(player.ship.x, player.ship.y, player.stars))
         
         client.socket.emit('player', client.player)
     })
@@ -56,7 +56,6 @@ module.exports = function (client) {
 
     client.socket.on('playerAngle', angle => {
         if (client.player) {
-            //console.log('*Player Sends Angle');
             client.player.ship.angle = angle
         }
     })

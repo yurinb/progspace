@@ -1,11 +1,32 @@
 const canvas = document.querySelector('canvas')
+const bulletsCanvas = document.createElement('canvas')
+const shipsCanvas = document.createElement('canvas')
+canvas.style.backgroundColor = '#020202'
+
 const screenHeight = window.innerHeight
 const screenWidth = window.innerWidth
-canvas.height = screenHeight
-canvas.width = screenWidth
-const c = canvas.getContext('2d')
 
-let mousePosition = {}
+canvas.height = screenHeight
+bulletsCanvas.height = screenHeight
+shipsCanvas.height = screenHeight
+
+canvas.width = screenWidth
+bulletsCanvas.width = screenWidth
+shipsCanvas.width = screenWidth
+
+canvas.style.zIndex = '1'
+bulletsCanvas.style.zIndex = '2'
+shipsCanvas.style.zIndex = '3'
+
+
+const backgroundC = canvas.getContext('2d')
+const bulletsC = bulletsCanvas.getContext('2d')
+const shipsC = shipsCanvas.getContext('2d')
+
+let mousePosition = {
+    x: 0,
+    y: 0
+}
 
 let score = {}
 let player = {}
@@ -14,13 +35,14 @@ let bullets = []
 let stars = []
 let particles = []
 
-canvas.addEventListener('mousemove', function (evt) {
-    var mousePos = getMousePos(canvas, evt);
-    
-    mousePosition = {
-        x: mousePos.x,
-        y: mousePos.y
-    }
+debugger;
+
+document.body.addEventListener('mousemove', function (evt) {
+    var mousePos = getMousePos(shipsCanvas, evt);
+
+    mousePosition.x = mousePos.x
+    mousePosition.y = mousePos.y
+
     if (!player.ship) {
         return
     }
@@ -28,14 +50,6 @@ canvas.addEventListener('mousemove', function (evt) {
 }, false);
 
 
-function startLoop() {
-    requestAnimationFrame(startLoop)
-    writeObjects()
-    if (!player.ship) {
-        return
-    }
-    emitAngle()
-}
 
 const modal = document.getElementById('myModal');
 
@@ -51,5 +65,8 @@ showLoginModal()
 
 function userLoggedIn() {
     hideLoginModal()
-    startLoop()
+    document.body.appendChild(shipsCanvas);
+    document.body.appendChild(bulletsCanvas);
+    writeObjects()
+    emitAngle()
 }

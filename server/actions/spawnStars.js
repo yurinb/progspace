@@ -1,7 +1,7 @@
 const StarFactory = require('../models/Star')
 
-const quadrantSize = 250
-const starsByQuadrant = 50
+const quadrantSize = 300
+const starsByQuadrant = 10
 
 let tests = {
     quadrantFactory: [{
@@ -69,7 +69,7 @@ function test() {
     return fails
 }
 
-console.log(test());
+//console.log(test());
 
 
 // creates a quadrant to be used to fit stars in
@@ -82,14 +82,14 @@ function getQuadrantPositionBy(x, y) {
         if (x <= quadrantSize) {
             quadrant.x = 0
         }
-        if (x > quadrantSize) { 
+        if (x > quadrantSize) {
             quadrant.x = (Math.trunc(x / quadrantSize) * quadrantSize)
             // let quadX = Math.trunc(x / quadrantSize)
             // quadrant.x = quadX * quadrantSize
         }
     }
     if (x < 0) {
-        if (x >= -(quadrantSize)) { 
+        if (x >= -(quadrantSize)) {
             quadrant.x = -(quadrantSize)
         }
         if (x < -(quadrantSize)) {
@@ -126,14 +126,11 @@ function getQuadrantPositionBy(x, y) {
 // searchs for quadrant at quadrants array
 function getQuadrantByPosition(x, y) {
     let quadrant = getQuadrantPositionBy(x, y)
-    //console.log('QUAD POS : ' + x + ' - ' + y + ' > ', quadrant);
 
-    let found = false
     for (let index = 0; index < global.gameObjects.starsQuadrant.length; index++) {
         let element = global.gameObjects.starsQuadrant[index]
 
         if (element.x == quadrant.x && element.y == quadrant.y) {
-            found = true
             return element
         }
     }
@@ -142,7 +139,6 @@ function getQuadrantByPosition(x, y) {
 }
 
 function getNewQuadrant(x, y) {
-    //console.log('NEW QUADRANT');
 
     // get a example quadrant that shold have in memory based on x, y
     let quadrant = getQuadrantPositionBy(x, y)
@@ -162,13 +158,51 @@ function getNewQuadrant(x, y) {
             }
         }
     } else {
-        
         globalQuadrant.push(quadrant)
     }
 
     return quadrant
 }
 
+function getNewVisibleQuadrants(x, y, playerQuadrants) {
+    let quadrants = []
+    let startX = x
+    let startY = y
+    for (let quad = 1; quad <= 4; quad++) {
+        if (quad == 2) {
+            x = startX - quadrantSize
+            y = startY
+        }
+        if (quad == 3) {
+            x = startX - quadrantSize
+            y = startY - quadrantSize
+        }
+        if (quad == 4) {
+            x = startX
+            y = startY - quadrantSize
+        }
+        let newQuadrant = getQuadrantByPosition(x, y)
+
+        if (playerQuadrants.length > 0) {
+            let found = false
+            for (let index = 0; index < playerQuadrants.length; index++) {
+                if (playerQuadrants[index].x == newQuadrant.x && playerQuadrants[index].y == newQuadrant.y) {
+                    found = true
+                }
+            }
+            if (!found) {
+                playerQuadrants.push(newQuadrant)
+                quadrants.push(newQuadrant)
+            }
+        } else {
+            playerQuadrants.push(newQuadrant)
+            quadrants.push(newQuadrant)
+        }
+    }
+
+    return quadrants
+}
+
 module.exports = {
-    getQuadrantByPosition
+    getNewVisibleQuadrants
 }

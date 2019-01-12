@@ -31,6 +31,7 @@ module.exports = {
                 id: playerCount,
                 username,
                 password,
+                stars: [],
                 ship: ShipFactory.newShip(username)
             }
             return player
