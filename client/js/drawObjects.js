@@ -28,7 +28,7 @@ function drawStars() {
                         backgroundC.fillStyle = "rgba(" + ele.r + ", " + ele.g + ", " + ele.b + ", " + ele.z * Math.random() + ")"
                         //backgroundC.translate(screenPosition.x, screenPosition.y);
                         //backgroundC.fillRect(0, 0, elem.s, elem.s)
-                        backgroundC.fillRect(screenPosition.x, screenPosition.y, ele.s, ele.s)
+                        backgroundC.fillRect(screenPosition.x, screenPosition.y, ele.s * zoom, ele.s * zoom)
                         //backgroundC.fillText(elem.x + ' ' + elem.y, screenPosition.x, screenPosition.y)
                         //backgroundC.restore();
                     }
@@ -52,7 +52,7 @@ function drawShips() {
                 shipsC.translate(screenPosition.x, screenPosition.y);
                 shipsC.rotate(elem.angle * Math.PI / 180);
                 shipsC.fillStyle = "white";
-                shipsC.rect(-(elem.w * elem.size / 2), -(elem.h * elem.size / 2), elem.w * elem.size, elem.h * elem.size);
+                shipsC.rect(-(elem.w * elem.size * zoom / 2), -(elem.h * elem.size * zoom / 2), elem.w * elem.size * zoom, elem.h * elem.size * zoom);
                 //backgroundC.drawImage(ele.img, -15, -15, 30, 30);
                 shipsC.fill();
                 shipsC.restore();
@@ -83,7 +83,7 @@ function drawBullets() {
                 bulletsC.rotate(elem.angle * Math.PI / 180);
                 bulletsC.fillStyle = elem.color
                 bulletsC.fillStyle = '#FF5500'
-                bulletsC.rect(-(elem.w / 2), -(elem.h / 2), elem.w, elem.h);
+                bulletsC.rect(-(elem.w / 2), -(elem.h / 2), elem.w * zoom, elem.h * zoom);
                 bulletsC.fill();
                 bulletsC.restore();
             })

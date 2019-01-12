@@ -1,7 +1,7 @@
 const StarFactory = require('../models/Star')
 
-const quadrantSize = 300
-const starsByQuadrant = 10
+const quadrantSize = 1000
+const starsByQuadrant = 30
 
 let tests = {
     quadrantFactory: [{

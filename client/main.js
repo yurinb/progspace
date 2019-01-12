@@ -41,7 +41,6 @@ document.body.addEventListener('mousemove', function (evt) {
 
     mousePosition.x = mousePos.x
     mousePosition.y = mousePos.y
-console.log(player, ships, stars);
 
     if (!player.ship) {
         return

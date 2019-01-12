@@ -19,7 +19,7 @@ function getPlayerAngle() {
     if (angle < 0) {
         angle += 360
     }
-    
+
     return angle
 }
 
@@ -33,14 +33,22 @@ function getPlayerAngle() {
 // ou seja 
 // if objeto.x '500' for maior que a maxima-menor && se '500' for menor que a maxima-maior
 // if objeto.y '500' for maior que a maxima-menor && se '500' for menor que a maxima-maior
+let zoom = 1
+window.addEventListener('mousewheel', function (e) {
+    if (e.wheelDelta < 0 && zoom > 0.20) {
+        zoom-= 0.10;
+    } else if (e.wheelDelta > 0 && zoom < 2) {
+        zoom+= 0.10;
+    }
+});
 
 function convertPosToPixel(x, y, playerShip) { // 
 
     let canvasCenterX = canvas.width / 2
     let canvasCenterY = canvas.height / 2
 
-    let diffX = x - playerShip.x
-    let diffY = y - playerShip.y
+    let diffX = (x - playerShip.x) * zoom
+    let diffY = (y - playerShip.y) * zoom
 
     return {
         x: diffX + canvasCenterX,
@@ -49,8 +57,8 @@ function convertPosToPixel(x, y, playerShip) { //
 }
 
 function isEmpty(obj) {
-    for(var key in obj) {
-        if(obj.hasOwnProperty(key))
+    for (var key in obj) {
+        if (obj.hasOwnProperty(key))
             return false;
     }
     return true;
