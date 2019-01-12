@@ -83,4 +83,20 @@ module.exports = function (client) {
             }
         }
     })
+
+    client.socket.on('playerImpulseOn', () => {
+        if (client.player) {
+            let energyCost = client.player.ship.maxEnergy * 0.01
+            if (client.player.ship.energy >= energyCost) {
+                client.player.ship.impulseOn = true
+            }
+        }
+    })
+    
+    client.socket.on('playerImpulseOff', () => {
+        if (client.player) {
+            client.player.ship.impulseOn = false
+            client.player.ship.acelerated /=  3
+        }
+    })
 }

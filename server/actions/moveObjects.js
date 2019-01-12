@@ -20,6 +20,18 @@ function moveShips(element) {
         if (element.acelerated <= element.speed) {
             element.acelerated += element.aceleration * 0.1
         }
+        if (element.impulseOn) {
+            let energyCost = element.maxEnergy * 0.01
+            if (element.energy >= energyCost) {
+                element.energy -= energyCost
+                if (element.acelerated <= element.speed * 3) {
+                    element.acelerated += element.aceleration * 0.1 * 3
+                }
+            } else {
+                element.impulseOn = false
+                element.acelerated /=  3
+            }
+        }
     } else {
         if (element.acelerated > 0) {
             element.acelerated -= element.aceleration * 0.25
@@ -35,7 +47,7 @@ function moveShips(element) {
 function explodeElement(elem) {
     if (elem.explosion) {
         for (let index = 0; index < elem.explosion.particles; index++) {
-            let bullet = BulletFactory.newExplosionParticle(elem.x + ( 10 +Math.random() * 15 - Math.random() * 25), elem.y + (10 + Math.random() * 15 - Math.random() * 25), elem.explosion)
+            let bullet = BulletFactory.newExplosionParticle(elem.x + (10 + Math.random() * 15 - Math.random() * 25), elem.y + (10 + Math.random() * 15 - Math.random() * 25), elem.explosion)
             global.gameObjects.bullets.push(bullet)
         }
     }
@@ -54,28 +66,29 @@ function elementCollidesWithShip(element) {
             y: global.gameObjects.ships[i].y,
             r: (global.gameObjects.ships[i].w + global.gameObjects.ships[i].h) / 2
         }
-        
+
         if (collision(eC.x, eC.y, eC.r, sC.x, sC.y, sC.r)) {
             return true
         }
     }
     return false
 }
+
 function collision(p1x, p1y, r1, p2x, p2y, r2) {
     var a;
     var x;
     var y;
-  
+
     a = r1 + r2;
     x = p1x - p2x;
     y = p1y - p2y;
-  
+
     if (a > Math.sqrt((x * x) + (y * y))) {
-      return true;
+        return true;
     } else {
-      return false;
+        return false;
     }
-  }
+}
 
 //collides rectangle
 // function elementCollidesWithShip(element) {

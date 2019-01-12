@@ -58,5 +58,13 @@ function emitKeyRelease(key) {
 function emitFire() {
     socket.emit("playerFires", {}, () => {
         playShotSound()
-        });
+    });
+}
+
+function emitPlayerImpulseOn() {
+    socket.emit('playerImpulseOn')
+}
+
+function emitPlayerImpulseOff() {
+    socket.emit('playerImpulseOff')
 }

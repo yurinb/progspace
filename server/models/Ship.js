@@ -13,6 +13,7 @@ module.exports = {
             aceleration: 1,
             acelerated: 0,
             engineOn: false,
+            impulseOn: false, 
             maxEnergy: 100,
             energy: 100,
             reactorSpeed: 1,

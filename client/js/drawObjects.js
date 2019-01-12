@@ -24,13 +24,15 @@ function drawStars() {
 
             let count = 0
             player.stars.forEach(elem => {
+                let r = Math.random()
                 elem.stars.forEach(ele => {
                     let screenPosition = convertPosToPixel(ele.x, ele.y, player.ship)
                     if (screenPosition.x * zoom <= screenWidth && screenPosition.y * zoom <= screenHeight) {
                         count++
                         //backgroundC.save();
                         //backgroundC.beginPath();
-                        backgroundC.fillStyle = "rgba(" + ele.r + ", " + ele.g + ", " + ele.b + ", " + ele.z * Math.random() + ")"
+                        let z = ele.z * r
+                        backgroundC.fillStyle = "rgba(" + ele.r + ", " + ele.g + ", " + ele.b + ", " + z + ")"
                         //backgroundC.translate(screenPosition.x, screenPosition.y);
                         //backgroundC.fillRect(0, 0, elem.s, elem.s)
                         backgroundC.fillRect(screenPosition.x, screenPosition.y, ele.s * zoom, ele.s * zoom)
@@ -39,10 +41,12 @@ function drawStars() {
                     }
                 });
             })
-            console.log('drawing stars: ', count);
         }
     }, 30);
 }
+
+let impulseInterval = 5
+let impulseLastsPosition = []
 
 function drawShips() {
     let energyShieldSizeEffect = 0
@@ -86,6 +90,35 @@ function drawShips() {
                 shipsC.fill();
                 shipsC.restore();
 
+                // impulse
+                if (elem.impulseOn) {
+                    impulseInterval--
+                    if (impulseInterval <= 0) {
+                        impulseLastsPosition.push({
+                            x: elem.x,
+                            y: elem.y
+                        })
+                        impulseInterval = 0
+                        for (let i = 0; i < impulseLastsPosition.length; i++) {
+                            // ship
+                            shipsC.save();
+                            shipsC.beginPath();
+                            let screenPosition2 = convertPosToPixel(impulseLastsPosition[i].x, impulseLastsPosition[i].y, player.ship)
+                            shipsC.translate(screenPosition2.x, screenPosition2.y);
+                            shipsC.rotate(elem.angle * Math.PI / 180);
+                            shipsC.fillStyle = "#42f4c5";
+                            shipsC.rect(-(elem.w * zoom / 2), -(elem.h * zoom / 2), elem.w * zoom, elem.h * zoom);
+                            //backgroundC.drawImage(ele.img, -15, -15, 30, 30);
+                            shipsC.stroke();
+                            shipsC.fill();
+                            shipsC.restore();
+                        }
+                    }
+                } else {
+                    if (impulseLastsPosition.length > 0) {
+                        impulseLastsPosition = []
+                    }
+                }
 
                 // username
                 shipsC.save();

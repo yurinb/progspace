@@ -13,6 +13,28 @@ function playShotSound() {
 
 onclick = shot
 
+window.onmousedown = function (eventData) {
+    eventData.preventDefault()
+    if (eventData.button == 2) {
+        emitPlayerImpulseOn()
+        return false
+    }
+}
+
+window.onmouseup = function (eventData) {
+    eventData.preventDefault()
+    if (eventData.button == 2) {
+        emitPlayerImpulseOff()
+        return false
+    }
+}
+
+window.oncontextmenu = function() {
+    return false
+}
+
+
+
 let up = false;
 let down = false;
 
