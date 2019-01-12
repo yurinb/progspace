@@ -10,7 +10,6 @@ function moveElement(elem) {
 setInterval(function moveShips() {
     global.gameObjects.ships.forEach(element => {
         moveElement(element)
-
     });
     global.io.emit('ships', global.gameObjects.ships)
 }, intervalMS);

@@ -35,13 +35,13 @@ let bullets = []
 let stars = []
 let particles = []
 
-debugger;
 
 document.body.addEventListener('mousemove', function (evt) {
     var mousePos = getMousePos(shipsCanvas, evt);
 
     mousePosition.x = mousePos.x
     mousePosition.y = mousePos.y
+console.log(player, ships, stars);
 
     if (!player.ship) {
         return
@@ -67,6 +67,10 @@ function userLoggedIn() {
     hideLoginModal()
     document.body.appendChild(shipsCanvas);
     document.body.appendChild(bulletsCanvas);
-    writeObjects()
-    emitAngle()
+    setTimeout(() => {
+        writeObjects()
+    }, 10);
+    setTimeout(() => {
+        emitAngle()
+    }, 20);
 }

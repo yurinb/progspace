@@ -6,24 +6,30 @@ const spawnStars = require('../actions/spawnStars')
 module.exports = function (client) {
     client.socket.on('disconnect', () => {
         console.log('-Client disconnected');
-        if (client.player) {
-            client.player.isConnected = false;
-        }
     });
 
     client.socket.on('playerReady', userData => {
         //console.log('*Player Ready');
-        let player = PlayerFactory.newPlayer(userData.username, userData.password)
-        player.isConnected = true;
-        client.player = player
-        
-        if (!global.gameObjects.ships.includes(player)) {
-            global.gameObjects.ships.push(player.ship)
+        let clients = global.gameObjects.clients
+        let playerFound = false
+        for (let index = 0; index < clients.length; index++) {
+            if (clients[index].player) {
+                if (clients[index].player.username == userData.username && clients[index].player.password == userData.password) {
+                    playerFound = true
+                    client.player = clients[index].player
+                    client.socket.emit('player', client.player)
+                    break
+                }
+            }
         }
-        
-        client.socket.emit('stars', spawnStars.getNewVisibleQuadrants(player.ship.x, player.ship.y, player.stars))
-        
-        client.socket.emit('player', client.player)
+
+        if (!playerFound) {
+            let player = PlayerFactory.newPlayer(userData.username, userData.password)
+            client.player = player
+            global.gameObjects.ships.push(player.ship)
+            client.socket.emit('player', client.player)
+        }
+
     })
 
     // movement

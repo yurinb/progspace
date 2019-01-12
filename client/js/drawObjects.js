@@ -19,22 +19,20 @@ function drawStars() {
             backgroundC.clearRect(0, 0, screenWidth, screenHeight)
             backgroundC.restore();
 
-            stars.forEach(element => {
-                element.forEach(elem => {
-                    elem.stars.forEach(ele => {
-                        let screenPosition = convertPosToPixel(ele.x, ele.y, player.ship)
-                        if (screenPosition.x <= screenWidth || screenPosition.y <= screenHeight) {
-                            //backgroundC.save();
-                            //backgroundC.beginPath();
-                            backgroundC.fillStyle = "rgba(" + ele.r + ", " + ele.g + ", " + ele.b + ", " + ele.z * Math.random() + ")"
-                            //backgroundC.translate(screenPosition.x, screenPosition.y);
-                            //backgroundC.fillRect(0, 0, elem.s, elem.s)
-                            backgroundC.fillRect(screenPosition.x, screenPosition.y, ele.s, ele.s)
-                            //backgroundC.fillText(elem.x + ' ' + elem.y, screenPosition.x, screenPosition.y)
-                            //backgroundC.restore();
-                        }
-                        });
-                })
+            player.stars.forEach(elem => {
+                elem.stars.forEach(ele => {
+                    let screenPosition = convertPosToPixel(ele.x, ele.y, player.ship)
+                    if (screenPosition.x <= screenWidth || screenPosition.y <= screenHeight) {
+                        //backgroundC.save();
+                        //backgroundC.beginPath();
+                        backgroundC.fillStyle = "rgba(" + ele.r + ", " + ele.g + ", " + ele.b + ", " + ele.z * Math.random() + ")"
+                        //backgroundC.translate(screenPosition.x, screenPosition.y);
+                        //backgroundC.fillRect(0, 0, elem.s, elem.s)
+                        backgroundC.fillRect(screenPosition.x, screenPosition.y, ele.s, ele.s)
+                        //backgroundC.fillText(elem.x + ' ' + elem.y, screenPosition.x, screenPosition.y)
+                        //backgroundC.restore();
+                    }
+                });
             })
         }
     }, 30);
@@ -43,34 +41,32 @@ function drawStars() {
 function drawShips() {
     setInterval(() => {
         if (ships.length > 0 && !isEmpty(player)) {
-            if (player.isConnected) {
-                shipsC.clearRect(0, 0, screenWidth, screenHeight)
-                ships.forEach(elem => {
-                    if (elem.id == player.ship.id) {
-                        player.ship = elem
-                    }
-                    shipsC.save();
-                    shipsC.beginPath();
-                    let screenPosition = convertPosToPixel(elem.x, elem.y, player.ship)
-                    shipsC.translate(screenPosition.x, screenPosition.y);
-                    shipsC.rotate(elem.angle * Math.PI / 180);
-                    shipsC.fillStyle = "white";
-                    shipsC.rect(-(elem.w * elem.size / 2), -(elem.h * elem.size / 2), elem.w * elem.size, elem.h * elem.size);
-                    //backgroundC.drawImage(ele.img, -15, -15, 30, 30);
-                    shipsC.fill();
-                    shipsC.restore();
+            shipsC.clearRect(0, 0, screenWidth, screenHeight)
+            ships.forEach(elem => {
+                if (elem.id == player.ship.id) {
+                    player.ship = elem
+                }
+                shipsC.save();
+                shipsC.beginPath();
+                let screenPosition = convertPosToPixel(elem.x, elem.y, player.ship)
+                shipsC.translate(screenPosition.x, screenPosition.y);
+                shipsC.rotate(elem.angle * Math.PI / 180);
+                shipsC.fillStyle = "white";
+                shipsC.rect(-(elem.w * elem.size / 2), -(elem.h * elem.size / 2), elem.w * elem.size, elem.h * elem.size);
+                //backgroundC.drawImage(ele.img, -15, -15, 30, 30);
+                shipsC.fill();
+                shipsC.restore();
 
-                    // username
-                    shipsC.save();
-                    shipsC.beginPath();
-                    shipsC.font = "15px Arial";
-                    shipsC.fillStyle = "green";
-                    shipsC.translate(screenPosition.x, screenPosition.y + 30);
-                    shipsC.textAlign = "center";
-                    shipsC.fillText(elem.username, 0, 0)
-                    shipsC.restore();
-                })
-            }
+                // username
+                shipsC.save();
+                shipsC.beginPath();
+                shipsC.font = "15px Arial";
+                shipsC.fillStyle = "green";
+                shipsC.translate(screenPosition.x, screenPosition.y + 30);
+                shipsC.textAlign = "center";
+                shipsC.fillText(elem.username, 0, 0)
+                shipsC.restore();
+            })
         }
     }, 30);
 }

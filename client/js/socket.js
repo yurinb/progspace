@@ -6,6 +6,8 @@ socket.on("connect", function () {
 
 socket.on("player", function (data) {
     player = data
+    console.log('player ', player);
+    userLoggedIn()
 });
 
 socket.on("ships", function (data) {
@@ -17,8 +19,9 @@ socket.on("bullets", function (data) {
 
 socket.on("stars", function (data) {
     if (data.length > 0) {
-        stars.push(data)
-        console.log(stars);
+        data.forEach(element => {
+            player.stars.push(element)
+        });
     }
 });
 
@@ -34,7 +37,6 @@ function emitReady() {
         username,
         password
     })
-    userLoggedIn()
 }
 
 function emitAngle() {
