@@ -15,11 +15,12 @@ module.exports = {
             h: 5,
             energyCost: 10,
             username,
+            shipAcelerated: 0, 
             explosion: {
                 particles : 30, 
                 maxDamage : 10, 
                 minSize : 1, 
-                maxSize : 3, 
+                maxSize : 3,
                 minSpeed: 25, 
                 maxSpeed: 35,
                 maxLifeTime: 100,

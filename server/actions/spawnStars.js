@@ -177,7 +177,7 @@ function getNewVisibleQuadrants(x, y, playerQuadrants) {
         quadrants = getQuadrant(x - quadrantSize / 2, y, playerQuadrants)
     }
     if (quadrants.length == 0) {
-        quadrants = getQuadrant(x, y - quadrantSize / 2, playerQuadrants)
+        quadrants = getQuadrant(x, y + quadrantSize / 2, playerQuadrants)
     }
     if (quadrants.length == 0) {
         quadrants = getQuadrant(x, y - quadrantSize / 2, playerQuadrants)

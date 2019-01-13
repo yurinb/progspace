@@ -8,11 +8,11 @@ module.exports = {
             id: starCount,
             x: quadrant.x + Math.random() * quadrant.size,
             y: quadrant.y + Math.random() * quadrant.size,
-            z: 0.50 + Math.random() * 2,
-            r: Math.random() * 200,
-            g: Math.random() * 200,
-            b: Math.random() * 200,
-            s: Math.random() * 8,
+            z: 0.25 + Math.random() * 1,
+            r: Math.random() * 255 * 0.90,
+            g: Math.random() * 255 * 0.50,
+            b: Math.random() * 255 * 0.90,
+            s: Math.random() * 10,
         }
         return object
     }

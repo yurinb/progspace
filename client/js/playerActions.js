@@ -14,16 +14,16 @@ function playShotSound() {
 onclick = shot
 
 window.onmousedown = function (eventData) {
-    eventData.preventDefault()
     if (eventData.button == 2) {
+        eventData.preventDefault()
         emitPlayerImpulseOn()
         return false
     }
 }
 
 window.onmouseup = function (eventData) {
-    eventData.preventDefault()
     if (eventData.button == 2) {
+        eventData.preventDefault()
         emitPlayerImpulseOff()
         return false
     }

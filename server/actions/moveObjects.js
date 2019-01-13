@@ -7,8 +7,8 @@ function moveBullet(element) {
     if (elementCollidesWithShip(element)) {
         explodeElement(element)
     } else if (element.speed > 0) {
-        element.x += element.speed * Math.cos(element.angle * Math.PI / 180);
-        element.y += element.speed * Math.sin(element.angle * Math.PI / 180);
+        element.x += (element.speed + element.shipAcelerated) * Math.cos(element.angle * Math.PI / 180);
+        element.y += (element.speed + element.shipAcelerated) * Math.sin(element.angle * Math.PI / 180);
     }
     if (element.lifeTime > 0) {
         element.lifeTime -= intervalMS
@@ -24,12 +24,12 @@ function moveShips(element) {
             let energyCost = element.maxEnergy * 0.01
             if (element.energy >= energyCost) {
                 element.energy -= energyCost
-                if (element.acelerated <= element.speed * 3) {
-                    element.acelerated += element.aceleration * 0.1 * 3
+                if (element.acelerated <= element.speed * 25) {
+                    element.acelerated += element.aceleration * 0.1 * 1.5
                 }
             } else {
                 element.impulseOn = false
-                element.acelerated /=  3
+                //element.acelerated /= 3
             }
         }
     } else {
@@ -61,14 +61,16 @@ function elementCollidesWithShip(element) {
         r: (element.w + element.h) / 2
     }
     for (let i = 0; i < global.gameObjects.ships.length; i++) {
-        let sC = {
-            x: global.gameObjects.ships[i].x,
-            y: global.gameObjects.ships[i].y,
-            r: (global.gameObjects.ships[i].w + global.gameObjects.ships[i].h) / 2
-        }
+        if (element.username != global.gameObjects.ships[i].username) {
+            let sC = {
+                x: global.gameObjects.ships[i].x,
+                y: global.gameObjects.ships[i].y,
+                r: (global.gameObjects.ships[i].w + global.gameObjects.ships[i].h) / 2
+            }
 
-        if (collision(eC.x, eC.y, eC.r, sC.x, sC.y, sC.r)) {
-            return true
+            if (collision(eC.x, eC.y, eC.r, sC.x, sC.y, sC.r)) {
+                return true
+            }
         }
     }
     return false

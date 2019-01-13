@@ -77,6 +77,7 @@ module.exports = function (client) {
                 bullet.x = client.player.ship.x + 20 * Math.cos((client.player.ship.angle) * Math.PI / 180)
                 bullet.y = client.player.ship.y + 20 * Math.sin((client.player.ship.angle) * Math.PI / 180)
                 bullet.angle = client.player.ship.angle
+                bullet.shipAcelerated = client.player.ship.acelerated
                 client.player.ship.energy -= energyCost
                 global.gameObjects.bullets.push(bullet)
                 callback()
@@ -96,7 +97,6 @@ module.exports = function (client) {
     client.socket.on('playerImpulseOff', () => {
         if (client.player) {
             client.player.ship.impulseOn = false
-            client.player.ship.acelerated /=  3
         }
     })
 }

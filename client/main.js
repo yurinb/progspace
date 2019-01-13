@@ -30,6 +30,9 @@ const bulletsC = bulletsCanvas.getContext('2d')
 const shipsC = shipsCanvas.getContext('2d')
 const interfaceC = interfaceCanvas.getContext('2d')
 
+backgroundC.imageSmoothingEnabled = false;
+bulletsC.imageSmoothingEnabled = false;
+
 let mousePosition = {
     x: 0,
     y: 0

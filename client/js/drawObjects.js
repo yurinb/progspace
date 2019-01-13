@@ -22,13 +22,11 @@ function drawStars() {
             backgroundC.clearRect(0, 0, screenWidth, screenHeight)
             backgroundC.restore();
 
-            let count = 0
             player.stars.forEach(elem => {
-                let r = Math.random()
+                let r = 0.75 + Math.random() * 1
                 elem.stars.forEach(ele => {
                     let screenPosition = convertPosToPixel(ele.x, ele.y, player.ship)
                     if (screenPosition.x * zoom <= screenWidth && screenPosition.y * zoom <= screenHeight) {
-                        count++
                         //backgroundC.save();
                         //backgroundC.beginPath();
                         let z = ele.z * r
@@ -45,8 +43,8 @@ function drawStars() {
     }, 30);
 }
 
-let impulseInterval = 5
-let impulseLastsPosition = []
+let impulseInterval = []
+let shipsImpulses = []
 
 function drawShips() {
     let energyShieldSizeEffect = 0
@@ -94,29 +92,37 @@ function drawShips() {
                 if (elem.impulseOn) {
                     impulseInterval--
                     if (impulseInterval <= 0) {
-                        impulseLastsPosition.push({
-                            x: elem.x,
-                            y: elem.y
+                        shipsImpulses.push({
+                            username: elem.username,
+                            pos: {x:elem.x, y:elem.y}
                         })
-                        impulseInterval = 0
-                        for (let i = 0; i < impulseLastsPosition.length; i++) {
-                            // ship
-                            shipsC.save();
-                            shipsC.beginPath();
-                            let screenPosition2 = convertPosToPixel(impulseLastsPosition[i].x, impulseLastsPosition[i].y, player.ship)
-                            shipsC.translate(screenPosition2.x, screenPosition2.y);
-                            shipsC.rotate(elem.angle * Math.PI / 180);
-                            shipsC.fillStyle = "#42f4c5";
-                            shipsC.rect(-(elem.w * zoom / 2), -(elem.h * zoom / 2), elem.w * zoom, elem.h * zoom);
-                            //backgroundC.drawImage(ele.img, -15, -15, 30, 30);
-                            shipsC.stroke();
-                            shipsC.fill();
-                            shipsC.restore();
+                        console.log(shipsImpulses);
+                        
+                        for (let i = 0; i < shipsImpulses.length; i++) {
+                            if (shipsImpulses[i].username == elem.username) {
+                                // ship
+                                shipsC.save();
+                                shipsC.beginPath();
+                                let screenPosition2 = convertPosToPixel(shipsImpulses[i].pos.x, shipsImpulses[i].pos.y, player.ship)
+                                shipsC.translate(screenPosition2.x, screenPosition2.y);
+                                shipsC.rotate(elem.angle * Math.PI / 180);
+                                shipsC.fillStyle = "#42f4c5";
+                                shipsC.rect(-(elem.w * zoom / 2), -(2 * zoom / 2), elem.w * zoom, 2 * zoom);
+                                //backgroundC.drawImage(ele.img, -15, -15, 30, 30);
+                                shipsC.stroke();
+                                shipsC.fill();
+                                shipsC.restore();
+                            }
                         }
                     }
                 } else {
-                    if (impulseLastsPosition.length > 0) {
-                        impulseLastsPosition = []
+                    if (shipsImpulses.length > 0) {
+                        shipsImpulses = shipsImpulses.filter(impulse=>{
+                            if (elem.username == impulse.username) {
+                                return false
+                            }
+                            return impulse
+                        })
                     }
                 }
 
