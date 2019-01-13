@@ -94,10 +94,11 @@ function drawShips() {
                     if (impulseInterval <= 0) {
                         shipsImpulses.push({
                             username: elem.username,
-                            pos: {x:elem.x, y:elem.y}
+                            pos: {
+                                x: elem.x,
+                                y: elem.y
+                            }
                         })
-                        console.log(shipsImpulses);
-                        
                         for (let i = 0; i < shipsImpulses.length; i++) {
                             if (shipsImpulses[i].username == elem.username) {
                                 // ship
@@ -117,7 +118,7 @@ function drawShips() {
                     }
                 } else {
                     if (shipsImpulses.length > 0) {
-                        shipsImpulses = shipsImpulses.filter(impulse=>{
+                        shipsImpulses = shipsImpulses.filter(impulse => {
                             if (elem.username == impulse.username) {
                                 return false
                             }
@@ -129,9 +130,9 @@ function drawShips() {
                 // username
                 shipsC.save();
                 shipsC.beginPath();
-                shipsC.font = "15px Lucida Console";
+                shipsC.font = "15px sans-serif";
                 shipsC.fillStyle = "#42f4c5";
-                shipsC.translate(screenPosition.x, screenPosition.y + 10 + 35 * zoom);
+                shipsC.translate(25, 25);
                 shipsC.textAlign = "center";
                 shipsC.fillText(elem.username, 0, 0)
                 shipsC.restore();
@@ -171,23 +172,9 @@ function drawInterface() {
             interfaceC.save();
             interfaceC.beginPath();
 
-            interfaceC.font = "15px Lucida Console";
-            interfaceC.textAlign = "center";
+            drawShipCoords(interfaceC)
 
-            let x = screenWidth / 2
-            let y = screenHeight / 2 + screenHeight / 3
-
-            interfaceC.fillStyle = "#42f4c5";
-            interfaceC.fillText('energy', x, y - 10)
-            let energyBarSize = screenWidth / 4
-
-            // background energy bar
-            interfaceC.strokeStyle = "#42f4c5";
-            interfaceC.strokeRect(x - energyBarSize / 2, y, energyBarSize, 10)
-
-            // current state energy bar
-            interfaceC.fillStyle = "#42f4c5";
-            interfaceC.fillRect(x - energyBarSize / 2, y, energyBarSize * player.ship.energy / player.ship.maxEnergy, 10)
+            drawEnergyBar(interfaceC)
 
             interfaceC.fill();
             interfaceC.restore();
@@ -196,4 +183,32 @@ function drawInterface() {
         }
     }, 100);
 
+}
+
+function drawShipCoords(c) {
+    //c.font = "15px Lucida Console";
+    c.textAlign = "center";
+    c.fillStyle = "#42f4c5";
+    c.fillText('x ' + (player.ship.x | 0) + ' y ' + (player.ship.x | 0), screenWidth / 2, 25)
+}
+
+function drawEnergyBar(c) {
+    shipsC.font = "15px sans-serif";
+    c.textAlign = "center";
+
+    let x = screenWidth / 2
+    let y = screenHeight / 2 + screenHeight / 3
+
+    c.fillStyle = "#42f4c5";
+    c.fillText('energy', x, y - 10)
+    let energyBarSize = screenWidth / 4
+
+
+    // background energy bar
+    c.strokeStyle = "#42f4c5";
+    c.strokeRect(x - energyBarSize / 2, y, energyBarSize, 10)
+
+    // current state energy bar
+    c.fillStyle = "#42f4c5";
+    c.fillRect(x - energyBarSize / 2, y, energyBarSize * player.ship.energy / player.ship.maxEnergy, 10)
 }

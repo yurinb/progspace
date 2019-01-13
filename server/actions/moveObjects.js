@@ -21,10 +21,10 @@ function moveShips(element) {
             element.acelerated += element.aceleration * 0.1
         }
         if (element.impulseOn) {
-            let energyCost = element.maxEnergy * 0.01
+            let energyCost = element.maxEnergy * 0.01 * 0.25 * 0.25
             if (element.energy >= energyCost) {
                 element.energy -= energyCost
-                if (element.acelerated <= element.speed * 25) {
+                if (element.acelerated <= element.speed * 5) {
                     element.acelerated += element.aceleration * 0.1 * 1.5
                 }
             } else {

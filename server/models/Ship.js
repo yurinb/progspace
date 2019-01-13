@@ -14,8 +14,8 @@ module.exports = {
             acelerated: 0,
             engineOn: false,
             impulseOn: false, 
-            maxEnergy: 100,
-            energy: 100,
+            maxEnergy: 1000,
+            energy: 1000,
             reactorSpeed: 1,
             weapons: [WeaponFactory.laser()],
             currentWeapon: 0
