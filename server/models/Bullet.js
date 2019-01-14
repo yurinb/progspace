@@ -11,8 +11,8 @@ module.exports = {
             speed: 15,
             lifeTime: 2500,
             color: '#FF5500',
-            w: 5,
-            h: 5,
+            w: 25,
+            h: 2,
             energyCost: 10,
             username,
             shipAcelerated: 0, 
@@ -20,10 +20,10 @@ module.exports = {
                 particles : 30, 
                 maxDamage : 10, 
                 minSize : 1, 
-                maxSize : 3,
+                maxSize : 1,
                 minSpeed: 25, 
                 maxSpeed: 35,
-                maxLifeTime: 100,
+                maxLifeTime: 2000,
                 color: '#FF5500',
                 username
             }

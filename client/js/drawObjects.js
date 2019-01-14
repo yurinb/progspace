@@ -15,11 +15,12 @@ function writeObjects() {
 
 
 function drawStars() {
+    debugger;
     setInterval(() => {
         if (!isEmpty(player)) {
+            backgroundC.clearRect(0, 0, screenWidth, screenHeight)
             backgroundC.save();
             backgroundC.beginPath();
-            backgroundC.clearRect(0, 0, screenWidth, screenHeight)
             backgroundC.restore();
 
             player.stars.forEach(elem => {

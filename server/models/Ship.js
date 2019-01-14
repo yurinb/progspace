@@ -9,7 +9,7 @@ module.exports = {
             username: username,
             w: 15,
             h: 10,
-            speed: 10,
+            speed: 5,
             aceleration: 1,
             acelerated: 0,
             engineOn: false,

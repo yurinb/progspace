@@ -51,8 +51,8 @@ function convertPosToPixel(x, y, playerShip) { //
     let diffY = (y - playerShip.y) * zoom
 
     return {
-        x: diffX + canvasCenterX,
-        y: diffY + canvasCenterY
+        x: Math.floor(diffX + canvasCenterX),
+        y: Math.floor(diffY + canvasCenterY)
     }
 }
 

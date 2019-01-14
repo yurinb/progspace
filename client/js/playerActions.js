@@ -1,4 +1,5 @@
 function shot(evt) {
+    debugger;
     if (!isEmpty(player)) {
         if (player.ship.energy >= player.ship.weapons[player.ship.currentWeapon].bullet.energyCost) {
             emitFire()
@@ -68,9 +69,3 @@ onkeydown = onkeyup = function (e) {
         }
     }
 }
-
-
-
-//document.addEventListener('keydown', press)
-
-//document.addEventListener('keyup', release)

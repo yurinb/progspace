@@ -21,7 +21,7 @@ function moveShips(element) {
             element.acelerated += element.aceleration * 0.1
         }
         if (element.impulseOn) {
-            let energyCost = element.maxEnergy * 0.01 * 0.25 * 0.25
+            let energyCost = element.maxEnergy * 0.01 * 0.25
             if (element.energy >= energyCost) {
                 element.energy -= energyCost
                 if (element.acelerated <= element.speed * 5) {
@@ -51,6 +51,8 @@ function explodeElement(elem) {
             global.gameObjects.bullets.push(bullet)
         }
     }
+    //console.log('destroyed element : ', elem);
+    
     elem.state = "removible"
 }
 
