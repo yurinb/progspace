@@ -1,5 +1,4 @@
 function shot(evt) {
-    debugger;
     if (!isEmpty(player)) {
         if (player.ship.energy >= player.ship.weapons[player.ship.currentWeapon].bullet.energyCost) {
             emitFire()

@@ -15,7 +15,6 @@ function writeObjects() {
 
 
 function drawStars() {
-    debugger;
     setInterval(() => {
         if (!isEmpty(player)) {
             backgroundC.clearRect(0, 0, screenWidth, screenHeight)
