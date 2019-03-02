@@ -1,7 +1,7 @@
 setTimeout(() => {
     setInterval(() => {
         shipsGenerateEnergy()
-    }, 100);
+    }, 50);
 }, 1000);
 
 function shipsGenerateEnergy() {

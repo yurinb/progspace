@@ -26,7 +26,7 @@ require('./actions/moveObjects')
 require('./events/timed')
 
 
-const PORT = 9000
+const PORT = process.env.PORT || 9000
 
 http.listen(PORT, function () {
     console.log('Server listen on *:' + PORT);
