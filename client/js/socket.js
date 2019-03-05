@@ -1,5 +1,5 @@
-//const socket = io.connect("http://192.168.15.15:9000");
-const socket = io.connect("http://outspace.herokuapp.com");
+const socket = io.connect("http://192.168.15.15:9000");
+//const socket = io.connect("http://outspace.herokuapp.com");
 
 socket.on("connect", function () {
     console.log('Client connected.');
@@ -42,8 +42,8 @@ function emitReady() {
 
 function emitAngle() {
     setInterval(() => {
-        if (player.ship.angle) {
-            socket.emit("playerAngle", player.ship.angle);
+        if (getPlayerAngle()) {
+            socket.emit("playerAngle", getPlayerAngle());
         }
     }, 10);
 }

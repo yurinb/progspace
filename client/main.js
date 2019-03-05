@@ -55,7 +55,8 @@ document.body.addEventListener('mousemove', function (evt) {
     if (!player.ship) {
         return
     }
-    player.ship.angle = getPlayerAngle()
+    //realtime angle
+    //player.ship.angle = getPlayerAngle()
 }, false);
 
 
