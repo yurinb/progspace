@@ -7,26 +7,16 @@ module.exports = {
         let physicBullet = PhysicObjectFactory.newPhysicObject()
 
         let bullet = {
-            damage: 0,
-            speed: 15,
-            lifeTime: 2500,
-            color: '#FF5500',
-            w: 25,
-            h: 2,
-            energyCost: 10,
+            damage: 25,
+            speed: 35,
+            lifeTime: 3000,
+            color: '#ffffff',
+            modelImg: 1,
+            w: 80,
+            h: 42,
+            energyCost: 5,
             username,
             shipAcelerated: 0, 
-            explosion: {
-                particles : 30, 
-                maxDamage : 10, 
-                minSize : 1, 
-                maxSize : 1,
-                minSpeed: 25, 
-                maxSpeed: 35,
-                maxLifeTime: 2000,
-                color: '#FF5500',
-                username
-            }
         }
 
         return Object.assign(physicBullet,
@@ -34,56 +24,6 @@ module.exports = {
         )
     },
 
-    newExplosionParticle: function (x, y, explosion) {
-        let physicObject = PhysicObjectFactory.newPhysicObject()
-
-        let bullet = {
-            x,
-            y,
-            damage: explosion.maxDamage * (explosion.size / explosion.maxSize),
-            speed: explosion.minSpeed + Math.random() * (explosion.maxSpeed - explosion.minSpeed),
-            lifeTime: Math.random() * explosion.maxLifeTime,
-            color: explosion.color,
-            w: explosion.minSize + Math.random() * (explosion.maxSize - explosion.minSize),
-            h: explosion.minSize + Math.random() * (explosion.maxSize - explosion.minSize),
-            username: explosion.username,
-            angle: Math.random() * 360,
-            explosion: false
-        }
-        let physicBullet = Object.assign(physicObject, bullet)
-
-        return Object.assign(physicBullet,
-            bullet
-        )
-    },
-
-    newEngineParticle: function(x, y, username) {
-        let physicObject = PhysicObjectFactory.newPhysicObject()
-
-        let bullet = {
-            x,
-            y,
-            lifeTime: 0,
-            color: 'blue',
-            w: 1,
-            h: 1,
-            username,
-            explosion: {
-                particles : 30, 
-                maxDamage : 0, 
-                minSize : 1, 
-                maxSize : 2, 
-                minSpeed: 2, 
-                maxSpeed: 10,
-                maxLifeTime: 1,
-                color: 'blue',
-                username
-            }
-        }
-        let physicBullet = Object.assign(physicObject, bullet)
-
-        return physicBullet
-    }
 
 
 }

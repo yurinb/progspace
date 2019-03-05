@@ -25,7 +25,7 @@ function drawStars() {
             player.stars.forEach(elem => {
                 let r = 0.75 + Math.random() * 1
                 elem.stars.forEach(ele => {
-                    let screenPosition = convertPosToPixel(ele.x, ele.y, player.ship)
+                    let screenPosition = convertPosToPixel(ele.x + ele.x * 0.25, ele.y + ele.y * 0.25, player.ship)
                     if (screenPosition.x * zoom <= screenWidth && screenPosition.y * zoom <= screenHeight) {
                         //backgroundC.save();
                         //backgroundC.beginPath();
@@ -52,6 +52,13 @@ for (let i = 1; i <= 6; i++) {
     ship.src = '../img/ship' + i + '.png'
     shipsImg.push(ship)
 }
+// PROJETILS
+let projetilsImg = []
+for (let i = 1; i <= 1; i++) {
+    let proj = new Image();
+    proj.src = '../img/projetil' + i + '.png'
+    projetilsImg.push(proj)
+}
 // PROPULSOR
 let propulsor = new Image();
 propulsor.src = '../img/propulsor.png'
@@ -60,12 +67,29 @@ propulsor.onload = function () {
     propulsor.height = 15
 }
 
+// EXPLOSION
+let explosion = new Image();
+explosion.src = '../img/explosion1.png'
+explosion.onload = function () {
+    explosion.width = 15
+    explosion.height = 15
+}
+
 function getShipImgByModelID(id) {
     if (shipsImg[id - 1]) {
         return shipsImg[id - 1]
     }
     if (id == 'propulsor') {
         return propulsor
+    }
+    if (id == 'dead') {
+        return explosion
+    }
+}
+
+function getProjetilByModel(id) {
+    if (projetilsImg[id - 1]) {
+        return projetilsImg[id - 1]
     }
 }
 
@@ -78,19 +102,37 @@ function drawShips() {
         if (ships.length > 0 && !isEmpty(player)) {
             shipsC.clearRect(0, 0, screenWidth, screenHeight)
             ships.forEach(elem => {
+                let screenPosition = convertPosToPixel(elem.x, elem.y, player.ship)
                 if (elem.id == player.ship.id) {
                     player.ship = elem
                 }
-                let screenPosition = convertPosToPixel(elem.x, elem.y, player.ship)
+
+                if (elem.state == 'dead') {
+                    elem.decayTime += 1
+                    if (elem.decayTime == 3000) {
+                        elem.state = 'removible'
+                        return
+                    }
+                    shipsC.save();
+                    shipsC.beginPath();
+                    shipsC.translate(screenPosition.x, screenPosition.y);
+                    shipsC.drawImage(getShipImgByModelID(elem.modelImg), -(elem.w * zoom / 2), -(elem.h * zoom / 2), elem.w * zoom, elem.h * zoom);
+                    shipsC.restore();
+                    return
+                }
+
                 // energy shield
                 for (let q = 0; q < 3; q++) {
                     shipsC.save();
                     shipsC.beginPath();
-                    shipsC.translate(screenPosition.x, screenPosition.y);
+                    //shipsC.translate(screenPosition.x, screenPosition.y);
+                    let newX = screenPosition.x - 0 * zoom * Math.cos((elem.angle + 0) * Math.PI / 180)
+                    let newY = screenPosition.y - 0 * zoom * Math.sin((elem.angle + 0) * Math.PI / 180)
+                    shipsC.translate(newX, newY);
                     shipsC.fillStyle = '#020202';
                     shipsC.strokeStyle = "#42f4c5";
                     energyShieldSizeEffect += 0.25 * q * energyShieldSizeEffectMultipler
-                    shipsC.arc(0, 0, 10 * zoom + energyShieldSizeEffect, 0, 2 * Math.PI);
+                    shipsC.arc(0, 0, 50 * zoom + energyShieldSizeEffect, 0, 2 * Math.PI);
                     if (energyShieldSizeEffect >= 2) {
                         energyShieldSizeEffectMultipler = -q
                     }
@@ -107,11 +149,12 @@ function drawShips() {
                 shipsC.translate(screenPosition.x, screenPosition.y);
                 shipsC.rotate(elem.angle * Math.PI / 180);
                 //shipsC.fillStyle = "white";
-                //shipsC.rect(-(elem.w * zoom / 2), -(elem.h * zoom / 2), elem.w * zoom, elem.h * zoom);
+                //shipsC.rect(-(elem.w * zoom / 2),-(elem.h * zoom / 2), elem.w * zoom, elem.h * zoom);
                 shipsC.drawImage(getShipImgByModelID(elem.modelImg), -(elem.w * zoom / 2), -(elem.h * zoom / 2), elem.w * zoom, elem.h * zoom);
                 //shipsC.stroke();
                 //shipsC.fill();
                 shipsC.restore();
+                drawUsernameAboveShip(shipsC, elem)
 
                 // impulse
                 if (elem.impulseOn) {
@@ -132,10 +175,10 @@ function drawShips() {
                         shipsC.beginPath();
                         //let screenPosition2 = convertPosToPixel(shipsImpulses[i].pos.x, shipsImpulses[i].pos.y, player.ship)
                         //let screenPosition2 = convertPosToPixel(elem.x, elem.y)
-                        let newX = screenPosition.x - 12 * zoom * Math.cos((elem.angle + 0) * Math.PI / 180)
-                        let newY = screenPosition.y - 12 * zoom * Math.sin((elem.angle + 0) * Math.PI / 180)
-                        //shipsC.translate(screenPosition.x, screenPosition.y);
+                        let newX = screenPosition.x - 70 * zoom * Math.cos((elem.angle + 0) * Math.PI / 180)
+                        let newY = screenPosition.y - 70 * zoom * Math.sin((elem.angle + 0) * Math.PI / 180)
                         shipsC.translate(newX, newY);
+                        //shipsC.translate(screenPosition.x, screenPosition.y);
                         //shipsC.rotate(shipsImpulses[i].angle);
                         shipsC.rotate(elem.angle * Math.PI / 180);
                         //shipsC.fillStyle = "#42f4c5";
@@ -158,15 +201,7 @@ function drawShips() {
                     }
                 }
 
-                // username
-                shipsC.save();
-                shipsC.beginPath();
-                shipsC.font = "15px sans-serif";
-                shipsC.fillStyle = "#42f4c5";
-                shipsC.translate(25, 25);
-                shipsC.textAlign = "center";
-                shipsC.fillText(elem.username, 0, 0)
-                shipsC.restore();
+
             })
         } else {
             shipsC.clearRect(0, 0, screenWidth, screenHeight)
@@ -184,9 +219,10 @@ function drawBullets() {
                 let screenPosition = convertPosToPixel(elem.x, elem.y, player.ship)
                 bulletsC.translate(screenPosition.x, screenPosition.y);
                 bulletsC.rotate(elem.angle * Math.PI / 180);
-                bulletsC.fillStyle = elem.color
-                bulletsC.rect(-(elem.w * zoom / 2), -(elem.h * zoom / 2), elem.w * zoom, elem.h * zoom);
-                bulletsC.fill();
+                //bulletsC.fillStyle = elem.color
+                //bulletsC.rect(-(elem.w * zoom / 2), -(elem.h * zoom / 2), elem.w * zoom, elem.h * zoom);
+                //bulletsC.fill();
+                bulletsC.drawImage(getProjetilByModel(elem.modelImg), -(elem.w * zoom / 2), -(elem.h * zoom / 2), elem.w * zoom, elem.h * zoom);
                 bulletsC.restore();
             })
         } else {
@@ -224,7 +260,7 @@ function drawShipCoords(c) {
 }
 
 function drawEnergyBar(c) {
-    shipsC.font = "15px sans-serif";
+    shipsC.font = "15px Lucida Console, Monaco, monospace";
     c.textAlign = "center";
 
     let x = screenWidth / 2
@@ -242,4 +278,16 @@ function drawEnergyBar(c) {
     // current state energy bar
     c.fillStyle = "#42f4c5";
     c.fillRect(x - energyBarSize / 2, y, energyBarSize * player.ship.energy / player.ship.maxEnergy, 10)
+}
+
+function drawUsernameAboveShip(ctx, ship) {
+    let screenPosition = convertPosToPixel(ship.x, ship.y, player.ship)
+    ctx.save();
+    ctx.beginPath();
+    ctx.font = "12px Lucida Console, Monaco, monospace";
+    ctx.fillStyle = "#42f4c5";
+    ctx.translate((screenPosition.x), screenPosition.y);
+    ctx.textAlign = "center";
+    ctx.fillText(ship.username, 0, -100 * zoom)
+    ctx.restore();
 }

@@ -7,8 +7,8 @@ module.exports = {
     newShip: function (username) {
         let ship = {
             username: username,
-            w: 15,
-            h: 15,
+            w: 100,
+            h: 100,
             speed: 5,
             aceleration: 1,
             acelerated: 0,
@@ -19,7 +19,7 @@ module.exports = {
             reactorSpeed: 1,
             weapons: [WeaponFactory.laser()],
             currentWeapon: 0,
-            modelImg: 1
+            modelImg: 4
         }
         let physicObject = PhysicObjectFactory.newPhysicObject()
 

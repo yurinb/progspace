@@ -35,10 +35,10 @@ function getPlayerAngle() {
 // if objeto.y '500' for maior que a maxima-menor && se '500' for menor que a maxima-maior
 let zoom = 1
 window.addEventListener('mousewheel', function (e) {
-    if (e.wheelDelta < 0 && zoom > 0.20) {
-        zoom-= 0.10;
+    if (e.wheelDelta < 0 && zoom > 0.15) {
+        zoom-= 0.05;
     } else if (e.wheelDelta > 0 && zoom < 2) {
-        zoom+= 0.10;
+        zoom+= 0.05;
     }
 });
 

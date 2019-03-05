@@ -4,11 +4,21 @@ const BulletFactory = require('../models/Bullet')
 const intervalMS = 30
 
 function moveBullet(element) {
-    if (elementCollidesWithShip(element)) {
-        explodeElement(element)
-    } else if (element.speed > 0) {
-        element.x += (element.speed + element.shipAcelerated) * Math.cos(element.angle * Math.PI / 180);
-        element.y += (element.speed + element.shipAcelerated) * Math.sin(element.angle * Math.PI / 180);
+    if (element.state != "removible") {
+
+        elementCollidesWithShip(element, shipCollided => {
+            bulletDies(element)
+            console.log('collided');
+            shipCollided.energy -= element.damage
+            if (shipCollided.energy <= 0) {
+                shipCollided.state = 'dead'
+            }
+        })
+
+        if (element.speed > 0) {
+            element.x += (element.speed + element.shipAcelerated) * Math.cos(element.angle * Math.PI / 180);
+            element.y += (element.speed + element.shipAcelerated) * Math.sin(element.angle * Math.PI / 180);
+        }
     }
     if (element.lifeTime > 0) {
         element.lifeTime -= intervalMS
@@ -24,7 +34,8 @@ function moveShips(element) {
             let energyCost = element.maxEnergy * 0.01 * 0.25
             if (element.energy >= energyCost) {
                 element.energy -= energyCost
-                if (element.acelerated <= element.speed * 5) {
+                let maxAcceleration = 10
+                if (element.acelerated <= element.speed * maxAcceleration) {
                     element.acelerated += element.aceleration * 0.1 * 1.5
                 }
             } else {
@@ -42,36 +53,36 @@ function moveShips(element) {
 
     element.x += element.acelerated * Math.cos(element.angle * Math.PI / 180);
     element.y += element.acelerated * Math.sin(element.angle * Math.PI / 180);
+    if (element.state == 'dead') {
+        shipDies(element)
+    }
 }
 
-function explodeElement(elem) {
-    if (elem.explosion) {
-        for (let index = 0; index < elem.explosion.particles; index++) {
-            let bullet = BulletFactory.newExplosionParticle(elem.x + (10 + Math.random() * 15 - Math.random() * 25), elem.y + (10 + Math.random() * 15 - Math.random() * 25), elem.explosion)
-            global.gameObjects.bullets.push(bullet)
-        }
-    }
-    //console.log('destroyed element : ', elem);
-    
+function shipDies(elem) {
+    elem.modelImg = 'dead'
+}
+
+function bulletDies(elem) {
     elem.state = "removible"
 }
 
-function elementCollidesWithShip(element) {
+function elementCollidesWithShip(element, collidedWith) {
     let eC = {
         x: element.x,
         y: element.y,
-        r: (element.w + element.h) / 2
+        r: (element.w + element.h) / 3
     }
     for (let i = 0; i < global.gameObjects.ships.length; i++) {
-        if (element.username != global.gameObjects.ships[i].username) {
+        let ship = global.gameObjects.ships[i]
+        if (element.username != ship.username) {
             let sC = {
-                x: global.gameObjects.ships[i].x,
-                y: global.gameObjects.ships[i].y,
-                r: (global.gameObjects.ships[i].w + global.gameObjects.ships[i].h) / 2
+                x: ship.x,
+                y: ship.y,
+                r: (ship.w + ship.h) / 3
             }
 
             if (collision(eC.x, eC.y, eC.r, sC.x, sC.y, sC.r)) {
-                return true
+                collidedWith(ship)
             }
         }
     }
@@ -137,7 +148,7 @@ setTimeout(() => {
                 element.state = "dead"
             }
             if (element.state == "dead") {
-                explodeElement(element)
+                bulletDies(element)
             }
             if (element.state == "removible") {
                 indexesToRemove.push(index)
