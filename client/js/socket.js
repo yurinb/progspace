@@ -1,5 +1,5 @@
-//const socket = io.connect("http://192.168.15.15:9000");
-const socket = io.connect("http://outspace.herokuapp.com");
+const socket = io.connect("http://192.168.15.15:9000");
+//const socket = io.connect("http://outspace.herokuapp.com");
 
 socket.on("connect", function () {
     console.log('Client connected.');
@@ -21,7 +21,10 @@ socket.on("bullets", function (data) {
 socket.on("stars", function (data) {
     if (data.length > 0) {
         data.forEach(element => {
-            player.stars.push(element)
+            if (player.stars.length >= 50) {
+                player.stars.pop()
+            }
+            player.stars.unshift(element)
         });
     }
 });

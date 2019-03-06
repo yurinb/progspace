@@ -13,19 +13,20 @@ function writeObjects() {
     }, 30);
 }
 
-
+//const parallax = 0.25
+const parallax = 1
 function drawStars() {
     setInterval(() => {
         if (!isEmpty(player)) {
             backgroundC.clearRect(0, 0, screenWidth, screenHeight)
             backgroundC.save();
             backgroundC.beginPath();
-            backgroundC.restore();
-
+            
             player.stars.forEach(elem => {
                 let r = 0.75 + Math.random() * 1
                 elem.stars.forEach(ele => {
-                    let screenPosition = convertPosToPixel(ele.x + ele.x * 0.25, ele.y + ele.y * 0.25, player.ship)
+                    let screenPosition = convertPosToPixel(ele.x, ele.y, player.ship)
+                    // is star on screen?
                     if (screenPosition.x * zoom <= screenWidth && screenPosition.y * zoom <= screenHeight) {
                         //backgroundC.save();
                         //backgroundC.beginPath();
@@ -39,6 +40,7 @@ function drawStars() {
                     }
                 });
             })
+            backgroundC.restore();
         }
     }, 30);
 }
@@ -71,8 +73,8 @@ propulsor.onload = function () {
 let explosion = new Image();
 explosion.src = '../img/explosion1.png'
 explosion.onload = function () {
-    explosion.width = 15
-    explosion.height = 15
+    explosion.width = 50
+    explosion.height = 50
 }
 
 function getShipImgByModelID(id) {
@@ -102,10 +104,11 @@ function drawShips() {
         if (ships.length > 0 && !isEmpty(player)) {
             shipsC.clearRect(0, 0, screenWidth, screenHeight)
             ships.forEach(elem => {
-                let screenPosition = convertPosToPixel(elem.x, elem.y, player.ship)
                 if (elem.id == player.ship.id) {
                     player.ship = elem
                 }
+                
+                let screenPosition = convertPosToPixel(elem.x, elem.y, player.ship)
 
                 if (elem.state == 'dead') {
                     elem.decayTime += 1
@@ -144,6 +147,7 @@ function drawShips() {
                 }
 
                 // ship
+                //screenPosition = convertPosToPixel(elem.x, elem.y, player.ship)
                 shipsC.save();
                 shipsC.beginPath();
                 shipsC.translate(screenPosition.x, screenPosition.y);
@@ -154,9 +158,11 @@ function drawShips() {
                 //shipsC.stroke();
                 //shipsC.fill();
                 shipsC.restore();
+
+                // username
                 drawUsernameAboveShip(shipsC, elem)
 
-                // impulse
+                // impulse/propulsor
                 if (elem.impulseOn) {
                     impulseInterval--
                     if (impulseInterval <= 0) {
@@ -256,7 +262,7 @@ function drawShipCoords(c) {
     //c.font = "15px Lucida Console";
     c.textAlign = "center";
     c.fillStyle = "#42f4c5";
-    c.fillText('x ' + (player.ship.x | 0) + ' y ' + (player.ship.x | 0), screenWidth / 2, 25)
+    c.fillText('x ' + (player.ship.x | 0) + ' y ' + (player.ship.y | 0), screenWidth / 2, 25)
 }
 
 function drawEnergyBar(c) {
@@ -280,14 +286,14 @@ function drawEnergyBar(c) {
     c.fillRect(x - energyBarSize / 2, y, energyBarSize * player.ship.energy / player.ship.maxEnergy, 10)
 }
 
-function drawUsernameAboveShip(ctx, ship) {
+function drawUsernameAboveShip(c, ship) {
     let screenPosition = convertPosToPixel(ship.x, ship.y, player.ship)
-    ctx.save();
-    ctx.beginPath();
-    ctx.font = "12px Lucida Console, Monaco, monospace";
-    ctx.fillStyle = "#42f4c5";
-    ctx.translate((screenPosition.x), screenPosition.y);
-    ctx.textAlign = "center";
-    ctx.fillText(ship.username, 0, -100 * zoom)
-    ctx.restore();
+    c.save();
+    c.beginPath();
+    c.font = "12px Lucida Console, Monaco, monospace";
+    c.fillStyle = "#42f4c5";
+    c.translate((screenPosition.x), screenPosition.y);
+    c.textAlign = "center";
+    c.fillText(ship.username, 0, -100 * zoom)
+    c.restore();
 }

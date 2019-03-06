@@ -208,13 +208,19 @@ function getQuadrant(x, y, playerQuadrants) {
 
         if (playerQuadrants.length > 0) {
             let found = false
+            // verifica se o quadrante ja existe no client
             for (let index = 0; index < playerQuadrants.length; index++) {
                 if (playerQuadrants[index].x == newQuadrant.x && playerQuadrants[index].y == newQuadrant.y) {
                     found = true
                 }
             }
+            // se nao existe, coloca no array para enviar
             if (!found) {
-                playerQuadrants.push(newQuadrant)
+                // poe um limite na memoria de quadrantes que um player pode segurar
+                if (playerQuadrants.length >= 50) {
+                    playerQuadrants.pop()
+                }
+                playerQuadrants.unshift(newQuadrant)
                 quadrants.push(newQuadrant)
             }
         } else {
