@@ -22,9 +22,9 @@ function drawStars() {
             backgroundC.save();
             backgroundC.beginPath();
             
-            player.stars.forEach(elem => {
+            player.stars.slice().forEach(elem => {
                 let r = 0.75 + Math.random() * 1
-                elem.stars.forEach(ele => {
+                elem.stars.slice().forEach(ele => {
                     let screenPosition = convertPosToPixel(ele.x, ele.y, player.ship)
                     // is star on screen?
                     if (screenPosition.x * zoom <= screenWidth && screenPosition.y * zoom <= screenHeight) {
@@ -103,7 +103,7 @@ function drawShips() {
     setInterval(() => {
         if (ships.length > 0 && !isEmpty(player)) {
             shipsC.clearRect(0, 0, screenWidth, screenHeight)
-            ships.forEach(elem => {
+            ships.slice().forEach(elem => {
                 if (elem.id == player.ship.id) {
                     player.ship = elem
                 }
@@ -219,7 +219,7 @@ function drawBullets() {
     setInterval(() => {
         if (!isEmpty(player) && !isEmpty(bullets)) {
             bulletsC.clearRect(0, 0, screenWidth, screenHeight)
-            bullets.forEach(elem => {
+            bullets.slice().forEach(elem => {
                 bulletsC.save();
                 bulletsC.beginPath();
                 let screenPosition = convertPosToPixel(elem.x, elem.y, player.ship)

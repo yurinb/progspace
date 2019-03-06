@@ -58,7 +58,7 @@ let tests = {
 
 function test() {
     let fails = []
-    tests.quadrantFactory.forEach(element => {
+    tests.quadrantFactory.slice().forEach(element => {
         if (element.test !== element.assert) {
             fails.push({
                 element: JSON.stringify(element),
@@ -217,7 +217,7 @@ function getQuadrant(x, y, playerQuadrants) {
             // se nao existe, coloca no array para enviar
             if (!found) {
                 // poe um limite na memoria de quadrantes que um player pode segurar
-                if (playerQuadrants.length >= 50) {
+                if (playerQuadrants.length >= 25) {
                     playerQuadrants.pop()
                 }
                 playerQuadrants.unshift(newQuadrant)

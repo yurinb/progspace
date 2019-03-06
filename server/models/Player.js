@@ -4,7 +4,7 @@ let playerCount = -1
 
 function getPlayerBy(username, password) {
     let playerFound = false
-    global.gameObjects.clients.forEach(element => {
+    global.gameObjects.clients.slice().forEach(element => {
         if (!playerFound) {
             let player = element.player
             if (player) {

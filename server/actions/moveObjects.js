@@ -132,7 +132,7 @@ function collision(p1x, p1y, r1, p2x, p2y, r2) {
 
 setTimeout(() => {
     setInterval(function shipsMove() {
-        global.gameObjects.ships.forEach(element => {
+        global.gameObjects.ships.slice().forEach(element => {
             moveShips(element)
         });
         global.io.emit('ships', global.gameObjects.ships)
@@ -143,7 +143,7 @@ setTimeout(() => {
     setInterval(function bulletMove() {
         let index = 0
         let indexesToRemove = []
-        global.gameObjects.bullets.forEach(element => {
+        global.gameObjects.bullets.slice().forEach(element => {
             if (element.lifeTime <= 0 && element.state == 'alive') {
                 element.state = "dead"
             }
@@ -160,7 +160,7 @@ setTimeout(() => {
         });
         let updatedBullets = global.gameObjects.bullets.filter((value, index) => {
             let bulletAlive = true
-            indexesToRemove.forEach(i => {
+            indexesToRemove.slice().forEach(i => {
                 if (bulletAlive) {
                     if (i == index) {
                         bulletAlive = false
@@ -176,7 +176,7 @@ setTimeout(() => {
 
 setTimeout(() => {
     setInterval(() => {
-        global.gameObjects.clients.forEach(elem => {
+        global.gameObjects.clients.slice().forEach(elem => {
             if (elem.player) {
                 elem.socket.emit('stars', spawnStars.getNewVisibleQuadrants(elem.player.ship.x, elem.player.ship.y, elem.player.stars))
             }
