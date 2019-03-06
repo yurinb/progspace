@@ -47,3 +47,9 @@ input {
   transform: translate(-50%, -50%);
   z-index: 50;
 }
+
+button {
+  color: aqua;
+  background-color:#020202 !important;
+
+}

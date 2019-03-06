@@ -19,7 +19,7 @@ module.exports = {
             reactorSpeed: 1,
             weapons: [WeaponFactory.laser()],
             currentWeapon: 0,
-            modelImg: 6
+            modelImg: 4
         }
         let physicObject = PhysicObjectFactory.newPhysicObject()
 
