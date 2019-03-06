@@ -4,18 +4,31 @@ const bulletsCanvas = document.createElement('canvas')
 const shipsCanvas = document.createElement('canvas')
 const interfaceCanvas = document.createElement('canvas')
 
-const screenHeight = window.innerHeight
-const screenWidth = window.innerWidth
+let screenHeight = window.innerHeight
+let screenWidth  = window.innerWidth
 
-canvas.height = screenHeight
-bulletsCanvas.height = screenHeight
-shipsCanvas.height = screenHeight
-interfaceCanvas.height = screenHeight
+function resizeCanvas() {
+    screenHeight = window.innerHeight
+    screenWidth  = window.innerWidth
 
-canvas.width = screenWidth
-bulletsCanvas.width = screenWidth
-shipsCanvas.width = screenWidth
-interfaceCanvas.width = screenWidth
+    canvas.height          = screenHeight
+    bulletsCanvas.height   = screenHeight
+    shipsCanvas.height     = screenHeight
+    interfaceCanvas.height = screenHeight
+    
+    canvas.width           = screenWidth
+    bulletsCanvas.width    = screenWidth
+    shipsCanvas.width      = screenWidth
+    interfaceCanvas.width  = screenWidth
+}
+
+resizeCanvas()
+
+setInterval(() => {
+    if (screenHeight != window.innerHeight || screenWidth  != window.innerWidth) {
+        resizeCanvas()
+    }
+}, 250);
 
 canvas.style.zIndex = '1'
 bulletsCanvas.style.zIndex = '2'

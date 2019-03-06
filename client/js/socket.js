@@ -7,7 +7,7 @@ socket.on("connect", function () {
 
 socket.on("player", function (data) {
     player = data
-    console.log('player ', player);
+    //console.log('player ', player);
     userLoggedIn()
 });
 
@@ -36,7 +36,7 @@ socket.on("score", function (data) {
 function emitReady() {
     let username = document.querySelector('#username').value
     let password = document.querySelector('#password').value
-    console.log('emitReady, ', username, password);
+    //console.log('emitReady, ', username, password);
     socket.emit('playerReady', {
         username,
         password
