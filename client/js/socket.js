@@ -60,7 +60,9 @@ function emitKeyRelease(key) {
 }
 
 function emitFire() {
+    let emitted = performance.now()
     socket.emit("playerFires", {}, () => {
+        console.log('FIRES TOOK '+ performance.now() - emitted + 'ms');
         playShotSound()
     });
 }
