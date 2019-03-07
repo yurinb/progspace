@@ -28,3 +28,12 @@ TODO:
 * [ ] World map or radar
 
 ![](demo.gif)
+
+RUN PROJECT:
+
+Requirements:
+* NodeJS/NPM
+
+On project root:
+* npm install
+* npm start
