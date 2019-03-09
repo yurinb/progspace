@@ -1,3 +1,4 @@
+// Returns x and y of mouse position on canvas screen
 function getMousePos(canvas, evt) {
     let rect = canvas.getBoundingClientRect();
     return {
@@ -6,6 +7,7 @@ function getMousePos(canvas, evt) {
     };
 }
 
+// Returns the angle between player ship and mouse-canvas position
 function getPlayerAngle() {
     let ship = {
         x: canvas.width / 2,
@@ -23,25 +25,23 @@ function getPlayerAngle() {
     return angle
 }
 
-// se o main ta no x0 y0
-// e tem um objeto no     -x5000, -y3000
-// objeto do centro       -x5500, -y3500
-// a distancia do objeto ao centro é de x500 y-500
-// tamanho da tela = 1300 x 700
-// considerando o centro da tela vai dar max x-650 e y-350,  x650 e y350
-// fora dessa area nao aparece na tela
-// ou seja 
-// if objeto.x '500' for maior que a maxima-menor && se '500' for menor que a maxima-maior
-// if objeto.y '500' for maior que a maxima-menor && se '500' for menor que a maxima-maior
-let zoom = 1
+// zoom variable is used on next method(convertPosToPixel)
+// when less the number, more objects will fit on screen
+let zoom = 0.25
 window.addEventListener('mousewheel', function (e) {
-    if (e.wheelDelta < 0 && zoom > 0.15) {
+    if (e.wheelDelta < 0 && zoom > 0.10) {
         zoom -= 0.05;
-    } else if (e.wheelDelta > 0 && zoom < 2) {
+    } else if (e.wheelDelta > 0 && zoom < 1) {
         zoom += 0.05;
     }
 });
 
+// Convert and returns the position of objects to fit in screen
+// every object has postions, but to show up on screen they have to be close to player ship
+// if player ship position is x3000 y5000 and screen have max x = 1366 y = 766
+// the position x3000 y5000 will be equivalent to screen x = 1366/2 y = 766/2
+// so, player ship is allways at x1366/2 y = 766/2
+// objects that position is close enough of real player ship and match max screen size will show up
 function convertPosToPixel(x, y, playerShip) { // 
 
     let canvasCenterX = canvas.width / 2
@@ -58,6 +58,7 @@ function convertPosToPixel(x, y, playerShip) { //
     }
 }
 
+// TODO: move this to some util module
 function isEmpty(obj) {
     for (var key in obj) {
         if (obj.hasOwnProperty(key))

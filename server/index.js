@@ -20,9 +20,9 @@ app.get('/', function (req, res) {
 });
 
 
-require('./actions/setGameObjects')
-require('./actions/handleSocketsConnection')
-require('./actions/moveObjects')
+require('./actions/game-objects')
+require('./actions/handle-sockets-connection')
+require('./actions/move-objects')
 require('./events/timed')
 
 

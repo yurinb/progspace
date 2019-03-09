@@ -1,4 +1,4 @@
-const spawnStars = require('./spawnStars')
+const spawnStars = require('./spawn-stars')
 const BulletFactory = require('../models/Bullet')
 
 const intervalMS = 30

@@ -1,7 +1,5 @@
 const PlayerFactory = require('../models/Player')
 const BulletFactory = require('../models/Bullet')
-const spawnStars = require('../actions/spawnStars')
-
 
 module.exports = function (client) {
     client.socket.on('disconnect', () => {

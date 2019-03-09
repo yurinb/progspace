@@ -1,18 +1,11 @@
-function shot(evt) {
-    if (!isEmpty(player)) {
-        if (player.ship.energy >= player.ship.weapons[player.ship.currentWeapon].bullet.energyCost) {
-            emitFire()
-        }
-    }
+//-----------------------------//-------------------------------
+//----- Remove default action of left click --------------------
+window.oncontextmenu = function () {
+    return false
 }
 
-function playShotSound() {
-    let audio = new Audio('/audio/cannon_A.mp3');
-    audio.play();
-}
-
-onclick = shot
-
+//-----------------------------//-------------------------------
+//----- Activate propulsors ------------------------------------
 window.onmousedown = function (eventData) {
     if (eventData.button == 2) {
         eventData.preventDefault()
@@ -21,6 +14,8 @@ window.onmousedown = function (eventData) {
     }
 }
 
+//-----------------------------//-------------------------------
+//----- Disable propulsors -------------------------------------
 window.onmouseup = function (eventData) {
     if (eventData.button == 2) {
         eventData.preventDefault()
@@ -29,15 +24,33 @@ window.onmouseup = function (eventData) {
     }
 }
 
-window.oncontextmenu = function () {
-    return false
+//-----------------------------//-------------------------------
+//----- Player shot ----------------------------------
+function shot(evt) {
+    if (!isEmpty(player)) {
+        if (player.ship.energy >= player.ship.weapons[player.ship.currentWeapon].bullet.energyCost) {
+            emitFire()
+        }
+    }
 }
 
+//-----------------------------//-------------------------------
+//----- Call Player shot when right click ----------------------
+onclick = shot
 
+//-----------------------------//-------------------------------
+//----- Player shot sound --------------------------------------
+function playShotSound() {
+    let audio = new Audio('/audio/cannon_A.mp3');
+    audio.play();
+}
 
+//-----------------------------//-------------------------------
+//----- Keyboard keys state variables -----------------------------------
 let up = false;
 let down = false;
-
+//-----------------------------//-------------------------------
+//----- Keyboard actions ---------------------------------------
 var map = {};
 onkeydown = onkeyup = function (e) {
     map[e.keyCode] = e.type == 'keydown';

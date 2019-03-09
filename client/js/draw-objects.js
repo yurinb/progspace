@@ -51,19 +51,19 @@ let shipsImpulses = []
 let shipsImg = []
 for (let i = 1; i <= 6; i++) {
     let ship = new Image();
-    ship.src = '../img/ship' + i + '.png'
+    ship.src = '../img/ships/ship' + i + '.png'
     shipsImg.push(ship)
 }
 // PROJETILS
 let projetilsImg = []
 for (let i = 1; i <= 1; i++) {
     let proj = new Image();
-    proj.src = '../img/projetil' + i + '.png'
+    proj.src = '../img/projetils/projetil' + i + '.png'
     projetilsImg.push(proj)
 }
 // PROPULSOR
 let propulsor = new Image();
-propulsor.src = '../img/propulsor.png'
+propulsor.src = '../img/sfx/propulsor.png'
 propulsor.onload = function () {
     propulsor.width = 15
     propulsor.height = 15
@@ -71,7 +71,7 @@ propulsor.onload = function () {
 
 // EXPLOSION
 let explosion = new Image();
-explosion.src = '../img/explosion1.png'
+explosion.src = '../img/sfx/explosion1.png'
 explosion.onload = function () {
     explosion.width = 50
     explosion.height = 50
