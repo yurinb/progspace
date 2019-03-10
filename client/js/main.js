@@ -1,8 +1,9 @@
 //-----------------------------//-------------------------------
 //----- Server socket to connect at browser --------------------
-//const socket = io.connect("http://localhost:9000");
+const socket = io.connect("http://localhost:9000");
 //const socket = io.connect("http://192.168.15.15:9000");
-const socket = io.connect("http://outspace.herokuapp.com");
+//const socket = io.connect("http://outspace.herokuapp.com");
+//const socket = io.connect("http://mussum.ddns.net:9000");
 
 
 const canvas          = document.querySelector('canvas')

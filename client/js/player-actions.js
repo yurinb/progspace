@@ -9,7 +9,7 @@ window.oncontextmenu = function () {
 window.onmousedown = function (eventData) {
     if (eventData.button == 2) {
         eventData.preventDefault()
-        emitPlayerImpulseOn()
+        emitPlayerPropulsorOn()
         return false
     }
 }
@@ -19,7 +19,7 @@ window.onmousedown = function (eventData) {
 window.onmouseup = function (eventData) {
     if (eventData.button == 2) {
         eventData.preventDefault()
-        emitPlayerImpulseOff()
+        emitPlayerPropulsorOff()
         return false
     }
 }
@@ -67,7 +67,7 @@ onkeydown = onkeyup = function (e) {
         if (up) {
             emitKeyRelease('w')
             up = false;
-            emitPlayerImpulseOff()
+            emitPlayerPropulsorOff()
         }
     }
     // RETURN

@@ -42,13 +42,13 @@ function emitFire() {
 }
 
 //-----------------------------//-------------------------------
-//----- Sends impulse action to server -------------------------
-function emitPlayerImpulseOn() {
-    socket.emit('playerImpulseOn')
+//----- Sends propulsor action to server -------------------------
+function emitPlayerPropulsorOn() {
+    socket.emit('playerPropulsorOn')
 }
 
 //-----------------------------//-------------------------------
-//----- Sends impulse action to server -------------------------
-function emitPlayerImpulseOff() {
-    socket.emit('playerImpulseOff')
+//----- Sends propulsor action to server -------------------------
+function emitPlayerPropulsorOff() {
+    socket.emit('playerPropulsorOff')
 }
