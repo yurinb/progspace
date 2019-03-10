@@ -126,6 +126,21 @@ function drawShips() {
                     return
                 }
 
+                // ship
+                //screenPosition = convertPosToPixel(elem.x, elem.y, player.ship)
+                shipsC.save();
+                shipsC.beginPath();
+                shipsC.translate(screenPosition.x, screenPosition.y);
+                shipsC.rotate(elem.angle * Math.PI / 180);
+                //shipsC.fillStyle = "white";
+                //shipsC.rect(-(elem.w * zoom / 2),-(elem.h * zoom / 2), elem.w * zoom, elem.h * zoom);
+                try {
+                    shipsC.drawImage(shipFrame, -(shipFrame.width * zoom / 2), -(shipFrame.height * zoom / 2), shipFrame.width * zoom, shipFrame.height * zoom);
+                } catch (error) {}
+                //shipsC.stroke();
+                //shipsC.fill();
+                shipsC.restore();
+
                 // energy shield
                 for (let q = 0; q < 3; q++) {
                     shipsC.save();
@@ -152,21 +167,6 @@ function drawShips() {
                         energyShieldSizeEffectMultipler = q
                     }
                 }
-
-                // ship
-                //screenPosition = convertPosToPixel(elem.x, elem.y, player.ship)
-                shipsC.save();
-                shipsC.beginPath();
-                shipsC.translate(screenPosition.x, screenPosition.y);
-                shipsC.rotate(elem.angle * Math.PI / 180);
-                //shipsC.fillStyle = "white";
-                //shipsC.rect(-(elem.w * zoom / 2),-(elem.h * zoom / 2), elem.w * zoom, elem.h * zoom);
-                try {
-                    shipsC.drawImage(shipFrame, -(shipFrame.width * zoom / 2), -(shipFrame.height * zoom / 2), shipFrame.width * zoom, shipFrame.height * zoom);
-                } catch (error) {}
-                //shipsC.stroke();
-                //shipsC.fill();
-                shipsC.restore();
 
                 // username
                 drawUsernameAboveShip(shipsC, elem)

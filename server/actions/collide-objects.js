@@ -2,7 +2,7 @@ function elementCollidesWithShip(element, collidedWith) {
     let eC = {
         x: element.x,
         y: element.y,
-        r: (element.w + element.h) / 3
+        r: (element.w + element.h) / 2
     }
     for (let i = 0; i < global.gameObjects.ships.length; i++) {
         let ship = global.gameObjects.ships[i]
@@ -10,7 +10,7 @@ function elementCollidesWithShip(element, collidedWith) {
             let sC = {
                 x: ship.x,
                 y: ship.y,
-                r: (ship.w + ship.h) / 3
+                r: (ship.w + ship.h) / 2
             }
 
             if (collision(eC.x, eC.y, eC.r, sC.x, sC.y, sC.r)) {

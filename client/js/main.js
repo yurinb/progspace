@@ -43,8 +43,8 @@ setInterval(() => {
 
 // order canvas to act like layers
 canvas.style.zIndex          = '1'
-bulletsCanvas.style.zIndex   = '2'
-shipsCanvas.style.zIndex     = '3'
+shipsCanvas.style.zIndex     = '2'
+bulletsCanvas.style.zIndex   = '3'
 interfaceCanvas.style.zIndex = '4'
 
 // get canvas layer contexts

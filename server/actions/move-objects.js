@@ -61,7 +61,7 @@ function shipDies(elem) {
 }
 
 function bulletDies(elem) {
-    // TODO: dies method
+    elem.state = "dead"
 }
 
 
@@ -80,9 +80,6 @@ setTimeout(() => {
         let indexesToRemove = []
         global.gameObjects.bullets.slice().forEach(element => {
             if (element.lifeTime <= 0 && element.state == 'idle') {
-                element.state = "dead"
-            }
-            if (element.state == "dead") {
                 bulletDies(element)
             }
             if (element.state == "removible") {
@@ -118,4 +115,3 @@ setTimeout(() => {
         })
     }, intervalMS);
 }, 20);
-

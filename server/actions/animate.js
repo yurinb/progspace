@@ -5,6 +5,10 @@ function animateLoop(elem, intervalID) {
                 if (animation.state == elem.state) {
                     elem.animation = animation
                     elem.animation.frameIndex = -1
+                    clearInterval(intervalID)
+                    let newIntervalID = setInterval(function () {
+                        animateLoop(elem, newIntervalID)
+                    }, elem.animation.interval);
                     return true
                 }
             });
