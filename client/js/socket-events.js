@@ -24,11 +24,12 @@ socket.on("bullets", function (data) {
 });
 
 //-----------------------------//----------------------------------
-//----- Client receives new stars quadrant (1000 x 1000) ----------
+//----- Client receives new stars quadrant (10000 x 10000) ----------
+const cache = 10
 socket.on("stars", function (data) {
     if (data.length > 0) {
         data.slice().forEach(element => {
-            if (player.stars.length >= 25) {
+            if (player.stars.length >= cache) {
                 player.stars.pop()
             }
             player.stars.unshift(element)

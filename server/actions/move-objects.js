@@ -110,7 +110,7 @@ setTimeout(() => {
     setInterval(() => {
         global.gameObjects.clients.slice().forEach(elem => {
             if (elem.player) {
-                elem.socket.emit('stars', spawnStars.getNewVisibleQuadrants(elem.player.ship.x, elem.player.ship.y, elem.player.stars))
+                elem.socket.emit('stars', spawnStars.getNewVisibleQuadrants(elem.player.ship.x, elem.player.ship.y, elem.player.stars, elem.player.screenResolution))
             }
         })
     }, intervalMS);

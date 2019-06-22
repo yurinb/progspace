@@ -5,7 +5,8 @@ function emitReady() {
     let password = document.querySelector('#password').value
     socket.emit('playerReady', {
         username,
-        password
+        password,
+        screenResolution: {w: screen.width, h: screen.height}
     })
 }
 

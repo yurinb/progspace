@@ -7,7 +7,7 @@
     <title>progspace</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="css/main.css" />
-
+    
 </head>
 
 <body>
@@ -16,7 +16,7 @@
     <!-- Login -->
     <div id="login-container">
         <div id="login-input">
-            <input type="text" name="username" id="username" placeholder="username">
+            <input type="text" name="username" id="username" placeholder="username" autofocus>
             <input type="password" name="password" id="password" placeholder="password">
             <button onclick="emitReady()">login</button>
         </div>
@@ -29,6 +29,12 @@
     <script src="/js/socket-events.js"></script>
     <script src="/js/socket-actions.js"></script>
     <script src="/js/player-actions.js"></script>
+    <script>
+        document.querySelectorAll("#username, #password").forEach(el => el.addEventListener("keyup", event => {
+            if(event.key !== "Enter") return;
+            emitReady()
+        }))
+    </script>
 </body>
 
 </html>

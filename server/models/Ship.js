@@ -8,7 +8,7 @@ module.exports = {
 
 
     newShip: function (username) {
-        let iddleAnimation = AnimationsFactory.newAnimation('idle', ['../img/ships/ship6.png'], 3000, true)
+        let iddleAnimation = AnimationsFactory.newAnimation('idle', ['../img/ships/ship4.png'], 3000, true)
         let deadAnimation = AnimationsFactory.newAnimation('dead',
             ['/img/sfx/explosion1.png', '/img/sfx/explosion2.png', '/img/sfx/explosion3.png', '/img/sfx/explosion4.png', '/img/sfx/explosion5.png', '/img/sfx/explosion6.png',
                 '/img/sfx/explosion7.png', '/img/sfx/explosion8.png', '/img/sfx/explosion9.png', '/img/sfx/explosion10.png', '/img/sfx/explosion11.png', '/img/sfx/explosion12.png', '/img/sfx/explosion13.png'
@@ -19,8 +19,8 @@ module.exports = {
             username: username,
             w: 100,
             h: 100,
-            speed: 5,
-            aceleration: 1,
+            speed: 10,
+            aceleration: 2,
             acelerated: 0,
             engineOn: false,
             propulsor: {

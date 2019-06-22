@@ -27,12 +27,12 @@ function getPlayerAngle() {
 
 // zoom variable is used on next method(convertPosToPixel)
 // when less the number, more objects will fit on screen
-let zoom = 0.25
+let zoom = 0.10
 window.addEventListener('mousewheel', function (e) {
-    if (e.wheelDelta < 0 && zoom > 0.10) {
-        zoom -= 0.05;
-    } else if (e.wheelDelta > 0 && zoom < 1) {
-        zoom += 0.05;
+    if (e.wheelDelta < 0 && zoom > 0.05) {
+        zoom = Math.round( (zoom - 0.01) * 100 + Number.EPSILON ) / 100
+    } else if (e.wheelDelta > 0 && zoom < 0.25) {
+        zoom = Math.round( (zoom + 0.01) * 100 + Number.EPSILON ) / 100
     }
 });
 
@@ -41,20 +41,22 @@ window.addEventListener('mousewheel', function (e) {
 // if player ship position is x3000 y5000 and screen have max x = 1366 y = 766
 // the position x3000 y5000 will be equivalent to screen x = 1366/2 y = 766/2
 // so, player ship is allways at x1366/2 y = 766/2
-// objects that position is close enough of real player ship and match max screen size will show up
-function convertPosToPixel(x, y, playerShip) { // 
+// objects that position is close enough of player ship and match max screen size will show up
+function convertPosToPixel(x, y, playerShip, parallax = 1) { // 
 
     let canvasCenterX = canvas.width / 2
     let canvasCenterY = canvas.height / 2
 
-    let diffX = (x - playerShip.x) * zoom
-    let diffY = (y - playerShip.y) * zoom
+    let diffX = (x - playerShip.x) * parallax * zoom
+    let diffY = (y - playerShip.y) * parallax * zoom
 
     return {
         //x: diffX + canvasCenterX,
         //y: diffY + canvasCenterY
         x: Math.floor(diffX + canvasCenterX),
+        // x: Math.floor(Math.round( (diffX + canvasCenterX) * 100 + Number.EPSILON ) / 100),
         y: Math.floor(diffY + canvasCenterY)
+        // y: Math.floor(Math.round( (diffY + canvasCenterY) * 100 + Number.EPSILON ) / 100)
     }
 }
 

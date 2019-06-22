@@ -1,19 +1,19 @@
-let starCount = -1
+let starCount = 0
 
 module.exports = {
 
     newStar: function (quadrant) {
-        starCount++
         let object = {
             id: starCount,
-            x: quadrant.x + Math.random() * quadrant.size,
-            y: quadrant.y + Math.random() * quadrant.size,
-            z: 0.25 + Math.random() * 1,
-            r: Math.random() * 255 * 0.90,
-            g: Math.random() * 255 * 0.50,
-            b: Math.random() * 255 * 0.90,
-            s: Math.random() * 10,
+            x: quadrant.x + Math.random() * quadrant.w,
+            y: quadrant.y + Math.random() * quadrant.h,
+            z: 0.25 + Math.random() * 1, // deep
+            r: Math.random() * 255 * 0.50, // red
+            g: Math.random() * 255 * 0.50, // green
+            b: Math.random() * 255 * 0.50, // blue
+            s: Math.random() * 2, // size
         }
+        starCount++
         return object
     }
 

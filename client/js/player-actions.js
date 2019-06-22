@@ -40,9 +40,10 @@ onclick = shot
 
 //-----------------------------//-------------------------------
 //----- Player shot sound --------------------------------------
+const audio = new Audio('/audio/cannon_A.mp3');
 function playShotSound() {
-    let audio = new Audio('/audio/cannon_A.mp3');
-    audio.play();
+    audio.currentTime = 0
+    audio.play()
 }
 
 //-----------------------------//-------------------------------

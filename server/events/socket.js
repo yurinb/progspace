@@ -6,13 +6,13 @@ module.exports = function (client) {
         console.log('-Client disconnected');
     });
 
-    client.socket.on('playerReady', userData => {
+    client.socket.on('playerReady', clientData => {
         //console.log('*Player Ready');
         let clients = global.gameObjects.clients
         let playerFound = false
         for (let index = 0; index < clients.length; index++) {
             if (clients[index].player) {
-                if (clients[index].player.username == userData.username && clients[index].player.password == userData.password) {
+                if (clients[index].player.username == clientData.username && clients[index].player.password == clientData.password) {
                     playerFound = true
                     client.player = clients[index].player
                     client.socket.emit('player', client.player)
@@ -20,14 +20,15 @@ module.exports = function (client) {
                 }
             }
         }
-
+        
         if (!playerFound) {
-            let player = PlayerFactory.newPlayer(userData.username, userData.password)
+            let player = PlayerFactory.newPlayer(clientData.username, clientData.password)
             client.player = player
+            client.player.screenResolution = {w: clientData.screenResolution.w * 15, h: clientData.screenResolution.h * 15}
+            console.log(client.player.screenResolution)
             global.gameObjects.ships.push(player.ship)
             client.socket.emit('player', client.player)
         }
-
     })
 
     // movement

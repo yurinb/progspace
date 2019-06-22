@@ -103,6 +103,9 @@ function hideLoginModal() {
 
 showLoginModal()
 
+// override this variable will print his value on screen
+let debbugingOnScreen = false
+
 function userLoggedIn() {
     hideLoginModal()
     document.body.appendChild(shipsCanvas);
@@ -116,3 +119,4 @@ function userLoggedIn() {
         emitAngle()
     }, 20);
 }
+

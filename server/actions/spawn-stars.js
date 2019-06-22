@@ -1,131 +1,52 @@
 const StarFactory = require('../models/Star')
 
-const quadrantSize = 3000
-const starsByQuadrant = 50
-
-let tests = {
-    quadrantFactory: [{
-            id: 1,
-            test: getQuadrantPositionBy(0, 0),
-            assert: {
-                x: 0,
-                y: 0
-            }
-        },
-        {
-            id: 2,
-            test: getQuadrantPositionBy(500, 299),
-            assert: {
-                x: 0,
-                y: 0
-            }
-        },
-        {
-            id: 3,
-            test: getQuadrantPositionBy(1001, 500),
-            assert: {
-                x: 1000,
-                y: 0
-            }
-        },
-        {
-            id: 4,
-            test: getQuadrantPositionBy(-94, 101),
-            assert: {
-                x: -1000,
-                y: 0
-            }
-        }, ,
-        {
-            id: 5,
-            test: getQuadrantPositionBy(5600, -3900),
-            assert: {
-                x: 5000,
-                y: -4000
-            }
-        },
-        {
-            id: 6,
-            test: getQuadrantPositionBy(600, -500),
-            assert: {
-                x: 0,
-                y: -1000
-            }
-        }
-    ],
-
-}
-
-function test() {
-    let fails = []
-    tests.quadrantFactory.slice().forEach(element => {
-        if (element.test !== element.assert) {
-            fails.push({
-                element: JSON.stringify(element),
-                return: element.test
-            })
-        }
-    });
-    return fails
-}
-
-//console.log(test());
-
+const cache = 10
 
 // creates a quadrant to be used to fit stars in
-function getQuadrantPositionBy(x, y) {
+function getQuadrantPositionBy(x, y, playerResolution) {
     let quadrant = {
         x: 0,
         y: 0
     }
     if (x > 0) {
-        if (x <= quadrantSize) {
+        if (x <= playerResolution.w) {
             quadrant.x = 0
         }
-        if (x > quadrantSize) {
-            quadrant.x = (Math.trunc(x / quadrantSize) * quadrantSize)
-            // let quadX = Math.trunc(x / quadrantSize)
-            // quadrant.x = quadX * quadrantSize
+        if (x > playerResolution.w) {
+            quadrant.x = (Math.trunc(x / playerResolution.w) * playerResolution.w)
         }
     }
     if (x < 0) {
-        if (x >= -(quadrantSize)) {
-            quadrant.x = -(quadrantSize)
+        if (x >= -(playerResolution.w)) {
+            quadrant.x = -(playerResolution.w)
         }
-        if (x < -(quadrantSize)) {
-            quadrant.x = (Math.trunc(x / quadrantSize) * quadrantSize) - quadrantSize
-            // let quadX = Math.trunc(x / -(quadrantSize))
-            // quadrant.x = -(quadX * (quadrantSize * 2))
+        if (x < -(playerResolution.w)) {
+            quadrant.x = (Math.trunc(x / playerResolution.w) * playerResolution.w) - playerResolution.w
         }
     }
     if (y > 0) {
-        if (y <= quadrantSize) {
+        if (y <= playerResolution.h) {
             quadrant.y = 0
         }
-        if (y > quadrantSize) {
-            quadrant.y = (Math.trunc(y / quadrantSize) * quadrantSize)
-            // let quadY = Math.trunc(y / quadrantSize)
-            // quadrant.y = quadY
+        if (y > playerResolution.h) {
+            quadrant.y = (Math.trunc(y / playerResolution.h) * playerResolution.h)
         }
     }
 
     if (y < 0) {
-        if (y >= -(quadrantSize)) {
-            quadrant.y = -(quadrantSize)
+        if (y >= -(playerResolution.h)) {
+            quadrant.y = -(playerResolution.h)
         }
-        if (y < -(quadrantSize)) {
-            quadrant.y = (Math.trunc(y / quadrantSize) * quadrantSize) - quadrantSize
-            // let quadY = Math.trunc(x / -(quadrantSize))
-            // quadrant.y = -(quadX * (quadrantSize * 2))
+        if (y < -(playerResolution.h)) {
+            quadrant.y = (Math.trunc(y / playerResolution.h) * playerResolution.h) - playerResolution.h
         }
     }
-
     return quadrant
 }
 
 // searchs for quadrant at quadrants array
-function getQuadrantByPosition(x, y) {
-    let quadrant = getQuadrantPositionBy(x, y)
+function getQuadrantByPosition(x, y, playerResolution) {
+    let quadrant = getQuadrantPositionBy(x, y, playerResolution)
 
     for (let index = 0; index < global.gameObjects.starsQuadrant.length; index++) {
         let element = global.gameObjects.starsQuadrant[index]
@@ -134,17 +55,22 @@ function getQuadrantByPosition(x, y) {
             return element
         }
     }
-    return getNewQuadrant(x, y)
+    return getNewQuadrant(x, y, playerResolution)
 
 }
 
-function getNewQuadrant(x, y) {
+function getNewQuadrant(x, y, playerResolution) {
 
     // get a example quadrant that shold have in memory based on x, y
-    let quadrant = getQuadrantPositionBy(x, y)
+    let quadrant = getQuadrantPositionBy(x, y, playerResolution)
 
-    quadrant.size = quadrantSize
+    quadrant.w = playerResolution.w
+    quadrant.h = playerResolution.h
+
     quadrant.stars = []
+
+    const starsByQuadrant = Math.floor((quadrant.w + quadrant.h) / 150)
+
     for (let index = 0; index < starsByQuadrant; index++) {
         quadrant.stars.push(StarFactory.newStar(quadrant))
     }
@@ -164,47 +90,70 @@ function getNewQuadrant(x, y) {
     return quadrant
 }
 
-function getNewVisibleQuadrants(x, y, playerQuadrants) {
+function getNewVisibleQuadrants(x, y, playerQuadrants, playerResolution) {
 
     let quadrants = []
 
-    quadrants = getQuadrant(x, y, playerQuadrants)
+    if (quadrants.length == 0) {
+        quadrants = getQuadrant(x, y, playerQuadrants, playerResolution)
+    }
 
     if (quadrants.length == 0) {
-        quadrants = getQuadrant(x + quadrantSize / 2, y, playerQuadrants)
+        quadrants = getQuadrant(x + playerResolution.w / 2, y, playerQuadrants, playerResolution)
     }
+
     if (quadrants.length == 0) {
-        quadrants = getQuadrant(x - quadrantSize / 2, y, playerQuadrants)
+        quadrants = getQuadrant(x - playerResolution.w / 2, y, playerQuadrants, playerResolution)
     }
+
     if (quadrants.length == 0) {
-        quadrants = getQuadrant(x, y + quadrantSize / 2, playerQuadrants)
+        quadrants = getQuadrant(x, y + playerResolution.h / 2, playerQuadrants, playerResolution)
     }
+
     if (quadrants.length == 0) {
-        quadrants = getQuadrant(x, y - quadrantSize / 2, playerQuadrants)
+        quadrants = getQuadrant(x, y - playerResolution.h / 2, playerQuadrants, playerResolution)
+    }
+
+
+    if (quadrants.length == 0) {
+        quadrants = getQuadrant(x + playerResolution.w / 2, y  + playerResolution.h / 2, playerQuadrants, playerResolution)
+    }
+
+    if (quadrants.length == 0) {
+        quadrants = getQuadrant(x - playerResolution.w / 2, y  + playerResolution.h / 2, playerQuadrants, playerResolution)
+    }
+
+    if (quadrants.length == 0) {
+        quadrants = getQuadrant(x  + playerResolution.w / 2, y - playerResolution.h / 2, playerQuadrants, playerResolution)
+    }
+    
+    if (quadrants.length == 0) {
+        quadrants = getQuadrant(x  - playerResolution.w / 2, y - playerResolution.h / 2, playerQuadrants, playerResolution)
     }
 
     return quadrants
 
 }
 
-function getQuadrant(x, y, playerQuadrants) {
+function getQuadrant(x, y, playerQuadrants, playerResolution) {
     let quadrants = []
-    let startX = x
-    let startY = y
+    let startX = x + playerResolution.w / 2
+    let startY = y + playerResolution.h / 2
     for (let quad = 1; quad <= 4; quad++) {
         if (quad == 2) {
-            x = startX - quadrantSize
+            x = startX - playerResolution.w / 2
             y = startY
         }
         if (quad == 3) {
-            x = startX - quadrantSize
-            y = startY - quadrantSize
+            x = startX - playerResolution.w / 2
+            y = startY - playerResolution.h / 2
         }
         if (quad == 4) {
             x = startX
-            y = startY - quadrantSize
+            y = startY - playerResolution.h / 2
         }
-        let newQuadrant = getQuadrantByPosition(x, y)
+
+        let newQuadrant = getQuadrantByPosition(x, y, playerResolution)
 
         if (playerQuadrants.length > 0) {
             let found = false
@@ -217,7 +166,7 @@ function getQuadrant(x, y, playerQuadrants) {
             // se nao existe, coloca no array para enviar
             if (!found) {
                 // poe um limite na memoria de quadrantes que um player pode segurar
-                if (playerQuadrants.length >= 25) {
+                if (playerQuadrants.length >= cache) {
                     playerQuadrants.pop()
                 }
                 playerQuadrants.unshift(newQuadrant)

@@ -1,4 +1,7 @@
 const images = []
+//const colorA = "#f4e242";
+const colorA = "#42f4c5";
+
 
 // SHIPS
 for (let i = 1; i <= 6; i++) {
@@ -65,33 +68,26 @@ function writeObjects() {
         drawInterface()
     }, 30);
 }
-
 function drawStars() {
     setInterval(() => {
         if (!isEmpty(player)) {
             backgroundC.clearRect(0, 0, screenWidth, screenHeight)
-            backgroundC.save();
-            backgroundC.beginPath();
-
             player.stars.slice().forEach(elem => {
-                let r = 0.75 + Math.random() * 1
                 elem.stars.slice().forEach(ele => {
-                    let screenPosition = convertPosToPixel(ele.x, ele.y, player.ship)
+                    let r = 0.75 + Math.random() * 1
+                    let screenPosition = convertPosToPixel(ele.x , ele.y , player.ship, ele.s)
                     // is star on screen?
-                    if (screenPosition.x * zoom <= screenWidth && screenPosition.y * zoom <= screenHeight) {
-                        //backgroundC.save();
-                        //backgroundC.beginPath();
-                        let z = ele.z * r
+                    // if (screenPosition.x <= screenWidth && screenPosition.y <= screenHeight) {
+                        let z = r > 1 ? ele.z * r : ele.z
+                        // backgroundC.shadowOffsetX = 0;
+                        // backgroundC.shadowOffsetY = 0;
+                        // backgroundC.shadowBlur = 4;
+                        // backgroundC.shadowColor = "rgba(" + ele.r + ", " + ele.g + ", " + ele.b + ", " + z + ")"
                         backgroundC.fillStyle = "rgba(" + ele.r + ", " + ele.g + ", " + ele.b + ", " + z + ")"
-                        //backgroundC.translate(screenPosition.x, screenPosition.y);
-                        //backgroundC.fillRect(0, 0, elem.s, elem.s)
-                        backgroundC.fillRect(screenPosition.x, screenPosition.y, ele.s * zoom, ele.s * zoom)
-                        //backgroundC.fillText(elem.x + ' ' + elem.y, screenPosition.x, screenPosition.y)
-                        //backgroundC.restore();
-                    }
+                        backgroundC.fillRect(screenPosition.x, screenPosition.y, ele.s, ele.s)
+                    // }
                 });
             })
-            backgroundC.restore();
         }
     }, 30);
 }
@@ -149,7 +145,7 @@ function drawShips() {
                     let newY = screenPosition.y - 0 * zoom * Math.sin((elem.angle + 0) * Math.PI / 180)
                     shipsC.translate(newX, newY);
                     shipsC.fillStyle = '#020202';
-                    shipsC.strokeStyle = "#42f4c5";
+                    shipsC.strokeStyle = colorA;
                     energyShieldSizeEffect += 0.25 * q * energyShieldSizeEffectMultipler
 
                     shipsC.beginPath();
@@ -241,7 +237,7 @@ function drawInterface() {
 function drawShipCoords(c) {
     //c.font = "15px Lucida Console";
     c.textAlign = "center";
-    c.fillStyle = "#42f4c5";
+    c.fillStyle = colorA;
     c.fillText('x ' + (player.ship.x | 0) + ' y ' + (player.ship.y | 0), screenWidth / 2, 25)
 }
 
@@ -250,19 +246,19 @@ function drawEnergyBar(c) {
     c.textAlign = "center";
 
     let x = screenWidth / 2
-    let y = screenHeight / 2 + screenHeight / 3
+    let y = screenHeight / 2 + screenHeight / 2.25
 
-    c.fillStyle = "#42f4c5";
+    c.fillStyle = colorA;
     c.fillText('energy', x, y - 10)
     let energyBarSize = screenWidth / 4
 
 
     // background energy bar
-    c.strokeStyle = "#42f4c5";
+    c.strokeStyle = colorA;
     c.strokeRect(x - energyBarSize / 2, y, energyBarSize, 10)
 
     // current state energy bar
-    c.fillStyle = "#42f4c5";
+    c.fillStyle = colorA;
     c.fillRect(x - energyBarSize / 2, y, energyBarSize * player.ship.energy / player.ship.maxEnergy, 10)
 }
 
@@ -271,9 +267,21 @@ function drawUsernameAboveShip(c, ship) {
     c.save();
     c.beginPath();
     c.font = "12px Lucida Console, Monaco, monospace";
-    c.fillStyle = "#42f4c5";
+    c.fillStyle = colorA;
     c.translate((screenPosition.x), screenPosition.y);
     c.textAlign = "center";
     c.fillText(ship.username, 0, -200 * zoom)
     c.restore();
+
+    // debugger on screen:
+    if (debbugingOnScreen) {
+    c.save();
+    c.beginPath();
+    c.font = "12px Lucida Console, Monaco, monospace";
+    c.fillStyle = colorA;
+    c.translate((screenPosition.x), screenPosition.y);
+    c.textAlign = "center";
+    c.fillText(debbugingOnScreen, 0, -400 * zoom)
+    c.restore();
+    }
 }
