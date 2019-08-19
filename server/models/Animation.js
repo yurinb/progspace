@@ -1,19 +1,19 @@
 module.exports = {
 
 
-    newAnimation: function (state, frames, interval, repeat) {
+	newAnimation: function (state, frames, interval, repeat) {
 
-        let animation = {
-            state,
-            frames,
-            frame:{},
-            frameIndex: 0,
-            interval,
-            repeat
-        }
+		let animation = {
+			state,
+			frames,
+			frame:{},
+			frameIndex: 0,
+			interval,
+			repeat
+		}
 
-        return animation
-    },
+		return animation
+	},
 
 
 
