@@ -30,8 +30,9 @@ module.exports = function (client) {
 		}
 	})
 
-	client.socket.on('ships',() => {
-		client.socket.emit(global.gameObjects.ships)
+	client.socket.on('ships', (data, callback) => {
+		console.log(callback)
+		callback(global.gameObjects.ships)
 	})
 
 	// movement
