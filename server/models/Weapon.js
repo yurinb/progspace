@@ -23,16 +23,16 @@ function laser() {
 			bullet.y = ship.y + 85 * Math.sin((ship.angle + 85) * Math.PI / 180)
 			bullet.angle = ship.angle
 			bullet.shipAcelerated = ship.acelerated
-			ship.energy -= energyCost
-			global.gameObjects.bullets.push(bullet)
-
+			
 			let bullet2 = BulletFactory.newLaser(ship.username)
 			bullet2.x = ship.x + 85 * Math.cos((ship.angle - 85) * Math.PI / 180)
 			bullet2.y = ship.y + 85 * Math.sin((ship.angle - 85 ) * Math.PI / 180)
 			bullet2.angle = ship.angle
 			bullet2.shipAcelerated = ship.acelerated
+
+			global.gameObjects.bullets.push(bullet, bullet2)
+
 			ship.energy -= energyCost
-			global.gameObjects.bullets.push(bullet2)
 		}
 	}
 	return weapon

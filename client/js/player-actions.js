@@ -7,11 +7,6 @@ window.oncontextmenu = function () {
 //-----------------------------//-------------------------------
 //----- Activate propulsors & Player Shoot ---------------------
 window.onmousedown = function (eventData) {
-	if (eventData.button == 2) {
-		eventData.preventDefault()
-		emitPlayerPropulsorOn()
-		return false
-	}
 	if (eventData.button == 0) {
 		if (!isEmpty(player)) {
 			if (player.ship.energy >= player.ship.weapons[player.ship.currentWeaponIndex].bullet.energyCost) {
@@ -25,11 +20,6 @@ window.onmousedown = function (eventData) {
 //-----------------------------//-------------------------------
 //----- Disable propulsors & Player Stops Shoot ----------------
 window.onmouseup = function (eventData) {
-	if (eventData.button == 2) {
-		eventData.preventDefault()
-		emitPlayerPropulsorOff()
-		return false
-	}
 	if (eventData.button == 0) {
 		if (!isEmpty(player)) {
 			emitStopFire()

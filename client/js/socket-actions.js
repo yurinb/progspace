@@ -56,15 +56,3 @@ function emitFire() {
 function emitStopFire() {
 	socket.emit('playerStopFires')
 }
-
-//-----------------------------//-------------------------------
-//----- Sends propulsor action to server -------------------------
-function emitPlayerPropulsorOn() {
-	socket.emit('playerPropulsorOn')
-}
-
-//-----------------------------//-------------------------------
-//----- Sends propulsor action to server -------------------------
-function emitPlayerPropulsorOff() {
-	socket.emit('playerPropulsorOff')
-}

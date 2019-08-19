@@ -26,62 +26,53 @@ function moveProjetils(element) {
 }
 
 function moveShips(element) {
-	if (element.engineOn || true) {
-		if (element.acelerated <= element.speed) {
-			element.acelerated += Math.ceil(element.aceleration * 0.1)
-		}
-		if (element.propulsor.on) {
-			let energyCost = element.maxEnergy * 0.01 * 0.25
-			if (element.energy >= energyCost) {
-				element.energy -= energyCost
-				let maxAcceleration = 10
-				if (element.acelerated <= element.speed * maxAcceleration) {
-					element.acelerated += Math.ceil(element.aceleration * 0.1 * 1.5)
-				}
-			} else {
-				element.propulsor.on = false
-				//element.acelerated /= 3
-			}
-		}
-	} else {
-		if (element.acelerated > 0) {
-			element.acelerated -= element.aceleration * 0.25
-		} else {
-			element.acelerated = 0
+	if (element.acelerated <= element.speed) {
+		element.acelerated += Math.ceil(element.aceleration * 0.1)
+	}
+
+	if (element.propulsor.on) {
+		let maxAcceleration = 10
+		if (element.acelerated <= element.speed * maxAcceleration) {
+			element.acelerated += Math.ceil(element.aceleration * 0.1 * 1.5)
 		}
 	}
 
 	let velY = 0;
 	let velX = 0;
 
-	// let angle = 0
-
 	if (element.pressingW) velY = -1
 	if (element.pressingS) velY = 1
 
 	if (element.pressingA) velX = -1
 	if (element.pressingD) velX = 1
-	
-	// if (element.pressingW && element.pressingA) {
-	// 	velY = -0.5
-	// 	velX = -0.5
-	// }
-	// if (element.pressingW && element.pressingD) {
-	// 	velY = -0.5
-	// 	velX = 0.5
-	// }
-	// if (element.pressingS && element.pressingA) {
-	// 	velY = 0.5
-	// 	velX = -0.5
-	// }
-	// if (element.pressingS && element.pressingD) {
-	// 	velY = 0.5
-	// 	velX = 0.5
-	// }
-	// element.x += element.acelerated * Math.cos(element.angle * Math.PI / 180)
-	// element.y += element.acelerated * Math.sin(element.angle * Math.PI / 180)
-	element.x += element.acelerated * velX
-	element.y += element.acelerated * velY
+
+	const length = Math.sqrt(velX * velX + velY * velY);
+
+	if (length != 0) {
+		velX /= length;
+		velY /= length;
+		
+		velX *= element.acelerated
+		velY *= element.acelerated
+		
+		if (!element.shooting) {
+			let angle = Math.atan2(element.y - (element.y += velY), element.x - (element.x += velX)) * 180 / Math.PI
+			angle += 180
+			if (angle < 0) {
+				angle += 360
+			}
+			element.propulsor.on = true
+			element.angle = angle
+		} else {
+			element.propulsor.on = false
+		}
+
+		element.x += velX
+		element.y += velY
+	} else {
+		element.propulsor.on = false
+	}
+
 	if (element.state == 'dead') {
 		shipDies(element)
 	}

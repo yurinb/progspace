@@ -93,7 +93,7 @@ module.exports = function (client) {
 	// angle
 	client.socket.on('playerAngle', angle => {
 		if (client.player) {
-			client.player.ship.angle = angle
+			if (client.player.ship.shooting) client.player.ship.angle = angle			
 		}
 	})
 
@@ -109,21 +109,6 @@ module.exports = function (client) {
 	client.socket.on('playerStopFires', () => {
 		if (client.player) {
 			client.player.ship.shooting = false
-		}
-	})
-
-	client.socket.on('playerPropulsorOn', () => {
-		if (client.player) {
-			let energyCost = client.player.ship.maxEnergy * 0.01 * 0.25
-			if (client.player.ship.energy >= energyCost) {
-				client.player.ship.propulsor.on = true
-			}
-		}
-	})
-    
-	client.socket.on('playerPropulsorOff', () => {
-		if (client.player) {
-			client.player.ship.propulsor.on = false
 		}
 	})
 }
