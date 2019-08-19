@@ -8,9 +8,17 @@ function emitReady() {
 		password,
 		screenResolution: {w: screen.width, h: screen.height}
 	})
-	socket.emit('ships', {}, (data) => {
-		ships = data
-	})
+	getShips()
+}
+
+//-----------------------------//-------------------------------
+//------------------- Get ships state --------------------------
+function getShips() {
+	setInterval(() => {
+		socket.emit('ships', {}, (data) => {
+			ships = data
+		})
+	}, 250)
 }
 
 //-----------------------------//-------------------------------
@@ -43,6 +51,10 @@ function emitFire() {
 		console.log('FIRES TOOK ', performance.now() - emitted)
 		playShotSound()
 	})
+}
+
+function emitStopFire() {
+	socket.emit('playerStopFires')
 }
 
 //-----------------------------//-------------------------------

@@ -5,38 +5,38 @@ window.oncontextmenu = function () {
 }
 
 //-----------------------------//-------------------------------
-//----- Activate propulsors ------------------------------------
+//----- Activate propulsors & Player Shoot ---------------------
 window.onmousedown = function (eventData) {
 	if (eventData.button == 2) {
 		eventData.preventDefault()
 		emitPlayerPropulsorOn()
 		return false
 	}
+	if (eventData.button == 0) {
+		if (!isEmpty(player)) {
+			if (player.ship.energy >= player.ship.weapons[player.ship.currentWeaponIndex].bullet.energyCost) {
+				emitFire()
+			}
+		}
+		// return false
+	}
 }
 
 //-----------------------------//-------------------------------
-//----- Disable propulsors -------------------------------------
+//----- Disable propulsors & Player Stops Shoot ----------------
 window.onmouseup = function (eventData) {
 	if (eventData.button == 2) {
 		eventData.preventDefault()
 		emitPlayerPropulsorOff()
 		return false
 	}
-}
-
-//-----------------------------//-------------------------------
-//----- Player shot ----------------------------------
-function shot(evt) {
-	if (!isEmpty(player)) {
-		if (player.ship.energy >= player.ship.weapons[player.ship.currentWeapon].bullet.energyCost) {
-			emitFire()
+	if (eventData.button == 0) {
+		if (!isEmpty(player)) {
+			emitStopFire()
 		}
+		// return false
 	}
 }
-
-//-----------------------------//-------------------------------
-//----- Call Player shot when right click ----------------------
-onclick = shot
 
 //-----------------------------//-------------------------------
 //----- Player shot sound --------------------------------------
@@ -50,6 +50,8 @@ function playShotSound() {
 //----- Keyboard keys state variables -----------------------------------
 let up = false
 let down = false
+let left = false
+let right = false
 //-----------------------------//-------------------------------
 //----- Keyboard actions ---------------------------------------
 var map = {}
@@ -87,30 +89,30 @@ onkeydown = onkeyup = function (e) {
 	}
 	// TURN LEFT
 	if (map[65] /* a */ || map[37] /* < */ ) {
-		if (!down) {
+		if (!left) {
 			emitKeyPress('a')
-			down = true
+			left = true
 		}
 	}
 	// TURN LEFT STOP
 	if (map[65] == false /* a */ || map[37] == false /* < */ ) {
-		if (down) {
+		if (left) {
 			emitKeyRelease('a')
-			down = false
+			left = false
 		}
 	}
 	// TURN RIGHT
-	if (map[68] /* a */ || map[39] /* < */ ) {
-		if (!down) {
+	if (map[68] /* d */ || map[39] /* < */ ) {
+		if (!right) {
 			emitKeyPress('d')
-			down = true
+			right = true
 		}
 	}
 	// TURN LEFT STOP
-	if (map[68] == false /* a */ || map[39] == false /* < */ ) {
-		if (down) {
+	if (map[68] == false /* d */ || map[39] == false /* < */ ) {
+		if (right) {
 			emitKeyRelease('d')
-			down = false
+			right = false
 		}
 	}
 }
