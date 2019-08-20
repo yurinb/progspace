@@ -2,23 +2,30 @@ const spawnStars = require('./spawn-stars')
 const collideObjects = require('./collide-objects')
 
 const intervalMS = 30
-const projetilSpawnIntervalMS = 100
-
 
 function moveProjetils(element) {
 	if (element.state != 'removible') {
-		collideObjects.elementCollidesWithShip(element, shipCollided => {
-			projetilDies(element)
-			shipCollided.energy -= element.damage
-			if (shipCollided.energy <= 0) {
-				shipCollided.state = 'dead'
+
+		const collided = collideObjects.elementCollidesWithShip(element, shipCollided => {
+			if (shipCollided.state != 'dead' && shipCollided.state != 'removible') {
+				element.x = shipCollided.x
+				element.y = shipCollided.y
+
+				elemDies(element)
+				shipCollided.energy -= element.damage
+				if (shipCollided.energy <= 0) {
+					elemDies(shipCollided)
+				}
 			}
 		})
 
-		if (element.speed > 0) {
-			element.x += (element.speed + element.shipAcelerated) * Math.cos(element.angle * Math.PI / 180)
-			element.y += (element.speed + element.shipAcelerated) * Math.sin(element.angle * Math.PI / 180)
+		if (!collided) {
+			if (element.speed > 0) {
+				element.x += (element.speed + element.shipAcelerated) * Math.cos(element.angle * Math.PI / 180)
+				element.y += (element.speed + element.shipAcelerated) * Math.sin(element.angle * Math.PI / 180)
+			}
 		}
+		
 	}
 	if (element.lifeTime > 0) {
 		element.lifeTime -= intervalMS
@@ -26,6 +33,11 @@ function moveProjetils(element) {
 }
 
 function moveShips(element) {
+	if (element.state == 'dead') {
+		if (element.animation.state != 'dead') elemDies(element)
+		return
+	}
+
 	if (element.acelerated <= element.speed) {
 		element.acelerated += element.aceleration * 0.1
 	}
@@ -72,38 +84,37 @@ function moveShips(element) {
 		element.propulsor.on = false
 	}
 
-	if (element.state == 'dead') {
-		shipDies(element)
-	}
+	
 }
 
-function shipDies(elem) {
-	// TODO: dies method
-}
-
-function spawnProjetils() {
-
-}
-
-function projetilDies(elem) {
+function elemDies(elem) {
 	elem.state = 'dead'
+	elem.animation = elem.animations.dead
+	setTimeout(() => {
+		elem.state = 'removible'
+	}, elem.animation.interval * elem.animation.frames.length)
 }
 
+// emit ships position
 
 setTimeout(() => {
 	setInterval(function shipsMove() {
 		global.gameObjects.ships.forEach(element => {
 			moveShips(element)
 		})
+		global.gameObjects.ships = global.gameObjects.ships.filter( ship => ship.state != 'removible')
 		global.io.emit('ships_position', global.gameObjects.ships.map( ship => ({username: ship.username, x: ship.x, y: ship.y, angle: ship.angle})))
 	}, intervalMS)
 }, 0)
 
+
+// emit projetils
+let sendEmptyProjetilsCount = false
 setTimeout(() => {
 	setInterval(function projetilsMove() {
 		global.gameObjects.bullets.forEach(element => {
 			if (element.lifeTime <= 0 && element.state == 'idle') {
-				projetilDies(element)
+				elemDies(element)
 			}
 			
 			if (element.lifeTime > 0 && element.state == 'idle') {
@@ -117,9 +128,19 @@ setTimeout(() => {
 			return true
 		})
 		global.gameObjects.bullets = updatedBullets
-		if (updatedBullets.length > 0) global.io.emit('bullets', updatedBullets)
+		if (updatedBullets.length > 0) {
+			global.io.emit('bullets', updatedBullets)
+			if (sendEmptyProjetilsCount) sendEmptyProjetilsCount = false
+		} else {
+			if (!sendEmptyProjetilsCount) {
+				global.io.emit('bullets', updatedBullets)
+				sendEmptyProjetilsCount = true
+			}
+		}
 	}, intervalMS)
 }, 10)
+
+// emit stars
 
 setTimeout(() => {
 	setInterval(() => {
@@ -131,12 +152,3 @@ setTimeout(() => {
 		})
 	}, intervalMS)
 }, 20)
-
-// spawn projetils
-setTimeout(() => {
-	setInterval(() => {
-		global.gameObjects.ships.forEach(elem => {
-			if (elem.shooting) elem.weapons[elem.currentWeaponIndex].shoot(elem)
-		})
-	}, projetilSpawnIntervalMS)
-}, 25)

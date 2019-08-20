@@ -15,6 +15,7 @@ function elementCollidesWithShip(element, collidedWith) {
 
 			if (collision(eC.x, eC.y, eC.r, sC.x, sC.y, sC.r)) {
 				collidedWith(ship)
+				return true
 			}
 		}
 	}

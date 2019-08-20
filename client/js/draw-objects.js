@@ -49,7 +49,7 @@ function getImgBySrc(src) {
 				return element
 			}
 		} catch (error) {
-			return ''
+			return error
 		}
 	}
 }
@@ -108,19 +108,22 @@ function drawShips() {
 				let shipFrame = getImgBySrc(elem.animation.frame)
 				let propulsorFrame = getImgBySrc(elem.propulsor.animation.frame)
 
-				if (elem.state == 'dead') {
-					elem.decayTime += 1
-					if (elem.decayTime == 3000) {
-						elem.state = 'removible'
-						return
-					}
-					shipsC.save()
-					shipsC.beginPath()
-					shipsC.translate(screenPosition.x, screenPosition.y)
-					shipsC.drawImage(shipFrame, -(shipFrame.width * zoom / 2), -(shipFrame.height * zoom / 2), shipFrame.width * zoom, shipFrame.height * zoom)
-					shipsC.restore()
-					return
-				}
+				// if (elem.state == 'dead') {
+				// 	elem.decayTime += 1
+				// 	if (elem.decayTime == 3000) {
+				// 		elem.state = 'removible'
+				// 		return
+				// 	}
+				// 	shipsC.save()
+				// 	shipsC.beginPath()
+				// 	shipsC.translate(screenPosition.x, screenPosition.y)
+				// 	try {
+				// 		shipsC.drawImage(shipFrame, -(shipFrame.width * zoom / 2), -(shipFrame.height * zoom / 2), shipFrame.width * zoom, shipFrame.height * zoom)
+				// 	} catch (error) {
+				// 	}
+				// 	shipsC.restore()
+				// 	return
+				// }
 
 				// ship
 				//screenPosition = convertPosToPixel(elem.x, elem.y, player.ship)
@@ -249,7 +252,7 @@ function drawEnergyBar(c) {
 	let y = screenHeight / 2 + screenHeight / 2.25
 
 	c.fillStyle = colorA
-	c.fillText('energy', x, y - 10)
+	c.fillText('[energy shield]', x, y - 10)
 	let energyBarSize = screenWidth / 4
 
 

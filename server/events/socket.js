@@ -6,6 +6,7 @@ module.exports = function (client) {
 
 	client.socket.on('disconnect', () => {
 		console.log('-Client disconnected')
+		client.online = false
 	})
 
 
@@ -18,6 +19,7 @@ module.exports = function (client) {
 				if (clients[index].player.username == clientData.username && clients[index].player.password == clientData.password) {
 					playerFound = true
 					client.player = clients[index].player
+					client.online = true
 					client.socket.emit('player', client.player)
 					break
 				}
@@ -28,6 +30,7 @@ module.exports = function (client) {
 			let player = PlayerFactory.newPlayer(clientData.username, clientData.password)
 			client.player = player
 			client.player.screenResolution = {w: clientData.screenResolution.w * 15, h: clientData.screenResolution.h * 15}
+			client.online = true
 			global.gameObjects.ships.push(player.ship)
 			client.socket.emit('player', client.player)
 		}
@@ -101,7 +104,23 @@ module.exports = function (client) {
 
 	client.socket.on('playerFires', (data, callback) => {
 		if (client.player) {
-			client.player.ship.shooting = true
+			const ship = client.player.ship
+			if (ship.state != 'dead' && ship.state != 'removible') {
+
+				if (!ship.shooting) {
+					ship.shooting = true;
+				(function shootLoop() {
+					setTimeout(() => {
+						if (ship.shooting == true) {
+							ship.weapons[ship.currentWeaponIndex].shoot(ship)
+							setTimeout(() => {
+								shootLoop()
+							}, ship.weapons[ship.currentWeaponIndex].cooldawn)
+						}
+					}, ship.weapons[ship.currentWeaponIndex].canalizeTime)
+				})()
+				}
+			}
 			callback()
 		}
 	})

@@ -60,7 +60,6 @@ onkeydown = onkeyup = function (e) {
 		if (up) {
 			emitKeyRelease('w')
 			up = false
-			emitPlayerPropulsorOff()
 		}
 	}
 	// RETURN

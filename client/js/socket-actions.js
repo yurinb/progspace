@@ -46,10 +46,10 @@ function emitKeyRelease(key) {
 //-----------------------------//-------------------------------
 //----- Sends fire action to server ----------------------------
 function emitFire() {
-	let emitted = performance.now()
+	// let emitted = performance.now()
 	socket.emit('playerFires', {}, () => {
-		console.log('FIRES TOOK ', performance.now() - emitted)
-		playShotSound()
+		// console.log('FIRES TOOK ', performance.now() - emitted)
+		// playShotSound()
 	})
 }
 

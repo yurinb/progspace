@@ -17,8 +17,8 @@ module.exports = {
 
 		let bullet = {
 			damage: 25,
-			speed: 250,
-			lifeTime: 3000,
+			speed: 100,
+			lifeTime: 2000,
 			color: '#ffffff',
 			modelImg: 1,
 			w: 80,
@@ -28,7 +28,10 @@ module.exports = {
 			shipAcelerated: 0,
 			state: 'idle',
 			animation: idleProjetilAnimation,
-			animations: [idleProjetilAnimation, deadProjetilAnimation]
+			animations: {
+				idle: idleProjetilAnimation, 
+				dead: deadProjetilAnimation
+			}
 		}
 
 		let projetil = Object.assign(physicBullet, bullet)
