@@ -137,32 +137,32 @@ function drawShips() {
 				//shipsC.fill();
 				shipsC.restore()
 
-				// energy shield
-				for (let q = 0; q < 3; q++) {
-					shipsC.save()
-					//shipsC.translate(screenPosition.x, screenPosition.y);
-					let newX = screenPosition.x - 0 * zoom * Math.cos((elem.angle + 0) * Math.PI / 180)
-					let newY = screenPosition.y - 0 * zoom * Math.sin((elem.angle + 0) * Math.PI / 180)
-					shipsC.translate(newX, newY)
-					shipsC.fillStyle = '#020202'
-					shipsC.strokeStyle = colorA
-					energyShieldSizeEffect += 0.25 * q * energyShieldSizeEffectMultipler
+				// // energy shield
+				// for (let q = 0; q < 3; q++) {
+				// 	shipsC.save()
+				// 	//shipsC.translate(screenPosition.x, screenPosition.y);
+				// 	let newX = screenPosition.x - 0 * zoom * Math.cos((elem.angle + 0) * Math.PI / 180)
+				// 	let newY = screenPosition.y - 0 * zoom * Math.sin((elem.angle + 0) * Math.PI / 180)
+				// 	shipsC.translate(newX, newY)
+				// 	shipsC.fillStyle = '#020202'
+				// 	shipsC.strokeStyle = colorA
+				// 	energyShieldSizeEffect += 0.25 * q * energyShieldSizeEffectMultipler
 
-					shipsC.beginPath()
-					shipsC.arc(0, 0, (shipFrame.width + shipFrame.height) / 4 * zoom + energyShieldSizeEffect * q, 0, 2 * Math.PI)
-					shipsC.stroke()
-					shipsC.beginPath()
-					shipsC.arc(0, 0, (shipFrame.width + shipFrame.height) / 3.5 * zoom - energyShieldSizeEffect * q, 0, 2 * Math.PI)
-					shipsC.stroke()
-					shipsC.restore()
+				// 	shipsC.beginPath()
+				// 	shipsC.arc(0, 0, (shipFrame.width + shipFrame.height) / 4 * zoom + energyShieldSizeEffect * q, 0, 2 * Math.PI)
+				// 	shipsC.stroke()
+				// 	shipsC.beginPath()
+				// 	shipsC.arc(0, 0, (shipFrame.width + shipFrame.height) / 3.5 * zoom - energyShieldSizeEffect * q, 0, 2 * Math.PI)
+				// 	shipsC.stroke()
+				// 	shipsC.restore()
 
-					if (energyShieldSizeEffect >= 2) {
-						energyShieldSizeEffectMultipler = -q
-					}
-					if (energyShieldSizeEffect <= 0) {
-						energyShieldSizeEffectMultipler = q
-					}
-				}
+				// 	if (energyShieldSizeEffect >= 2) {
+				// 		energyShieldSizeEffectMultipler = -q
+				// 	}
+				// 	if (energyShieldSizeEffect <= 0) {
+				// 		energyShieldSizeEffectMultipler = q
+				// 	}
+				// }
 
 				// username
 				drawUsernameAboveShip(shipsC, elem)

@@ -19,8 +19,8 @@ module.exports = {
 			username: username,
 			w: 100,
 			h: 100,
-			speed: 10,
-			aceleration: 2,
+			speed: 5,
+			aceleration: 1,
 			acelerated: 0,
 			engineOn: false,
 			propulsor: {

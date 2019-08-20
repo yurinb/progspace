@@ -27,7 +27,7 @@ function getPlayerAngle() {
 
 // zoom variable is used on next method(convertPosToPixel)
 // when less the number, more objects will fit on screen
-let zoom = 0.10
+let zoom = 0.05
 window.addEventListener('mousewheel', function (e) {
 	if (e.wheelDelta < 0 && zoom > 0.05) {
 		zoom = Math.round( (zoom - 0.01) * 100 + Number.EPSILON ) / 100

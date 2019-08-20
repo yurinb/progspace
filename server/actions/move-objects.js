@@ -27,13 +27,13 @@ function moveProjetils(element) {
 
 function moveShips(element) {
 	if (element.acelerated <= element.speed) {
-		element.acelerated += Math.ceil(element.aceleration * 0.1)
+		element.acelerated += element.aceleration * 0.1
 	}
 
 	if (element.propulsor.on) {
 		let maxAcceleration = 10
 		if (element.acelerated <= element.speed * maxAcceleration) {
-			element.acelerated += Math.ceil(element.aceleration * 0.1 * 1.5)
+			element.acelerated += element.aceleration * 0.1 * 1.5
 		}
 	}
 
@@ -66,7 +66,6 @@ function moveShips(element) {
 		} else {
 			element.propulsor.on = false
 		}
-
 		element.x += velX
 		element.y += velY
 	} else {
