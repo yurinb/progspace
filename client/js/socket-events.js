@@ -15,7 +15,7 @@ socket.on('player', function (data) {
 //----- Client receives new ships data(position, angle, etc) ------
 socket.on('ships_position', function (data) {
 	ships = ships.map(ship => {
-		const found = data.find(el => el.username == ship.username)
+		const found = data.find(el => el.id == ship.id)
 		if (found) ship = {...ship, ...found}
 		return ship
 	})

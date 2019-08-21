@@ -1,8 +1,5 @@
-setTimeout(() => {
-	setInterval(() => {
-		shipsGenerateEnergy()
-	}, 50)
-}, 1000)
+const ShipFactory = require('../models/Ship')
+
 
 function shipsGenerateEnergy() {
 	for (let i = 0; i < global.gameObjects.clients.length; i++) {
@@ -17,3 +14,19 @@ function shipsGenerateEnergy() {
 		}
 	}
 }
+
+function spawnMeteors() {
+	global.gameObjects.ships.forEach(element => {
+		if (element.isPlayer) global.gameObjects.ships.push(ShipFactory.newMeteor(element.x + (-10000 + Math.random() * 10000), element.y + (-10000 + Math.random() * 10000)))
+	});
+}
+
+setTimeout(() => {
+	setInterval(() => {
+		shipsGenerateEnergy()
+	}, 50)
+}, 1000)
+
+setInterval(() => {
+	spawnMeteors()
+}, 5000)

@@ -17,7 +17,7 @@ module.exports = {
 
 		let bullet = {
 			damage: 25,
-			speed: 100,
+			speed: 150,
 			lifeTime: 2000,
 			color: '#ffffff',
 			modelImg: 1,

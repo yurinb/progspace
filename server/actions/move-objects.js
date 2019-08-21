@@ -8,9 +8,9 @@ function moveProjetils(element) {
 
 		const collided = collideObjects.elementCollidesWithShip(element, shipCollided => {
 			if (shipCollided.state != 'dead' && shipCollided.state != 'removible') {
-				element.x = shipCollided.x
-				element.y = shipCollided.y
-
+				// move explosion to center of collided element
+				// element.x = shipCollided.x
+				// element.y = shipCollided.y
 				elemDies(element)
 				shipCollided.energy -= element.damage
 				if (shipCollided.energy <= 0) {
@@ -83,8 +83,27 @@ function moveShips(element) {
 	} else {
 		element.propulsor.on = false
 	}
+}
 
-	
+function moveMeteors(element) {
+	if (element.state == 'dead') {
+		if (element.animation.state != 'dead') elemDies(element)
+		return
+	}
+
+	const collided = collideObjects.elementCollidesWithShip(element, shipCollided => {
+		if (shipCollided.state != 'dead' && shipCollided.state != 'removible') {
+			elemDies(shipCollided)
+			if (shipCollided.isMeteor) {
+				elemDies(element)
+			}
+		}
+	})
+
+	if (!collided) {
+		element.x += element.speed * Math.cos(element.angle * Math.PI / 180)
+		element.y += element.speed * Math.sin(element.angle * Math.PI / 180)
+	}
 }
 
 function elemDies(elem) {
@@ -100,10 +119,11 @@ function elemDies(elem) {
 setTimeout(() => {
 	setInterval(function shipsMove() {
 		global.gameObjects.ships.forEach(element => {
-			moveShips(element)
+			if (element.isPlayer) moveShips(element)
+			if (element.isMeteor) moveMeteors(element)
 		})
 		global.gameObjects.ships = global.gameObjects.ships.filter( ship => ship.state != 'removible')
-		global.io.emit('ships_position', global.gameObjects.ships.map( ship => ({username: ship.username, x: ship.x, y: ship.y, angle: ship.angle})))
+		global.io.emit('ships_position', global.gameObjects.ships.map( ship => ({id: ship.id, animation: ship.animation, x: ship.x, y: ship.y, angle: ship.angle})))
 	}, intervalMS)
 }, 0)
 

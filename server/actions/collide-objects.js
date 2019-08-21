@@ -6,16 +6,25 @@ function elementCollidesWithShip(element, collidedWith) {
 	}
 	for (let i = 0; i < global.gameObjects.ships.length; i++) {
 		let ship = global.gameObjects.ships[i]
-		if (element.username != ship.username) {
-			let sC = {
-				x: ship.x,
-				y: ship.y,
-				r: (ship.w + ship.h) / 2
-			}
+		let verify = true
+		if (ship.state == 'dead' || ship.state == 'removible') verify = false
 
-			if (collision(eC.x, eC.y, eC.r, sC.x, sC.y, sC.r)) {
-				collidedWith(ship)
-				return true
+		if (verify && element.username != ship.username || ship.isMeteor || element.isMeteor && ship.isPlayer) {
+
+			if (element.isMeteor && ship.isMeteor && ship.id == element.id) verify = false
+
+			if (verify) {
+
+				let sC = {
+					x: ship.x,
+					y: ship.y,
+					r: (ship.w + ship.h) / 2
+				}
+
+				if (collision(eC.x, eC.y, eC.r, sC.x, sC.y, sC.r)) {
+					collidedWith(ship)
+					return true
+				}
 			}
 		}
 	}
@@ -64,4 +73,6 @@ function collision(p1x, p1y, r1, p2x, p2y, r2) {
 // }
 
 
-module.exports = {elementCollidesWithShip}
+module.exports = {
+	elementCollidesWithShip
+}

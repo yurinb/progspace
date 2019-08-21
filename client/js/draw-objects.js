@@ -29,6 +29,12 @@ for (let i = 1; i <= 2; i++) {
 	}
 	images.push(propulsor)
 }
+// METEORS
+for (let i = 1; i <= 30; i++) {
+	let meteor = new Image()
+	meteor.src = '../img/meteor/meteor' + i + '.png'
+	images.push(meteor)
+}
 // EXPLOSION
 for (let i = 1; i <= 13; i++) {
 	let explosion = new Image()
@@ -94,8 +100,6 @@ function drawStars() {
 
 
 function drawShips() {
-	let energyShieldSizeEffect = 0
-	let energyShieldSizeEffectMultipler = 1
 	setInterval(() => {
 		if (ships.length > 0 && !isEmpty(player)) {
 			shipsC.clearRect(0, 0, screenWidth, screenHeight)
@@ -108,85 +112,34 @@ function drawShips() {
 				let shipFrame = getImgBySrc(elem.animation.frame)
 				let propulsorFrame = getImgBySrc(elem.propulsor.animation.frame)
 
-				// if (elem.state == 'dead') {
-				// 	elem.decayTime += 1
-				// 	if (elem.decayTime == 3000) {
-				// 		elem.state = 'removible'
-				// 		return
-				// 	}
-				// 	shipsC.save()
-				// 	shipsC.beginPath()
-				// 	shipsC.translate(screenPosition.x, screenPosition.y)
-				// 	try {
-				// 		shipsC.drawImage(shipFrame, -(shipFrame.width * zoom / 2), -(shipFrame.height * zoom / 2), shipFrame.width * zoom, shipFrame.height * zoom)
-				// 	} catch (error) {
-				// 	}
-				// 	shipsC.restore()
-				// 	return
-				// }
-
 				// ship
-				//screenPosition = convertPosToPixel(elem.x, elem.y, player.ship)
 				shipsC.save()
 				shipsC.beginPath()
 				shipsC.translate(screenPosition.x, screenPosition.y)
 				shipsC.rotate(elem.angle * Math.PI / 180)
-				//shipsC.fillStyle = "white";
-				//shipsC.rect(-(elem.w * zoom / 2),-(elem.h * zoom / 2), elem.w * zoom, elem.h * zoom);
 				try {
-					shipsC.drawImage(shipFrame, -(shipFrame.width * zoom / 2), -(shipFrame.height * zoom / 2), shipFrame.width * zoom, shipFrame.height * zoom)
+					// shipsC.drawImage(shipFrame, -(shipFrame.width * zoom / 2), -(shipFrame.height * zoom / 2), shipFrame.width * zoom, shipFrame.height * zoom)
+					shipsC.drawImage(shipFrame, -(elem.w * 2 * zoom / 2), -(elem.h * 2 * zoom / 2), elem.w * 2 * zoom, elem.h * 2 * zoom)
 				} catch (error) {}
-				//shipsC.stroke();
-				//shipsC.fill();
 				shipsC.restore()
-
-				// // energy shield
-				// for (let q = 0; q < 3; q++) {
-				// 	shipsC.save()
-				// 	//shipsC.translate(screenPosition.x, screenPosition.y);
-				// 	let newX = screenPosition.x - 0 * zoom * Math.cos((elem.angle + 0) * Math.PI / 180)
-				// 	let newY = screenPosition.y - 0 * zoom * Math.sin((elem.angle + 0) * Math.PI / 180)
-				// 	shipsC.translate(newX, newY)
-				// 	shipsC.fillStyle = '#020202'
-				// 	shipsC.strokeStyle = colorA
-				// 	energyShieldSizeEffect += 0.25 * q * energyShieldSizeEffectMultipler
-
-				// 	shipsC.beginPath()
-				// 	shipsC.arc(0, 0, (shipFrame.width + shipFrame.height) / 4 * zoom + energyShieldSizeEffect * q, 0, 2 * Math.PI)
-				// 	shipsC.stroke()
-				// 	shipsC.beginPath()
-				// 	shipsC.arc(0, 0, (shipFrame.width + shipFrame.height) / 3.5 * zoom - energyShieldSizeEffect * q, 0, 2 * Math.PI)
-				// 	shipsC.stroke()
-				// 	shipsC.restore()
-
-				// 	if (energyShieldSizeEffect >= 2) {
-				// 		energyShieldSizeEffectMultipler = -q
-				// 	}
-				// 	if (energyShieldSizeEffect <= 0) {
-				// 		energyShieldSizeEffectMultipler = q
-				// 	}
-				// }
 
 				// username
 				drawUsernameAboveShip(shipsC, elem)
 
 				// propulsor
-				if (elem.propulsor.on) {
+				if (elem.propulsor.on && elem.state != 'dead') {
 					shipsC.save()
 					shipsC.beginPath()
-					//let screenPosition2 = convertPosToPixel(shipsImpulses[i].pos.x, shipsImpulses[i].pos.y, player.ship)
-					//let screenPosition2 = convertPosToPixel(elem.x, elem.y)
 					let newX = screenPosition.x - 160 * zoom * Math.cos((elem.angle + 0) * Math.PI / 180)
 					let newY = screenPosition.y - 160 * zoom * Math.sin((elem.angle + 0) * Math.PI / 180)
 					shipsC.translate(newX, newY)
 					shipsC.rotate(elem.angle * Math.PI / 180)
 					try {
-						shipsC.drawImage(propulsorFrame, -(propulsorFrame.width * zoom / 2), -(propulsorFrame.height * zoom / 2), propulsorFrame.width * zoom, propulsorFrame.height * zoom)
+						// shipsC.drawImage(propulsorFrame, -(propulsorFrame.width * zoom / 2), -(propulsorFrame.height * zoom / 2), propulsorFrame.width * zoom, propulsorFrame.height * zoom)
+						shipsC.drawImage(propulsorFrame, -(elem.w * 2 * zoom / 2), -(elem.h * 2 * zoom / 2), elem.w * 2 * zoom, elem.h * 2 * zoom)
 					} catch (error) {}
 					shipsC.restore()
 				}
-
-
 			})
 		} else {
 			shipsC.clearRect(0, 0, screenWidth, screenHeight)
