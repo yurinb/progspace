@@ -1,6 +1,6 @@
 //-----------------------------//-------------------------------
 //----- Server socket to connect at browser --------------------
-const socket = io.connect("http://localhost:9000");
+const socket = io.connect('http://localhost:9000')
 //const socket = io.connect("http://192.168.15.15:9000");
 //const socket = io.connect("http://outspace.herokuapp.com");
 //const socket = io.connect("http://mussum.ddns.net:9000");
@@ -18,28 +18,28 @@ let screenHeight = window.innerHeight
 let screenWidth  = window.innerWidth
 
 function resizeCanvas() {
-    screenHeight = window.innerHeight
-    screenWidth  = window.innerWidth
+	screenHeight = window.innerHeight
+	screenWidth  = window.innerWidth
 
-    canvas.height          = screenHeight
-    bulletsCanvas.height   = screenHeight
-    shipsCanvas.height     = screenHeight
-    interfaceCanvas.height = screenHeight
+	canvas.height          = screenHeight
+	bulletsCanvas.height   = screenHeight
+	shipsCanvas.height     = screenHeight
+	interfaceCanvas.height = screenHeight
     
-    canvas.width          = screenWidth
-    bulletsCanvas.width   = screenWidth
-    shipsCanvas.width     = screenWidth
-    interfaceCanvas.width = screenWidth
+	canvas.width          = screenWidth
+	bulletsCanvas.width   = screenWidth
+	shipsCanvas.width     = screenWidth
+	interfaceCanvas.width = screenWidth
 }
 resizeCanvas()
 
 // periodically check if screen size changed
 // resize canvas if true
 setInterval(() => {
-    if (screenHeight != window.innerHeight || screenWidth  != window.innerWidth) {
-        resizeCanvas()
-    }
-}, 250);
+	if (screenHeight != window.innerHeight || screenWidth  != window.innerWidth) {
+		resizeCanvas()
+	}
+}, 250)
 
 // order canvas to act like layers
 canvas.style.zIndex          = '1'
@@ -54,16 +54,16 @@ const shipsC      = shipsCanvas.getContext('2d')
 const interfaceC  = interfaceCanvas.getContext('2d')
 
 // something like anti-aliasing effect
-backgroundC.imageSmoothingEnabled = false;
-bulletsC.imageSmoothingEnabled    = false;
-shipsC.imageSmoothingEnabled      = false;
-interfaceC.imageSmoothingEnabled  = false;
+backgroundC.imageSmoothingEnabled = false
+bulletsC.imageSmoothingEnabled    = false
+shipsC.imageSmoothingEnabled      = false
+interfaceC.imageSmoothingEnabled  = false
 
 
 // setting some game variables
 let mousePosition = {
-    x: 0,
-    y: 0
+	x: 0,
+	y: 0
 }
 
 let score     = {}
@@ -76,29 +76,29 @@ let particles = []
 
 // capture mouse move event and update mouse position variables
 document.body.addEventListener('mousemove', function (evt) {
-    var mousePos = getMousePos(shipsCanvas, evt);
+	var mousePos = getMousePos(shipsCanvas, evt)
 
-    mousePosition.x = mousePos.x
-    mousePosition.y = mousePos.y
+	mousePosition.x = mousePos.x
+	mousePosition.y = mousePos.y
 
-    if (!player.ship) {
-        return
-    }
-    //realtime angle
-    //player.ship.angle = getPlayerAngle()
-}, false);
+	if (!player.ship) {
+		return
+	}
+	//realtime angle
+	//player.ship.angle = getPlayerAngle()
+}, false)
 
 
 // login screen actions
-const modal = document.getElementById('login-container');
+const modal = document.getElementById('login-container')
 
 function showLoginModal() {
-    modal.style.display = "block";
+	modal.style.display = 'block'
 }
 
 function hideLoginModal() {
-    modal.style.display = "none";
-    document.body.removeChild(modal)
+	modal.style.display = 'none'
+	document.body.removeChild(modal)
 }
 
 showLoginModal()
@@ -107,16 +107,16 @@ showLoginModal()
 let debbugingOnScreen = false
 
 function userLoggedIn() {
-    hideLoginModal()
-    document.body.appendChild(shipsCanvas);
-    document.body.appendChild(bulletsCanvas);
-    document.body.appendChild(interfaceCanvas);
-    canvas.x = 0
-    setTimeout(() => {
-        writeObjects()
-    }, 10);
-    setTimeout(() => {
-        emitAngle()
-    }, 20);
+	hideLoginModal()
+	document.body.appendChild(shipsCanvas)
+	document.body.appendChild(bulletsCanvas)
+	document.body.appendChild(interfaceCanvas)
+	canvas.x = 0
+	setTimeout(() => {
+		writeObjects()
+	}, 10)
+	setTimeout(() => {
+		emitAngle()
+	}, 20)
 }
 
