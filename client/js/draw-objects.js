@@ -29,9 +29,9 @@ function drawStars() {
 			player.stars.forEach(elem => {
 				elem.stars.forEach(ele => {
 					let r = 0.75 + Math.random() * 1
-					let screenPosition = convertPosToPixel(ele.x, ele.y, player.ship, ele.s)
+					let screenPosition = convertPosToPixel(ele.x, ele.y, player.ship, ele.z)
 					// is star on screen?
-					if (screenPosition.x <= screenWidth && screenPosition.y <= screenHeight) {
+					if (true || screenPosition.x <= screenWidth && screenPosition.y <= screenHeight) {
 						let z = r > 1 ? ele.z * r : ele.z
 						// backgroundC.shadowOffsetX = 0;
 						// backgroundC.shadowOffsetY = 0;

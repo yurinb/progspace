@@ -25,7 +25,9 @@ function getShips() {
 //----- Sends angle from ship to mouse-canvas position ---------
 function emitAngle() {
 	setInterval(() => {
-		socket.emit('playerAngle', getPlayerAngle())
+		if (player.ship.shooting) {
+			socket.emit('playerAngle', getPlayerAngle())
+		}
 	}, 50)
 }
 

@@ -21,7 +21,7 @@ setTimeout(() => {
 	setInterval(() => {
 		global.gameObjects.bullets.forEach(element => {
 			if (element.lifeTime <= 0 && element.state == 'idle') {
-				elemDies(element)
+				element.dies()
 			}
 			
 			if (element.lifeTime > 0 && element.state == 'idle') {
@@ -64,10 +64,10 @@ function moveProjetils(element) {
 
 		const collided = collideObjects.elementCollidesWithShip(element, shipCollided => {
 			if (shipCollided.state != 'dead' && shipCollided.state != 'removible') {
-				elemDies(element)
+				element.dies()
 				shipCollided.energy -= element.damage
 				if (shipCollided.energy <= 0) {
-					elemDies(shipCollided)
+					shipCollided.dies()
 				}
 			}
 		})
@@ -140,9 +140,9 @@ function moveMeteors(element) {
 
 	const collided = collideObjects.elementCollidesWithShip(element, shipCollided => {
 		if (shipCollided.state != 'dead' && shipCollided.state != 'removible') {
-			elemDies(shipCollided)
+			shipCollided.dies()
 			if (shipCollided.isMeteor) {
-				elemDies(element)
+				element.dies()
 			}
 		}
 	})
@@ -152,12 +152,3 @@ function moveMeteors(element) {
 		element.y += element.speed * Math.sin(element.angle * Math.PI / 180)
 	}
 }
-
-function elemDies(elem) {
-	elem.state = 'dead'
-	elem.animation = elem.animations.dead
-	if (elem.isPlayer) console.log('Player', elem.username, 'Dies.')
-	if (elem.isPlayer) elem.propulsor.state = 'removible'
-	setTimeout(() => elem.state = 'removible', elem.animation.interval * elem.animation.frames.length)
-}
-

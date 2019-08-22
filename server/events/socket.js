@@ -9,6 +9,7 @@ module.exports = function (client) {
 		client.online = false
 	})
 
+	// player logged in
 
 	client.socket.on('playerReady', clientData => {
 		//console.log('*Player Ready');
@@ -36,13 +37,50 @@ module.exports = function (client) {
 		}
 	})
 
-
+	// update ships state
 
 	client.socket.on('ships', (data, callback) => {
 		callback(global.gameObjects.ships)
 	})
 
+	// angle
+	client.socket.on('playerAngle', angle => {
+		if (client.player) {
+			if (client.player.ship.shooting) client.player.ship.angle = angle			
+		}
+	})
 
+	// attack
+
+	client.socket.on('playerFires', (data, callback) => {
+		if (client.player) {
+			const ship = client.player.ship
+			if (ship.state != 'dead' && ship.state != 'removible') {
+
+				if (!ship.shooting) {
+					ship.angle = data.angle
+					ship.shooting = true;
+				(function shootLoop() {
+					setTimeout(() => {
+						if (ship.shooting == true && ship.state != 'dead' && ship.state != 'removible') {
+							ship.weapons[ship.currentWeaponIndex].shoot(ship)
+							setTimeout(() => {
+								shootLoop()
+							}, ship.weapons[ship.currentWeaponIndex].cooldawn)
+						}
+					}, ship.weapons[ship.currentWeaponIndex].canalizeTime)
+				})()
+				}
+			}
+			callback()
+		}
+	})
+
+	client.socket.on('playerStopFires', () => {
+		if (client.player) {
+			client.player.ship.shooting = false
+		}
+	})
 
 	// movement
 
@@ -93,42 +131,5 @@ module.exports = function (client) {
 		}
 	})
 
-	// angle
-	client.socket.on('playerAngle', angle => {
-		if (client.player) {
-			if (client.player.ship.shooting) client.player.ship.angle = angle			
-		}
-	})
-
-	// attack
-
-	client.socket.on('playerFires', (data, callback) => {
-		if (client.player) {
-			const ship = client.player.ship
-			if (ship.state != 'dead' && ship.state != 'removible') {
-
-				if (!ship.shooting) {
-					ship.angle = data.angle
-					ship.shooting = true;
-				(function shootLoop() {
-					setTimeout(() => {
-						if (ship.shooting == true) {
-							ship.weapons[ship.currentWeaponIndex].shoot(ship)
-							setTimeout(() => {
-								shootLoop()
-							}, ship.weapons[ship.currentWeaponIndex].cooldawn)
-						}
-					}, ship.weapons[ship.currentWeaponIndex].canalizeTime)
-				})()
-				}
-			}
-			callback()
-		}
-	})
-
-	client.socket.on('playerStopFires', () => {
-		if (client.player) {
-			client.player.ship.shooting = false
-		}
-	})
+	
 }

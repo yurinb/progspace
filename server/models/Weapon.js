@@ -16,17 +16,25 @@ function laser() {
 	weapon.name = 'laser'
 	weapon.canalizeTime = 0
 	weapon.cooldawn *= 0.30
+	weapon.active = true
 	weapon.shoot = (ship) => {
 		// let energyCost = ship.weapons[ship.currentWeaponIndex].bullet.energyCost
 		// if (ship.energy >= energyCost) {
-			let bullet = BulletFactory.newLaser(ship.username)
-			bullet.x = ship.x + 0 * Math.cos((ship.angle + 0) * Math.PI / 180)
-			bullet.y = ship.y + 0 * Math.sin((ship.angle + 0) * Math.PI / 180)
-			bullet.angle = ship.angle
-			bullet.shipAcelerated = ship.acelerated
-
-			global.gameObjects.bullets.push(bullet)
-
+			if (weapon.active) {
+				let bullet = BulletFactory.newLaser(ship.username)
+				bullet.x = ship.x + 0 * Math.cos((ship.angle + 0) * Math.PI / 180)
+				bullet.y = ship.y + 0 * Math.sin((ship.angle + 0) * Math.PI / 180)
+				bullet.angle = ship.angle
+				bullet.shipAcelerated = ship.acelerated
+				
+				global.gameObjects.bullets.push(bullet)
+				
+				weapon.active = false
+				
+				setTimeout(() => {
+					weapon.active = true
+				}, weapon.cooldawn)
+			} 
 			// ship.energy -= energyCost
 		// }
 	}

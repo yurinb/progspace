@@ -1,6 +1,7 @@
 const StarFactory = require('../models/Star')
 
-const cache = 10
+const starsByQuadrantDivisor = 200 // more stars when less number
+const cache = 15
 
 // creates a quadrant to be used to fit stars in
 function getQuadrantPositionBy(x, y, playerResolution) {
@@ -69,7 +70,7 @@ function getNewQuadrant(x, y, playerResolution) {
 
 	quadrant.stars = []
 
-	const starsByQuadrant = Math.floor((quadrant.w + quadrant.h) / 150)
+	const starsByQuadrant = Math.floor((quadrant.w + quadrant.h) / starsByQuadrantDivisor)
 
 	for (let index = 0; index < starsByQuadrant; index++) {
 		quadrant.stars.push(StarFactory.newStar(quadrant))
