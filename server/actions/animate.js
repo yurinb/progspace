@@ -1,15 +1,11 @@
-function animateLoop(elem, intervalID) {
+function animateLoop(elem, intervalID, setCurrentState) {
 	if (elem) {
-		if (elem.state != elem.animation.state) {
-			elem.animation.frameIndex = -1
-			clearInterval(intervalID)
-			
-			let newIntervalID = setInterval(function () {
-				animateLoop(elem, newIntervalID)
-			}, elem.animation.interval)
-		}
+		
+		setCurrentState(elem.state)
 
-		elem.animation.frameIndex++
+		if (elem.state == 'removible') {
+			clearInterval(intervalID)
+		}
 
 		if (elem.animation.frameIndex >= elem.animation.frames.length) {
 			if (elem.animation.repeat) {
@@ -19,15 +15,34 @@ function animateLoop(elem, intervalID) {
 				clearInterval(intervalID)
 			}
 		}
+
 		elem.animation.frame = elem.animation.frames[elem.animation.frameIndex]
+		elem.animation.frameIndex++
 	}
 }
 
 module.exports = {
 	animate: (elem) => {
-		let intervalID = setInterval(function () {
-			animateLoop(elem, intervalID)
+		let currentState = elem.state
+
+		const intervalID = setInterval(() => {
+			animateLoop(elem, intervalID, setCurrentState)
 		}, elem.animation.interval)
-		animateLoop(elem, intervalID)
+		
+		const refreshAnimationIntervalID = setInterval(() => {
+			if (elem.state == 'removible') clearInterval(refreshAnimationIntervalID)
+			if (elem.state != currentState) {
+				clearInterval(intervalID)
+				const newIntervalID = setInterval(function () {
+					animateLoop(elem, newIntervalID, setCurrentState)
+				}, elem.animation.interval)
+			}
+		}, 250)
+
+		function setCurrentState(state) {
+			currentState = state
+		}
+
+		animateLoop(elem, intervalID, setCurrentState)
 	}
 }

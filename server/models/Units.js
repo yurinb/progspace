@@ -8,12 +8,12 @@ module.exports = {
 
 
 	newShip: function (username) {
-		let iddleAnimation = AnimationsFactory.newAnimation('idle', ['../img/ships/ship4.png'], 3000, true)
+		let iddleAnimation = AnimationsFactory.newAnimation('idle', ['../img/ships/ship4.png'], 9999, true)
 		let deadAnimation = AnimationsFactory.newAnimation('dead',
 			['../img/sfx/explosion1.png', '../img/sfx/explosion2.png', '../img/sfx/explosion3.png', '../img/sfx/explosion4.png', '../img/sfx/explosion5.png', '../img/sfx/explosion6.png',
 				'../img/sfx/explosion7.png', '../img/sfx/explosion8.png', '../img/sfx/explosion9.png', '../img/sfx/explosion10.png', '../img/sfx/explosion11.png', '../img/sfx/explosion12.png', '../img/sfx/explosion13.png'
-			], 150, false)
-		let propulsorAnimation = AnimationsFactory.newAnimation('idle', ['../img/sfx/propulsor1.png', '../img/sfx/propulsor2.png'], 100, true)
+			], 200, false)
+		let propulsorAnimation = AnimationsFactory.newAnimation('idle', ['../img/sfx/propulsor1.png', '../img/sfx/propulsor2.png'], 200, true)
 
 		let objectProperties = {
 			username: username,
@@ -26,6 +26,7 @@ module.exports = {
 			engineOn: false,
 			shooting: false,
 			propulsor: {
+				isPropulsor: true,
 				on: false,
 				state: 'idle',
 				animation: propulsorAnimation,

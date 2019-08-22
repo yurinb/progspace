@@ -24,9 +24,11 @@ function spawnMeteors() {
 setTimeout(() => {
 	setInterval(() => {
 		shipsGenerateEnergy()
-	}, 50)
+	}, 100)
 }, 1000)
 
-setInterval(() => {
-	spawnMeteors()
-}, 5000)
+setTimeout(() => {
+	setInterval(() => {
+		spawnMeteors()
+	}, 5000)
+}, 1000)
