@@ -25,10 +25,8 @@ function getShips() {
 //----- Sends angle from ship to mouse-canvas position ---------
 function emitAngle() {
 	setInterval(() => {
-		if (getPlayerAngle()) {
-			socket.emit('playerAngle', getPlayerAngle())
-		}
-	}, 30)
+		socket.emit('playerAngle', getPlayerAngle())
+	}, 50)
 }
 
 //-----------------------------//-------------------------------
@@ -47,7 +45,7 @@ function emitKeyRelease(key) {
 //----- Sends fire action to server ----------------------------
 function emitFire() {
 	// let emitted = performance.now()
-	socket.emit('playerFires', {}, () => {
+	socket.emit('playerFires', { angle: getPlayerAngle() }, () => {
 		// console.log('FIRES TOOK ', performance.now() - emitted)
 		// playShotSound()
 	})

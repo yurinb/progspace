@@ -1,3 +1,4 @@
+// circle collider
 function elementCollidesWithShip(element, collidedWith) {
 	let eC = {
 		x: element.x,
@@ -47,7 +48,7 @@ function collision(p1x, p1y, r1, p2x, p2y, r2) {
 	}
 }
 
-//collides rectangle
+// rectangle collider
 // function elementCollidesWithShip(element) {
 
 //     let ships = global.gameObjects.ships

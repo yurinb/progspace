@@ -1,4 +1,4 @@
-const ShipFactory = require('../models/Ship')
+const UnitsFactory = require('../models/Units')
 
 
 function shipsGenerateEnergy() {
@@ -17,7 +17,7 @@ function shipsGenerateEnergy() {
 
 function spawnMeteors() {
 	global.gameObjects.ships.forEach(element => {
-		if (element.isPlayer) global.gameObjects.ships.push(ShipFactory.newMeteor(element.x + (-10000 + Math.random() * 10000), element.y + (-10000 + Math.random() * 10000)))
+		if (element.isPlayer) global.gameObjects.ships.push(UnitsFactory.newMeteor(element.x + (-10000 + Math.random() * 10000), element.y + (-10000 + Math.random() * 10000)))
 	});
 }
 

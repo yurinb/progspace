@@ -32,7 +32,7 @@ socket.on('bullets', function (data) {
 const cache = 10
 socket.on('stars', function (data) {
 	if (data.length > 0) {
-		data.slice().forEach(element => {
+		data.forEach(element => {
 			if (player.stars.length >= cache) {
 				player.stars.pop()
 			}

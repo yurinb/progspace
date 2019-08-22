@@ -8,9 +8,6 @@ function moveProjetils(element) {
 
 		const collided = collideObjects.elementCollidesWithShip(element, shipCollided => {
 			if (shipCollided.state != 'dead' && shipCollided.state != 'removible') {
-				// move explosion to center of collided element
-				// element.x = shipCollided.x
-				// element.y = shipCollided.y
 				elemDies(element)
 				shipCollided.energy -= element.damage
 				if (shipCollided.energy <= 0) {
@@ -114,10 +111,9 @@ function elemDies(elem) {
 	}, elem.animation.interval * elem.animation.frames.length)
 }
 
-// emit ships position
-
+// Units
 setTimeout(() => {
-	setInterval(function shipsMove() {
+	setInterval(() => {
 		global.gameObjects.ships.forEach(element => {
 			if (element.isPlayer) moveShips(element)
 			if (element.isMeteor) moveMeteors(element)
@@ -127,11 +123,10 @@ setTimeout(() => {
 	}, intervalMS)
 }, 0)
 
-
-// emit projetils
+// Projetils
 let sendEmptyProjetilsCount = false
 setTimeout(() => {
-	setInterval(function projetilsMove() {
+	setInterval(() => {
 		global.gameObjects.bullets.forEach(element => {
 			if (element.lifeTime <= 0 && element.state == 'idle') {
 				elemDies(element)
@@ -160,8 +155,7 @@ setTimeout(() => {
 	}, intervalMS)
 }, 10)
 
-// emit stars
-
+// Stars
 setTimeout(() => {
 	setInterval(() => {
 		global.gameObjects.clients.forEach(elem => {

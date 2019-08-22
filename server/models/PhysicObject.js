@@ -1,10 +1,9 @@
-let objectCount = -1
+let objectCount = 0
 
 module.exports = {
 
 
 	newPhysicObject: function () {
-		objectCount++
 		let object = {
 			id: objectCount,
 			x: 0,
@@ -15,6 +14,7 @@ module.exports = {
 			state: 'alive',
 			lifeTime: 3000
 		}
+		objectCount++
 		return object
 	}
 

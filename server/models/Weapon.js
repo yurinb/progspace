@@ -15,7 +15,7 @@ function laser() {
 	let weapon = newWeapon()
 	weapon.name = 'laser'
 	weapon.canalizeTime = 0
-	weapon.cooldawn *= 0.25
+	weapon.cooldawn *= 0.35
 	weapon.shoot = (ship) => {
 		// let energyCost = ship.weapons[ship.currentWeaponIndex].bullet.energyCost
 		// if (ship.energy >= energyCost) {

@@ -1,10 +1,10 @@
-const ShipFactory = require('./Ship')
+const UnitsFactory = require('./Units')
 
-let playerCount = -1
+let playerCount = 0
 
 function getPlayerBy(username, password) {
 	let playerFound = false
-	global.gameObjects.clients.slice().forEach(element => {
+	global.gameObjects.clients.forEach(element => {
 		if (!playerFound) {
 			let player = element.player
 			if (player) {
@@ -22,7 +22,6 @@ module.exports = {
 
 
 	newPlayer: function (username, password) {
-		playerCount++
 		let playerFound = getPlayerBy(username, password)
 		if (playerFound) {
 			return playerFound
@@ -32,8 +31,9 @@ module.exports = {
 				username,
 				password,
 				stars: [],
-				ship: ShipFactory.newShip(username)
+				ship: UnitsFactory.newShip(username)
 			}
+			playerCount++
 			return player
 		}
 	}

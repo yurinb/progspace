@@ -108,6 +108,7 @@ module.exports = function (client) {
 			if (ship.state != 'dead' && ship.state != 'removible') {
 
 				if (!ship.shooting) {
+					ship.angle = data.angle
 					ship.shooting = true;
 				(function shootLoop() {
 					setTimeout(() => {

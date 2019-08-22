@@ -1,6 +1,6 @@
 // Returns x and y of mouse position on canvas screen
 function getMousePos(canvas, evt) {
-	let rect = canvas.getBoundingClientRect()
+	let rect = canvasElements.canvas.getBoundingClientRect()
 	return {
 		x: evt.clientX - rect.left,
 		y: evt.clientY - rect.top
@@ -10,8 +10,8 @@ function getMousePos(canvas, evt) {
 // Returns the angle between player ship and mouse-canvas position
 function getPlayerAngle() {
 	let ship = {
-		x: canvas.width / 2,
-		y: canvas.height / 2
+		x: canvasElements.canvas.width / 2,
+		y: canvasElements.canvas.height / 2
 	}
 	let mouse = {
 		x: mousePosition.x,
@@ -44,8 +44,8 @@ window.addEventListener('mousewheel', function (e) {
 // objects that position is close enough of player ship and match max screen size will show up
 function convertPosToPixel(x, y, playerShip, parallax = 1) { // 
 
-	let canvasCenterX = canvas.width / 2
-	let canvasCenterY = canvas.height / 2
+	let canvasCenterX = canvasElements.canvas.width / 2
+	let canvasCenterY = canvasElements.canvas.height / 2
 
 	let diffX = (x - playerShip.x) * parallax * zoom
 	let diffY = (y - playerShip.y) * parallax * zoom
