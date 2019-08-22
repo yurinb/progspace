@@ -35,7 +35,7 @@ module.exports = {
 			maxEnergy: 1000,
 			energy: 1000,
 			reactorSpeed: 1,
-			weapons: [WeaponFactory.laser()],
+			weapons: [WeaponFactory.laser2()],
 			currentWeaponIndex: 0,
 			state: 'idle',
 			animation: iddleAnimation,

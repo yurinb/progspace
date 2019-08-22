@@ -35,6 +35,21 @@ module.exports = {
 						clearInterval(intervalID)
 					}
 				}, 100)
+			},
+			appearIn: function(ms) {
+				const w = this.w
+				const h = this.h
+				const incrementW = w / (ms / 100)
+				const incrementH = h / (ms / 100)
+				this.w = 0
+				this.h = 0
+				const intervalID = setInterval(() => {
+					this.w += incrementW
+					this.h += incrementH
+					if (this.w >= w && this.h >= h) {
+						clearInterval(intervalID)
+					}
+				}, 100)
 			}
 		}
 		objectCount++

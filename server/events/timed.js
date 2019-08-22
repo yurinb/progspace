@@ -17,11 +17,16 @@ function shipsGenerateEnergy() {
 
 function spawnMeteors() {
 	global.gameObjects.ships.forEach(element => {
-		const meteor = UnitsFactory.newMeteor(element.x + (-25000 + Math.random() * 25000), element.y + (-15000 + Math.random() * 15000))
-		setTimeout(() => {
-			meteor.vanishIn(10000)
-		}, 60000)
-		if (element.isPlayer) global.gameObjects.ships.push(meteor)
+		if (element.isPlayer) {
+			const meteor = UnitsFactory.newMeteor(element.x + (-25000 + Math.random() * 25000), element.y + (-15000 + Math.random() * 15000))
+			meteor.appearIn(5000)
+		
+			setTimeout(() => {
+				meteor.vanishIn(10000)
+			}, 60000)
+		
+			global.gameObjects.ships.push(meteor)
+		}
 	});
 }
 
