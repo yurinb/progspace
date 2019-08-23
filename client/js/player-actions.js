@@ -9,7 +9,7 @@ window.oncontextmenu = function () {
 window.onmousedown = function (eventData) {
 	if (eventData.button == 0) {
 		if (!isEmpty(player)) {
-			if (player.ship.energy >= player.ship.weapons[player.ship.currentWeaponIndex].bullet.energyCost) {
+			if (player.unit.energy >= player.unit.weapons[player.unit.currentWeaponIndex].bullet.energyCost) {
 				emitFire()
 			}
 		}

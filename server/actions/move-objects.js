@@ -6,12 +6,12 @@ const intervalMS = 30
 // Units
 setTimeout(() => {
 	setInterval(() => {
-		global.gameObjects.ships.forEach(element => {
-			if (element.isPlayer) moveShips(element)
+		global.gameObjects.units.forEach(element => {
+			if (element.isPlayer) moveUnits(element)
 			if (element.isMeteor) moveMeteors(element)
 		})
-		global.gameObjects.ships = global.gameObjects.ships.filter( ship => ship.state != 'removible')
-		global.io.emit('ships_position', global.gameObjects.ships.map( ship => ({id: ship.id, animation: ship.animation, x: ship.x, y: ship.y, angle: ship.angle})))
+		global.gameObjects.units = global.gameObjects.units.filter( unit => unit.state != 'removible')
+		global.io.emit('units_position', global.gameObjects.units.map( unit => ({id: unit.id, animation: unit.animation, x: unit.x, y: unit.y, angle: unit.angle})))
 	}, intervalMS)
 }, 0)
 
@@ -19,7 +19,7 @@ setTimeout(() => {
 let sendEmptyProjetilsCount = false
 setTimeout(() => {
 	setInterval(() => {
-		global.gameObjects.bullets.forEach(element => {
+		global.gameObjects.projetils.forEach(element => {
 			if (element.lifeTime <= 0 && element.state == 'idle') {
 				element.dies()
 			}
@@ -28,19 +28,19 @@ setTimeout(() => {
 				moveProjetils(element)
 			}
 		})
-		let updatedBullets = global.gameObjects.bullets.filter((projetil) => {
+		let updatedProjetils = global.gameObjects.projetils.filter((projetil) => {
 			if (projetil.state == 'removible') {
 				return false
 			}
 			return true
 		})
-		global.gameObjects.bullets = updatedBullets
-		if (updatedBullets.length > 0) {
-			global.io.emit('bullets', updatedBullets)
+		global.gameObjects.projetils = updatedProjetils
+		if (updatedProjetils.length > 0) {
+			global.io.emit('projetils', updatedProjetils)
 			if (sendEmptyProjetilsCount) sendEmptyProjetilsCount = false
 		} else {
 			if (!sendEmptyProjetilsCount) {
-				global.io.emit('bullets', updatedBullets)
+				global.io.emit('projetils', updatedProjetils)
 				sendEmptyProjetilsCount = true
 			}
 		}
@@ -52,7 +52,7 @@ setTimeout(() => {
 	setInterval(() => {
 		global.gameObjects.clients.forEach(elem => {
 			if (elem.player) {
-				const stars = spawnStars.getNewVisibleQuadrants(elem.player.ship.x, elem.player.ship.y, elem.player.stars, elem.player.screenResolution)
+				const stars = spawnStars.getNewVisibleQuadrants(elem.player.unit.x, elem.player.unit.y, elem.player.stars, elem.player.screenResolution)
 				if (stars.length > 0) elem.socket.emit('stars', stars)
 			}
 		})
@@ -62,20 +62,20 @@ setTimeout(() => {
 function moveProjetils(element) {
 	if (element.state != 'removible') {
 
-		const collided = collideObjects.elementCollidesWithShip(element, shipCollided => {
-			if (shipCollided.state != 'dead' && shipCollided.state != 'removible') {
+		const collided = collideObjects.elementCollidesWithShip(element, unitCollided => {
+			if (unitCollided.state != 'dead' && unitCollided.state != 'removible') {
 				element.dies()
-				shipCollided.energy -= element.damage
-				if (shipCollided.energy <= 0) {
-					shipCollided.dies()
+				unitCollided.energy -= element.damage
+				if (unitCollided.energy <= 0) {
+					unitCollided.dies()
 				}
 			}
 		})
 
 		if (!collided) {
 			if (element.speed > 0) {
-				element.x += (element.speed + element.shipAcelerated) * Math.cos(element.angle * Math.PI / 180)
-				element.y += (element.speed + element.shipAcelerated) * Math.sin(element.angle * Math.PI / 180)
+				element.x += (element.speed + element.unitAcelerated) * Math.cos(element.angle * Math.PI / 180)
+				element.y += (element.speed + element.unitAcelerated) * Math.sin(element.angle * Math.PI / 180)
 			}
 		}
 		
@@ -85,7 +85,7 @@ function moveProjetils(element) {
 	}
 }
 
-function moveShips(element) {
+function moveUnits(element) {
 	if (element.state == 'dead') return
 
 	if (element.acelerated <= element.speed) {
@@ -138,10 +138,10 @@ function moveShips(element) {
 function moveMeteors(element) {
 	if (element.state == 'dead') return
 
-	const collided = collideObjects.elementCollidesWithShip(element, shipCollided => {
-		if (shipCollided.state != 'dead' && shipCollided.state != 'removible') {
-			shipCollided.dies()
-			if (shipCollided.isMeteor) {
+	const collided = collideObjects.elementCollidesWithShip(element, unitCollided => {
+		if (unitCollided.state != 'dead' && unitCollided.state != 'removible') {
+			unitCollided.dies()
+			if (unitCollided.isMeteor) {
 				element.dies()
 			}
 		}

@@ -32,21 +32,21 @@ module.exports = function (client) {
 			client.player = player
 			client.player.screenResolution = {w: clientData.screenResolution.w * 15, h: clientData.screenResolution.h * 15}
 			client.online = true
-			global.gameObjects.ships.push(player.ship)
+			global.gameObjects.units.push(player.unit)
 			client.socket.emit('player', client.player)
 		}
 	})
 
-	// update ships state
+	// update units state
 
-	client.socket.on('ships', (data, callback) => {
-		callback(global.gameObjects.ships)
+	client.socket.on('units', (data, callback) => {
+		callback(global.gameObjects.units)
 	})
 
 	// angle
 	client.socket.on('playerAngle', angle => {
 		if (client.player) {
-			if (client.player.ship.shooting) client.player.ship.angle = angle			
+			if (client.player.unit.shooting) client.player.unit.angle = angle			
 		}
 	})
 
@@ -54,21 +54,21 @@ module.exports = function (client) {
 
 	client.socket.on('playerFires', (data, callback) => {
 		if (client.player) {
-			const ship = client.player.ship
-			if (ship.state != 'dead' && ship.state != 'removible') {
+			const unit = client.player.unit
+			if (unit.state != 'dead' && unit.state != 'removible') {
 
-				if (!ship.shooting) {
-					ship.angle = data.angle
-					ship.shooting = true;
+				if (!unit.shooting) {
+					unit.angle = data.angle
+					unit.shooting = true;
 				(function shootLoop() {
 					setTimeout(() => {
-						if (ship.shooting == true && ship.state != 'dead' && ship.state != 'removible') {
-							ship.weapons[ship.currentWeaponIndex].shoot(ship)
+						if (unit.shooting == true && unit.state != 'dead' && unit.state != 'removible') {
+							unit.weapons[unit.currentWeaponIndex].shoot(unit)
 							setTimeout(() => {
 								shootLoop()
-							}, ship.weapons[ship.currentWeaponIndex].cooldawn)
+							}, unit.weapons[unit.currentWeaponIndex].cooldawn)
 						}
-					}, ship.weapons[ship.currentWeaponIndex].canalizeTime)
+					}, unit.weapons[unit.currentWeaponIndex].canalizeTime)
 				})()
 				}
 			}
@@ -78,7 +78,7 @@ module.exports = function (client) {
 
 	client.socket.on('playerStopFires', () => {
 		if (client.player) {
-			client.player.ship.shooting = false
+			client.player.unit.shooting = false
 		}
 	})
 
@@ -86,48 +86,48 @@ module.exports = function (client) {
 
 	client.socket.on('playerKeyPress_w', () => {
 		if (client.player) {
-			client.player.ship.engineOn = true
-			client.player.ship.pressingW = true
+			client.player.unit.engineOn = true
+			client.player.unit.pressingW = true
 		}
 	})
 	client.socket.on('playerKeyRelease_w', () => {
 		if (client.player) {
-			client.player.ship.pressingW = false
-			client.player.ship.engineOn = false
+			client.player.unit.pressingW = false
+			client.player.unit.engineOn = false
 		}
 	})
 
 	client.socket.on('playerKeyPress_s', () => {
 		if (client.player) {
-			client.player.ship.pressingS = true
+			client.player.unit.pressingS = true
 		}
 	})
 	client.socket.on('playerKeyRelease_s', () => {
 		if (client.player) {
-			client.player.ship.pressingS = false
+			client.player.unit.pressingS = false
 		}
 	})
 
 
 	client.socket.on('playerKeyPress_a', () => {
 		if (client.player) {
-			client.player.ship.pressingA = true
+			client.player.unit.pressingA = true
 		}
 	})
 	client.socket.on('playerKeyRelease_a', () => {
 		if (client.player) {
-			client.player.ship.pressingA = false
+			client.player.unit.pressingA = false
 		}
 	})
 
 	client.socket.on('playerKeyPress_d', () => {
 		if (client.player) {
-			client.player.ship.pressingD = true
+			client.player.unit.pressingD = true
 		}
 	})
 	client.socket.on('playerKeyRelease_d', () => {
 		if (client.player) {
-			client.player.ship.pressingD = false
+			client.player.unit.pressingD = false
 		}
 	})
 

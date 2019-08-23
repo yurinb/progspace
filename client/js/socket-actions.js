@@ -8,24 +8,24 @@ function emitReady() {
 		password,
 		screenResolution: {w: screen.width, h: screen.height}
 	})
-	getShips()
+	getUnits()
 }
 
 //-----------------------------//-------------------------------
-//------------------- Get ships state --------------------------
-function getShips() {
+//------------------- Get units state --------------------------
+function getUnits() {
 	setInterval(() => {
-		socket.emit('ships', {}, (data) => {
-			ships = data
+		socket.emit('units', {}, (data) => {
+			units = data
 		})
 	}, 200)
 }
 
 //-----------------------------//-------------------------------
-//----- Sends angle from ship to mouse-canvas position ---------
+//----- Sends angle from unit to mouse-canvas position ---------
 function emitAngle() {
 	setInterval(() => {
-		if (player.ship.shooting) {
+		if (player.unit.shooting) {
 			socket.emit('playerAngle', getPlayerAngle())
 		}
 	}, 50)

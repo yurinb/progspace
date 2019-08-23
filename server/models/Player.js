@@ -31,7 +31,7 @@ module.exports = {
 				username,
 				password,
 				stars: [],
-				ship: UnitsFactory.newShip(username)
+				unit: UnitsFactory.newShip(username)
 			}
 			playerCount++
 			return player

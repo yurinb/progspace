@@ -5,25 +5,25 @@ function elementCollidesWithShip(element, collidedWith) {
 		y: element.y,
 		r: (element.w + element.h) / 2
 	}
-	for (let i = 0; i < global.gameObjects.ships.length; i++) {
-		let ship = global.gameObjects.ships[i]
+	for (let i = 0; i < global.gameObjects.units.length; i++) {
+		let unit = global.gameObjects.units[i]
 		let verify = true
-		if (ship.state == 'dead' || ship.state == 'removible') verify = false
+		if (unit.state == 'dead' || unit.state == 'removible') verify = false
 
-		if (verify && element.username != ship.username || ship.isMeteor || element.isMeteor && ship.isPlayer) {
+		if (verify && element.username != unit.username || unit.isMeteor || element.isMeteor && unit.isPlayer) {
 
-			if (element.isMeteor && ship.isMeteor && ship.id == element.id) verify = false
+			if (element.isMeteor && unit.isMeteor && unit.id == element.id) verify = false
 
 			if (verify) {
 
 				let sC = {
-					x: ship.x,
-					y: ship.y,
-					r: (ship.w + ship.h) / 2
+					x: unit.x,
+					y: unit.y,
+					r: (unit.w + unit.h) / 2
 				}
 
 				if (collision(eC.x, eC.y, eC.r, sC.x, sC.y, sC.r)) {
-					collidedWith(ship)
+					collidedWith(unit)
 					return true
 				}
 			}
@@ -51,16 +51,16 @@ function collision(p1x, p1y, r1, p2x, p2y, r2) {
 // rectangle collider
 // function elementCollidesWithShip(element) {
 
-//     let ships = global.gameObjects.ships
+//     let units = global.gameObjects.units
 //     let eMinX = element.x - element.w / 2
 //     let eMaxX = element.x + element.w / 2
 //     let eMinY = element.y - element.h / 2
 //     let eMaxY = element.y + element.h / 2
-//     for (let index = 0; index < ships.length; index++) {
-//         let sMinX = ships[index].x - ships[index].w / 2
-//         let sMaxX = ships[index].x + ships[index].w / 2
-//         let sMinY = ships[index].y - ships[index].h / 2
-//         let sMaxY = ships[index].y + ships[index].h / 2
+//     for (let index = 0; index < units.length; index++) {
+//         let sMinX = units[index].x - units[index].w / 2
+//         let sMaxX = units[index].x + units[index].w / 2
+//         let sMinY = units[index].y - units[index].h / 2
+//         let sMaxY = units[index].y + units[index].h / 2
 //         if (
 //             eMaxX >= sMinX &&
 //             eMinX <= sMaxX &&

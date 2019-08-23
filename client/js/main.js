@@ -8,8 +8,8 @@ const socket = io.connect('http://localhost:9000')
 // game objects
 let score     = {}
 let player    = {}
-let ships     = []
-let bullets   = []
+let units     = []
+let projetils = []
 let stars     = []
 let particles = []
 
@@ -17,8 +17,8 @@ let particles = []
 const canvasElements = {
 	canvas          : document.querySelector('canvas'),
 	meteorsCanvas   : document.createElement('canvas'),
-	shipsCanvas     : document.createElement('canvas'),
-	bulletsCanvas   : document.createElement('canvas'),
+	unitsCanvas     : document.createElement('canvas'),
+	projetilsCanvas : document.createElement('canvas'),
 	interfaceCanvas : document.createElement('canvas'),
 }
 
@@ -27,15 +27,15 @@ canvasElements.canvas.style.backgroundColor = '#020202'
 // get canvas layer contexts
 const backgroundC = canvasElements.canvas.getContext('2d')
 const meteorsC    = canvasElements.meteorsCanvas.getContext('2d')
-const shipsC      = canvasElements.shipsCanvas.getContext('2d')
-const bulletsC    = canvasElements.bulletsCanvas.getContext('2d')
+const unitsC      = canvasElements.unitsCanvas.getContext('2d')
+const projetilsC  = canvasElements.projetilsCanvas.getContext('2d')
 const interfaceC  = canvasElements.interfaceCanvas.getContext('2d')
 
 // something like anti-aliasing effect
 backgroundC.imageSmoothingEnabled = false
 meteorsC.imageSmoothingEnabled    = false
-shipsC.imageSmoothingEnabled      = false
-bulletsC.imageSmoothingEnabled    = false
+unitsC.imageSmoothingEnabled      = false
+projetilsC.imageSmoothingEnabled  = false
 interfaceC.imageSmoothingEnabled  = false
 
 function setCanvasElementsPropValue(prop, value) {
@@ -84,16 +84,16 @@ let mousePosition = {
 
 // capture mouse move event and update mouse position variables
 document.body.addEventListener('mousemove', function (evt) {
-	var mousePos = getMousePos(canvasElements.shipsCanvas, evt)
+	var mousePos = getMousePos(canvasElements.unitsCanvas, evt)
 
 	mousePosition.x = mousePos.x
 	mousePosition.y = mousePos.y
 
-	if (!player.ship) {
+	if (!player.unit) {
 		return
 	}
 	//realtime angle
-	//player.ship.angle = getPlayerAngle()
+	//player.unit.angle = getPlayerAngle()
 }, false)
 
 

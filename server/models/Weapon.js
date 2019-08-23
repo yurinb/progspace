@@ -17,17 +17,17 @@ function laser() {
 	weapon.canalizeTime = 0
 	weapon.cooldawn *= 0.30
 	weapon.active = true
-	weapon.shoot = (ship) => {
-		// let energyCost = ship.weapons[ship.currentWeaponIndex].bullet.energyCost
-		// if (ship.energy >= energyCost) {
+	weapon.shoot = (unit) => {
+		// let energyCost = unit.weapons[unit.currentWeaponIndex].bullet.energyCost
+		// if (unit.energy >= energyCost) {
 			if (weapon.active) {
-				let bullet = BulletFactory.newLaser(ship.username)
-				bullet.x = ship.x + 0 * Math.cos((ship.angle + 0) * Math.PI / 180)
-				bullet.y = ship.y + 0 * Math.sin((ship.angle + 0) * Math.PI / 180)
-				bullet.angle = ship.angle
-				bullet.shipAcelerated = ship.acelerated
+				let bullet = BulletFactory.newLaser(unit.username)
+				bullet.x = unit.x + 0 * Math.cos((unit.angle + 0) * Math.PI / 180)
+				bullet.y = unit.y + 0 * Math.sin((unit.angle + 0) * Math.PI / 180)
+				bullet.angle = unit.angle
+				bullet.unitAcelerated = unit.acelerated
 				
-				global.gameObjects.bullets.push(bullet)
+				global.gameObjects.projetils.push(bullet)
 				
 				weapon.active = false
 				
@@ -35,7 +35,7 @@ function laser() {
 					weapon.active = true
 				}, weapon.cooldawn)
 			}
-			// ship.energy -= energyCost
+			// unit.energy -= energyCost
 		// }
 	}
 	return weapon
@@ -47,87 +47,87 @@ function laser2() {
 	weapon.canalizeTime = 0
 	weapon.cooldawn *= 0.30
 	weapon.active = true
-	weapon.shoot = (ship) => {
-		// let energyCost = ship.weapons[ship.currentWeaponIndex].bullet.energyCost
-		// if (ship.energy >= energyCost) {
+	weapon.shoot = (unit) => {
+		// let energyCost = unit.weapons[unit.currentWeaponIndex].bullet.energyCost
+		// if (unit.energy >= energyCost) {
 			if (weapon.active) {
-				let bullet = BulletFactory.newLaser(ship.username)
-				bullet.x = ship.x + 50 * Math.cos((ship.angle + 50) * Math.PI / 180)
-				bullet.y = ship.y + 50 * Math.sin((ship.angle + 50) * Math.PI / 180)
-				bullet.angle = ship.angle
-				bullet.shipAcelerated = ship.acelerated
+				let bullet = BulletFactory.newLaser(unit.username)
+				bullet.x = unit.x + 50 * Math.cos((unit.angle + 50) * Math.PI / 180)
+				bullet.y = unit.y + 50 * Math.sin((unit.angle + 50) * Math.PI / 180)
+				bullet.angle = unit.angle
+				bullet.unitAcelerated = unit.acelerated
 				
-				let bullet2 = BulletFactory.newLaser(ship.username)
-				bullet2.x = ship.x + 50 * Math.cos((ship.angle - 50) * Math.PI / 180)
-				bullet2.y = ship.y + 50 * Math.sin((ship.angle - 50 ) * Math.PI / 180)
-				bullet2.angle = ship.angle
-				bullet2.shipAcelerated = ship.acelerated
+				let bullet2 = BulletFactory.newLaser(unit.username)
+				bullet2.x = unit.x + 50 * Math.cos((unit.angle - 50) * Math.PI / 180)
+				bullet2.y = unit.y + 50 * Math.sin((unit.angle - 50 ) * Math.PI / 180)
+				bullet2.angle = unit.angle
+				bullet2.unitAcelerated = unit.acelerated
 				
-				let bullet3 = BulletFactory.newLaser(ship.username)
-				bullet3.x = ship.x + 115 * Math.cos((ship.angle + 115) * Math.PI / 180)
-				bullet3.y = ship.y + 115 * Math.sin((ship.angle + 115) * Math.PI / 180)
-				bullet3.angle = ship.angle
-				bullet3.shipAcelerated = ship.acelerated
+				let bullet3 = BulletFactory.newLaser(unit.username)
+				bullet3.x = unit.x + 115 * Math.cos((unit.angle + 115) * Math.PI / 180)
+				bullet3.y = unit.y + 115 * Math.sin((unit.angle + 115) * Math.PI / 180)
+				bullet3.angle = unit.angle
+				bullet3.unitAcelerated = unit.acelerated
 				
-				let bullet4 = BulletFactory.newLaser(ship.username)
-				bullet4.x = ship.x + 115 * Math.cos((ship.angle - 115) * Math.PI / 180)
-				bullet4.y = ship.y + 115 * Math.sin((ship.angle - 115 ) * Math.PI / 180)
-				bullet4.angle = ship.angle
-				bullet4.shipAcelerated = ship.acelerated
+				let bullet4 = BulletFactory.newLaser(unit.username)
+				bullet4.x = unit.x + 115 * Math.cos((unit.angle - 115) * Math.PI / 180)
+				bullet4.y = unit.y + 115 * Math.sin((unit.angle - 115 ) * Math.PI / 180)
+				bullet4.angle = unit.angle
+				bullet4.unitAcelerated = unit.acelerated
 
 				// 
 
-				let bullet5 = BulletFactory.newLaser(ship.username)
-				bullet5.x = ship.x + 50 * Math.cos((ship.angle + 50) * Math.PI / 180)
-				bullet5.y = ship.y + 50 * Math.sin((ship.angle + 50) * Math.PI / 180)
-				bullet5.angle = ship.angle + 30
-				bullet5.shipAcelerated = ship.acelerated
+				let bullet5 = BulletFactory.newLaser(unit.username)
+				bullet5.x = unit.x + 50 * Math.cos((unit.angle + 50) * Math.PI / 180)
+				bullet5.y = unit.y + 50 * Math.sin((unit.angle + 50) * Math.PI / 180)
+				bullet5.angle = unit.angle + 30
+				bullet5.unitAcelerated = unit.acelerated
 				
-				let bullet6 = BulletFactory.newLaser(ship.username)
-				bullet6.x = ship.x + 50 * Math.cos((ship.angle - 50) * Math.PI / 180)
-				bullet6.y = ship.y + 50 * Math.sin((ship.angle - 50 ) * Math.PI / 180)
-				bullet6.angle = ship.angle + 30
-				bullet6.shipAcelerated = ship.acelerated
+				let bullet6 = BulletFactory.newLaser(unit.username)
+				bullet6.x = unit.x + 50 * Math.cos((unit.angle - 50) * Math.PI / 180)
+				bullet6.y = unit.y + 50 * Math.sin((unit.angle - 50 ) * Math.PI / 180)
+				bullet6.angle = unit.angle + 30
+				bullet6.unitAcelerated = unit.acelerated
 				
-				let bullet7 = BulletFactory.newLaser(ship.username)
-				bullet7.x = ship.x + 115 * Math.cos((ship.angle + 115) * Math.PI / 180)
-				bullet7.y = ship.y + 115 * Math.sin((ship.angle + 115) * Math.PI / 180)
-				bullet7.angle = ship.angle + 30
-				bullet7.shipAcelerated = ship.acelerated
+				let bullet7 = BulletFactory.newLaser(unit.username)
+				bullet7.x = unit.x + 115 * Math.cos((unit.angle + 115) * Math.PI / 180)
+				bullet7.y = unit.y + 115 * Math.sin((unit.angle + 115) * Math.PI / 180)
+				bullet7.angle = unit.angle + 30
+				bullet7.unitAcelerated = unit.acelerated
 				
-				let bullet8 = BulletFactory.newLaser(ship.username)
-				bullet8.x = ship.x + 115 * Math.cos((ship.angle - 115) * Math.PI / 180)
-				bullet8.y = ship.y + 115 * Math.sin((ship.angle - 115 ) * Math.PI / 180)
-				bullet8.angle = ship.angle + 30
-				bullet8.shipAcelerated = ship.acelerated
+				let bullet8 = BulletFactory.newLaser(unit.username)
+				bullet8.x = unit.x + 115 * Math.cos((unit.angle - 115) * Math.PI / 180)
+				bullet8.y = unit.y + 115 * Math.sin((unit.angle - 115 ) * Math.PI / 180)
+				bullet8.angle = unit.angle + 30
+				bullet8.unitAcelerated = unit.acelerated
 
 				// 
 
-				let bullet9 = BulletFactory.newLaser(ship.username)
-				bullet9.x = ship.x + 50 * Math.cos((ship.angle + 50) * Math.PI / 180)
-				bullet9.y = ship.y + 50 * Math.sin((ship.angle + 50) * Math.PI / 180)
-				bullet9.angle = ship.angle - 30
-				bullet9.shipAcelerated = ship.acelerated
+				let bullet9 = BulletFactory.newLaser(unit.username)
+				bullet9.x = unit.x + 50 * Math.cos((unit.angle + 50) * Math.PI / 180)
+				bullet9.y = unit.y + 50 * Math.sin((unit.angle + 50) * Math.PI / 180)
+				bullet9.angle = unit.angle - 30
+				bullet9.unitAcelerated = unit.acelerated
 				
-				let bullet10 = BulletFactory.newLaser(ship.username)
-				bullet10.x = ship.x + 50 * Math.cos((ship.angle - 50) * Math.PI / 180)
-				bullet10.y = ship.y + 50 * Math.sin((ship.angle - 50 ) * Math.PI / 180)
-				bullet10.angle = ship.angle - 30
-				bullet10.shipAcelerated = ship.acelerated
+				let bullet10 = BulletFactory.newLaser(unit.username)
+				bullet10.x = unit.x + 50 * Math.cos((unit.angle - 50) * Math.PI / 180)
+				bullet10.y = unit.y + 50 * Math.sin((unit.angle - 50 ) * Math.PI / 180)
+				bullet10.angle = unit.angle - 30
+				bullet10.unitAcelerated = unit.acelerated
 				
-				let bullet11 = BulletFactory.newLaser(ship.username)
-				bullet11.x = ship.x + 115 * Math.cos((ship.angle + 115) * Math.PI / 180)
-				bullet11.y = ship.y + 115 * Math.sin((ship.angle + 115) * Math.PI / 180)
-				bullet11.angle = ship.angle - 30
-				bullet11.shipAcelerated = ship.acelerated
+				let bullet11 = BulletFactory.newLaser(unit.username)
+				bullet11.x = unit.x + 115 * Math.cos((unit.angle + 115) * Math.PI / 180)
+				bullet11.y = unit.y + 115 * Math.sin((unit.angle + 115) * Math.PI / 180)
+				bullet11.angle = unit.angle - 30
+				bullet11.unitAcelerated = unit.acelerated
 				
-				let bullet12 = BulletFactory.newLaser(ship.username)
-				bullet12.x = ship.x + 115 * Math.cos((ship.angle - 115) * Math.PI / 180)
-				bullet12.y = ship.y + 115 * Math.sin((ship.angle - 115 ) * Math.PI / 180)
-				bullet12.angle = ship.angle - 30
-				bullet12.shipAcelerated = ship.acelerated
+				let bullet12 = BulletFactory.newLaser(unit.username)
+				bullet12.x = unit.x + 115 * Math.cos((unit.angle - 115) * Math.PI / 180)
+				bullet12.y = unit.y + 115 * Math.sin((unit.angle - 115 ) * Math.PI / 180)
+				bullet12.angle = unit.angle - 30
+				bullet12.unitAcelerated = unit.acelerated
 
-				global.gameObjects.bullets.push(bullet, bullet2, bullet3, bullet4, bullet5, bullet6, bullet7, bullet8, bullet9, bullet10, bullet11, bullet12)
+				global.gameObjects.projetils.push(bullet, bullet2, bullet3, bullet4, bullet5, bullet6, bullet7, bullet8, bullet9, bullet10, bullet11, bullet12)
 				
 				weapon.active = false
 				
@@ -136,7 +136,7 @@ function laser2() {
 				}, weapon.cooldawn)
 			}
 
-			// ship.energy -= energyCost
+			// unit.energy -= energyCost
 		// }
 	}
 	return weapon

@@ -1,14 +1,14 @@
 const UnitsFactory = require('../models/Units')
 
 
-function shipsGenerateEnergy() {
+function unitsGenerateEnergy() {
 	for (let i = 0; i < global.gameObjects.clients.length; i++) {
 		let player = global.gameObjects.clients[i].player
 		if (player) {
-			if (player.ship.energy < player.ship.maxEnergy) {
-				player.ship.energy += player.ship.reactorSpeed
-				if (player.ship.energy > player.ship.maxEnergy) {
-					player.ship.energy = player.ship.maxEnergy
+			if (player.unit.energy < player.unit.maxEnergy) {
+				player.unit.energy += player.unit.reactorSpeed
+				if (player.unit.energy > player.unit.maxEnergy) {
+					player.unit.energy = player.unit.maxEnergy
 				}
 			}
 		}
@@ -16,23 +16,23 @@ function shipsGenerateEnergy() {
 }
 
 function spawnMeteors() {
-	global.gameObjects.ships.forEach(element => {
+	global.gameObjects.units.forEach(element => {
 		if (element.isPlayer) {
 			const meteor = UnitsFactory.newMeteor(element.x + (-25000 + Math.random() * 25000), element.y + (-15000 + Math.random() * 15000))
-			meteor.appearIn(5000)
+			meteor.appearIn(10000)
 		
 			setTimeout(() => {
 				meteor.vanishIn(10000)
 			}, 60000)
 		
-			global.gameObjects.ships.push(meteor)
+			global.gameObjects.units.push(meteor)
 		}
 	});
 }
 
 setTimeout(() => {
 	setInterval(() => {
-		shipsGenerateEnergy()
+		unitsGenerateEnergy()
 	}, 100)
 }, 1000)
 

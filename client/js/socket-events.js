@@ -12,19 +12,19 @@ socket.on('player', function (data) {
 })
 
 //-----------------------------//----------------------------------
-//----- Client receives new ships data(position, angle, etc) ------
-socket.on('ships_position', function (data) {
-	ships = ships.map(ship => {
-		const found = data.find(el => el.id == ship.id)
-		if (found) ship = {...ship, ...found}
-		return ship
+//----- Client receives new units data(position, angle, etc) ------
+socket.on('units_position', function (data) {
+	units = units.map(unit => {
+		const found = data.find(el => el.id == unit.id)
+		if (found) unit = {...unit, ...found}
+		return unit
 	})
 })
 
 //-----------------------------//----------------------------------
 //----- Client receives new projetils data(position, state, etc) --
-socket.on('bullets', function (data) {
-	bullets = data
+socket.on('projetils', function (data) {
+	projetils = data
 })
 
 //-----------------------------//----------------------------------

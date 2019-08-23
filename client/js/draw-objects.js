@@ -12,10 +12,10 @@ function writeObjects() {
 		drawMeteors()
 	}, 7.5)
 	setTimeout(() => {
-		drawShips()
+		drawUnits()
 	}, 15)
 	setTimeout(() => {
-		drawBullets()
+		drawProjetils()
 	}, 22.5)
 	setTimeout(() => {
 		drawInterface()
@@ -29,7 +29,7 @@ function drawStars() {
 			player.stars.forEach(elem => {
 				elem.stars.forEach(ele => {
 					let r = 0.75 + Math.random() * 1
-					let screenPosition = convertPosToPixel(ele.x, ele.y, player.ship, ele.z)
+					let screenPosition = convertPosToPixel(ele.x, ele.y, player.unit, ele.z)
 					// is star on screen?
 					if (true || screenPosition.x <= screenWidth && screenPosition.y <= screenHeight) {
 						let z = r > 1 ? ele.z * r : ele.z
@@ -48,21 +48,21 @@ function drawStars() {
 
 function drawMeteors() {
 	setInterval(() => {
-		if (ships.length > 0 && !isEmpty(player)) {
+		if (units.length > 0 && !isEmpty(player)) {
 			meteorsC.clearRect(0, 0, screenWidth, screenHeight)
-			ships.filter(el => el.isMeteor).forEach(elem => {
+			units.filter(el => el.isMeteor).forEach(elem => {
 
-				if (elem.id == player.ship.id) {
-					player.ship = elem
+				if (elem.id == player.unit.id) {
+					player.unit = elem
 				}
 
-				let screenPosition = convertPosToPixel(elem.x, elem.y, player.ship)
-				let shipFrame = getImgBySrc(elem.animation.frame)
+				let screenPosition = convertPosToPixel(elem.x, elem.y, player.unit)
+				let unitFrame = getImgBySrc(elem.animation.frame)
 				meteorsC.save()
 				meteorsC.translate(screenPosition.x, screenPosition.y)
 				meteorsC.rotate(elem.angle * Math.PI / 180)
 				try {
-					meteorsC.drawImage(shipFrame, -(elem.w * 2 * zoom / 2), -(elem.h * 2 * zoom / 2), elem.w * 2 * zoom, elem.h * 2 * zoom)
+					meteorsC.drawImage(unitFrame, -(elem.w * 2 * zoom / 2), -(elem.h * 2 * zoom / 2), elem.w * 2 * zoom, elem.h * 2 * zoom)
 				} catch (error) {}
 				meteorsC.restore()
 			})
@@ -72,68 +72,68 @@ function drawMeteors() {
 	}, 30)
 }
 
-function drawShips() {
+function drawUnits() {
 	setInterval(() => {
-		if (ships.length > 0 && !isEmpty(player)) {
-			shipsC.clearRect(0, 0, screenWidth, screenHeight)
-			ships.filter(el => !el.isMeteor).forEach(elem => {
+		if (units.length > 0 && !isEmpty(player)) {
+			unitsC.clearRect(0, 0, screenWidth, screenHeight)
+			units.filter(el => !el.isMeteor).forEach(elem => {
 
-				if (elem.id == player.ship.id) {
-					player.ship = elem
+				if (elem.id == player.unit.id) {
+					player.unit = elem
 				}
-				let screenPosition = convertPosToPixel(elem.x, elem.y, player.ship)
+				let screenPosition = convertPosToPixel(elem.x, elem.y, player.unit)
 
-				// ship
-				let shipFrame = getImgBySrc(elem.animation.frame)
-				shipsC.save()
-				shipsC.translate(screenPosition.x, screenPosition.y)
-				shipsC.rotate(elem.angle * Math.PI / 180)
+				// unit
+				let unitFrame = getImgBySrc(elem.animation.frame)
+				unitsC.save()
+				unitsC.translate(screenPosition.x, screenPosition.y)
+				unitsC.rotate(elem.angle * Math.PI / 180)
 				try {
-					shipsC.drawImage(shipFrame, -(elem.w * 2 * zoom / 2), -(elem.h * 2 * zoom / 2), elem.w * 2 * zoom, elem.h * 2 * zoom)
+					unitsC.drawImage(unitFrame, -(elem.w * 2 * zoom / 2), -(elem.h * 2 * zoom / 2), elem.w * 2 * zoom, elem.h * 2 * zoom)
 				} catch (error) {}
-				shipsC.restore()
+				unitsC.restore()
 
 				// username
-				drawUsernameAboveShip(shipsC, elem)
+				drawUsernameAboveShip(unitsC, elem)
 
 				// propulsor
 				let propulsorFrame = getImgBySrc(elem.propulsor.animation.frame)
 				if (elem.propulsor.on && elem.state != 'dead') {
 					let newX = screenPosition.x - 160 * zoom * Math.cos((elem.angle + 0) * Math.PI / 180)
 					let newY = screenPosition.y - 160 * zoom * Math.sin((elem.angle + 0) * Math.PI / 180)
-					shipsC.save()
-					shipsC.translate(newX, newY)
-					shipsC.rotate(elem.angle * Math.PI / 180)
+					unitsC.save()
+					unitsC.translate(newX, newY)
+					unitsC.rotate(elem.angle * Math.PI / 180)
 					try {
-						shipsC.drawImage(propulsorFrame, -(elem.w * 2 * zoom / 2), -(elem.h * 2 * zoom / 2), elem.w * 2 * zoom, elem.h * 2 * zoom)
+						unitsC.drawImage(propulsorFrame, -(elem.w * 2 * zoom / 2), -(elem.h * 2 * zoom / 2), elem.w * 2 * zoom, elem.h * 2 * zoom)
 					} catch (error) {}
-					shipsC.restore()
+					unitsC.restore()
 				}
 			})
 		} else {
-			shipsC.clearRect(0, 0, screenWidth, screenHeight)
+			unitsC.clearRect(0, 0, screenWidth, screenHeight)
 		}
 	}, 30)
 }
 
-function drawBullets() {
+function drawProjetils() {
 	setInterval(() => {
-		if (!isEmpty(player) && !isEmpty(bullets)) {
-			bulletsC.clearRect(0, 0, screenWidth, screenHeight)
-			bullets.forEach(elem => {
+		if (!isEmpty(player) && !isEmpty(projetils)) {
+			projetilsC.clearRect(0, 0, screenWidth, screenHeight)
+			projetils.forEach(elem => {
 				let projetilImg = getImgBySrc(elem.animation.frame)
-				bulletsC.save()
-				bulletsC.beginPath()
-				let screenPosition = convertPosToPixel(elem.x, elem.y, player.ship)
-				bulletsC.translate(screenPosition.x, screenPosition.y)
-				bulletsC.rotate(elem.angle * Math.PI / 180)
+				projetilsC.save()
+				projetilsC.beginPath()
+				let screenPosition = convertPosToPixel(elem.x, elem.y, player.unit)
+				projetilsC.translate(screenPosition.x, screenPosition.y)
+				projetilsC.rotate(elem.angle * Math.PI / 180)
 				try {
-					bulletsC.drawImage(projetilImg, -(projetilImg.width * zoom / 2), -(projetilImg.height * zoom / 2), projetilImg.width * zoom, projetilImg.height * zoom)
+					projetilsC.drawImage(projetilImg, -(projetilImg.width * zoom / 2), -(projetilImg.height * zoom / 2), projetilImg.width * zoom, projetilImg.height * zoom)
 				} catch (error) {}
-				bulletsC.restore()
+				projetilsC.restore()
 			})
 		} else {
-			bulletsC.clearRect(0, 0, screenWidth, screenHeight)
+			projetilsC.clearRect(0, 0, screenWidth, screenHeight)
 		}
 	}, 30)
 
@@ -163,7 +163,7 @@ function drawShipCoords(c) {
 	// c.font = "15px Lucida Console, Monaco, monospace'";
 	c.textAlign = 'center'
 	c.fillStyle = primaryColor
-	c.fillText('x ' + (player.ship.x | 0) + ' y ' + (player.ship.y | 0), screenWidth / 2, 25)
+	c.fillText('x ' + (player.unit.x | 0) + ' y ' + (player.unit.y | 0), screenWidth / 2, 25)
 }
 
 function drawEnergyBar(c) {
@@ -184,18 +184,18 @@ function drawEnergyBar(c) {
 
 	// current state energy bar
 	c.fillStyle = primaryColor
-	c.fillRect(x - energyBarSize / 2, y, energyBarSize * player.ship.energy / player.ship.maxEnergy, 10)
+	c.fillRect(x - energyBarSize / 2, y, energyBarSize * player.unit.energy / player.unit.maxEnergy, 10)
 }
 
-function drawUsernameAboveShip(c, ship) {
-	let screenPosition = convertPosToPixel(ship.x, ship.y, player.ship)
+function drawUsernameAboveShip(c, unit) {
+	let screenPosition = convertPosToPixel(unit.x, unit.y, player.unit)
 	c.save()
 	c.beginPath()
 	c.font = '12px Lucida Console, Monaco, monospace'
 	c.fillStyle = primaryColor
 	c.translate((screenPosition.x), screenPosition.y)
 	c.textAlign = 'center'
-	c.fillText(ship.username, 0, -200 * zoom)
+	c.fillText(unit.username, 0, -200 * zoom)
 	c.restore()
 
 	// debugger on screen:
@@ -214,9 +214,9 @@ function drawUsernameAboveShip(c, ship) {
 function loadImages() {
 	// SHIPS
 	for (let i = 1; i <= 6; i++) {
-		let ship = new Image()
-		ship.src = '../img/ships/ship' + i + '.png'
-		images.push(ship)
+		let unit = new Image()
+		unit.src = '../img/units/unit' + i + '.png'
+		images.push(unit)
 	}
 	// PROJETILS
 	for (let i = 1; i <= 1; i++) {

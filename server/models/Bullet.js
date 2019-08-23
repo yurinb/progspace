@@ -25,7 +25,7 @@ module.exports = {
 			h: 42,
 			energyCost: 5,
 			username,
-			shipAcelerated: 0,
+			unitAcelerated: 0,
 			state: 'idle',
 			animation: idleProjetilAnimation,
 			animations: {
