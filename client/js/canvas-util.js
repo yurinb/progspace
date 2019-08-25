@@ -22,7 +22,7 @@ function getPlayerAngle() {
 		angle += 360
 	}
 
-	return angle
+	return Math.floor(angle)
 }
 
 // zoom variable is used on next method(convertPosToPixel)

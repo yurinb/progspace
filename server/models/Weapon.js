@@ -1,9 +1,9 @@
-const BulletFactory = require('../models/Bullet')
+const ProjetilFactory = require('../models/Projetil')
 
 function newWeapon(username) {
 	let weapon = {
 		name: '',
-		bullet: BulletFactory.newLaser(username),
+		projetil: ProjetilFactory.newLaser(username),
 		energyCost: 10,
 		canalizeTime: 1000,
 		cooldawn: 500
@@ -18,16 +18,16 @@ function laser() {
 	weapon.cooldawn *= 0.30
 	weapon.active = true
 	weapon.shoot = (unit) => {
-		// let energyCost = unit.weapons[unit.currentWeaponIndex].bullet.energyCost
+		// let energyCost = unit.weapons[unit.currentWeaponIndex].projetil.energyCost
 		// if (unit.energy >= energyCost) {
 			if (weapon.active) {
-				let bullet = BulletFactory.newLaser(unit.username)
-				bullet.x = unit.x + 0 * Math.cos((unit.angle + 0) * Math.PI / 180)
-				bullet.y = unit.y + 0 * Math.sin((unit.angle + 0) * Math.PI / 180)
-				bullet.angle = unit.angle
-				bullet.unitAcelerated = unit.acelerated
+				let projetil = ProjetilFactory.newLaser(unit.username)
+				projetil.x = unit.x + Math.floor(0 * Math.cos((unit.angle + 0) * Math.PI / 180))
+				projetil.y = unit.y + Math.floor(0 * Math.sin((unit.angle + 0) * Math.PI / 180))
+				projetil.angle = unit.angle
+				projetil.unitAcelerated = unit.acelerated
 				
-				global.gameObjects.projetils[bullet.id] = bullet
+				global.gameObjects.projetils[projetil.id] = projetil
 				
 				weapon.active = false
 				
@@ -45,100 +45,113 @@ function laser2() {
 	let weapon = newWeapon()
 	weapon.name = 'laser'
 	weapon.canalizeTime = 0
-	weapon.cooldawn *= 0.30
+	weapon.cooldawn *= 0.35
 	weapon.active = true
 	weapon.shoot = (unit) => {
-		// let energyCost = unit.weapons[unit.currentWeaponIndex].bullet.energyCost
+		// let energyCost = unit.weapons[unit.currentWeaponIndex].projetil.energyCost
 		// if (unit.energy >= energyCost) {
 			if (weapon.active) {
-				let bullet = BulletFactory.newLaser(unit.username)
-				bullet.x = unit.x + 50 * Math.cos((unit.angle + 50) * Math.PI / 180)
-				bullet.y = unit.y + 50 * Math.sin((unit.angle + 50) * Math.PI / 180)
-				bullet.angle = unit.angle
-				bullet.unitAcelerated = unit.acelerated
+				let projetil = ProjetilFactory.newLaser(unit.username)
+				projetil.x = unit.x + Math.floor(75 * Math.cos((unit.angle + 75) * Math.PI / 180))
+				projetil.y = unit.y + Math.floor(75 * Math.sin((unit.angle + 75) * Math.PI / 180))
+				projetil.angle = unit.angle
+				projetil.unitAcelerated = unit.acelerated
 				
-				let bullet2 = BulletFactory.newLaser(unit.username)
-				bullet2.x = unit.x + 50 * Math.cos((unit.angle - 50) * Math.PI / 180)
-				bullet2.y = unit.y + 50 * Math.sin((unit.angle - 50 ) * Math.PI / 180)
-				bullet2.angle = unit.angle
-				bullet2.unitAcelerated = unit.acelerated
+				let projetil2 = ProjetilFactory.newLaser(unit.username)
+				projetil2.x = unit.x + Math.floor(75 * Math.cos((unit.angle - 75) * Math.PI / 180))
+				projetil2.y = unit.y + Math.floor(75 * Math.sin((unit.angle - 75 ) * Math.PI / 180))
+				projetil2.angle = unit.angle
+				projetil2.unitAcelerated = unit.acelerated
 				
-				let bullet3 = BulletFactory.newLaser(unit.username)
-				bullet3.x = unit.x + 115 * Math.cos((unit.angle + 115) * Math.PI / 180)
-				bullet3.y = unit.y + 115 * Math.sin((unit.angle + 115) * Math.PI / 180)
-				bullet3.angle = unit.angle
-				bullet3.unitAcelerated = unit.acelerated
+				// let projetil3 = ProjetilFactory.newLaser(unit.username)
+				// projetil3.x = unit.x + Math.floor(125 * Math.cos((unit.angle + 125) * Math.PI / 180))
+				// projetil3.y = unit.y + Math.floor(125 * Math.sin((unit.angle + 125) * Math.PI / 180))
+				// projetil3.angle = unit.angle
+				// projetil3.unitAcelerated = unit.acelerated
 				
-				let bullet4 = BulletFactory.newLaser(unit.username)
-				bullet4.x = unit.x + 115 * Math.cos((unit.angle - 115) * Math.PI / 180)
-				bullet4.y = unit.y + 115 * Math.sin((unit.angle - 115 ) * Math.PI / 180)
-				bullet4.angle = unit.angle
-				bullet4.unitAcelerated = unit.acelerated
+				// let projetil4 = ProjetilFactory.newLaser(unit.username)
+				// projetil4.x = unit.x + Math.floor(125 * Math.cos((unit.angle - 125) * Math.PI / 180))
+				// projetil4.y = unit.y + Math.floor(125 * Math.sin((unit.angle - 125 ) * Math.PI / 180))
+				// projetil4.angle = unit.angle
+				// projetil4.unitAcelerated = unit.acelerated
 
 				// 
 
-				let bullet5 = BulletFactory.newLaser(unit.username)
-				bullet5.x = unit.x + 50 * Math.cos((unit.angle + 50) * Math.PI / 180)
-				bullet5.y = unit.y + 50 * Math.sin((unit.angle + 50) * Math.PI / 180)
-				bullet5.angle = unit.angle + 30
-				bullet5.unitAcelerated = unit.acelerated
+				// let projetil5 = ProjetilFactory.newLaser(unit.username)
+				// projetil5.x = unit.x + Math.floor(50 * Math.cos((unit.angle + 50) * Math.PI / 180))
+				// projetil5.y = unit.y + Math.floor(50 * Math.sin((unit.angle + 50) * Math.PI / 180))
+				// projetil5.angle = unit.angle + 30
+				// projetil5.unitAcelerated = unit.acelerated
 				
-				let bullet6 = BulletFactory.newLaser(unit.username)
-				bullet6.x = unit.x + 50 * Math.cos((unit.angle - 50) * Math.PI / 180)
-				bullet6.y = unit.y + 50 * Math.sin((unit.angle - 50 ) * Math.PI / 180)
-				bullet6.angle = unit.angle + 30
-				bullet6.unitAcelerated = unit.acelerated
+				// let projetil6 = ProjetilFactory.newLaser(unit.username)
+				// projetil6.x = unit.x + Math.floor(50 * Math.cos((unit.angle - 50) * Math.PI / 180))
+				// projetil6.y = unit.y + Math.floor(50 * Math.sin((unit.angle - 50 ) * Math.PI / 180))
+				// projetil6.angle = unit.angle + 30
+				// projetil6.unitAcelerated = unit.acelerated
 				
-				let bullet7 = BulletFactory.newLaser(unit.username)
-				bullet7.x = unit.x + 115 * Math.cos((unit.angle + 115) * Math.PI / 180)
-				bullet7.y = unit.y + 115 * Math.sin((unit.angle + 115) * Math.PI / 180)
-				bullet7.angle = unit.angle + 30
-				bullet7.unitAcelerated = unit.acelerated
+				// let projetil7 = ProjetilFactory.newLaser(unit.username)
+				// projetil7.x = unit.x + Math.floor(115 * Math.cos((unit.angle + 115) * Math.PI / 180))
+				// projetil7.y = unit.y + Math.floor(115 * Math.sin((unit.angle + 115) * Math.PI / 180))
+				// projetil7.angle = unit.angle + 30
+				// projetil7.unitAcelerated = unit.acelerated
 				
-				let bullet8 = BulletFactory.newLaser(unit.username)
-				bullet8.x = unit.x + 115 * Math.cos((unit.angle - 115) * Math.PI / 180)
-				bullet8.y = unit.y + 115 * Math.sin((unit.angle - 115 ) * Math.PI / 180)
-				bullet8.angle = unit.angle + 30
-				bullet8.unitAcelerated = unit.acelerated
+				// let projetil8 = ProjetilFactory.newLaser(unit.username)
+				// projetil8.x = unit.x + Math.floor(115 * Math.cos((unit.angle - 115) * Math.PI / 180))
+				// projetil8.y = unit.y + Math.floor(115 * Math.sin((unit.angle - 115 ) * Math.PI / 180))
+				// projetil8.angle = unit.angle + 30
+				// projetil8.unitAcelerated = unit.acelerated
 
-				// 
+				// // 
 
-				let bullet9 = BulletFactory.newLaser(unit.username)
-				bullet9.x = unit.x + 50 * Math.cos((unit.angle + 50) * Math.PI / 180)
-				bullet9.y = unit.y + 50 * Math.sin((unit.angle + 50) * Math.PI / 180)
-				bullet9.angle = unit.angle - 30
-				bullet9.unitAcelerated = unit.acelerated
+				// let projetil9 = ProjetilFactory.newLaser(unit.username)
+				// projetil9.x = unit.x + Math.floor(50 * Math.cos((unit.angle + 50) * Math.PI / 180))
+				// projetil9.y = unit.y + Math.floor(50 * Math.sin((unit.angle + 50) * Math.PI / 180))
+				// projetil9.angle = unit.angle - 30
+				// projetil9.unitAcelerated = unit.acelerated
 				
-				let bullet10 = BulletFactory.newLaser(unit.username)
-				bullet10.x = unit.x + 50 * Math.cos((unit.angle - 50) * Math.PI / 180)
-				bullet10.y = unit.y + 50 * Math.sin((unit.angle - 50 ) * Math.PI / 180)
-				bullet10.angle = unit.angle - 30
-				bullet10.unitAcelerated = unit.acelerated
+				// let projetil10 = ProjetilFactory.newLaser(unit.username)
+				// projetil10.x = unit.x + Math.floor(50 * Math.cos((unit.angle - 50) * Math.PI / 180))
+				// projetil10.y = unit.y + Math.floor(50 * Math.sin((unit.angle - 50 ) * Math.PI / 180))
+				// projetil10.angle = unit.angle - 30
+				// projetil10.unitAcelerated = unit.acelerated
 				
-				let bullet11 = BulletFactory.newLaser(unit.username)
-				bullet11.x = unit.x + 115 * Math.cos((unit.angle + 115) * Math.PI / 180)
-				bullet11.y = unit.y + 115 * Math.sin((unit.angle + 115) * Math.PI / 180)
-				bullet11.angle = unit.angle - 30
-				bullet11.unitAcelerated = unit.acelerated
+				// let projetil11 = ProjetilFactory.newLaser(unit.username)
+				// projetil11.x = unit.x + Math.floor(115 * Math.cos((unit.angle + 115) * Math.PI / 180))
+				// projetil11.y = unit.y + Math.floor(115 * Math.sin((unit.angle + 115) * Math.PI / 180))
+				// projetil11.angle = unit.angle - 30
+				// projetil11.unitAcelerated = unit.acelerated
 				
-				let bullet12 = BulletFactory.newLaser(unit.username)
-				bullet12.x = unit.x + 115 * Math.cos((unit.angle - 115) * Math.PI / 180)
-				bullet12.y = unit.y + 115 * Math.sin((unit.angle - 115 ) * Math.PI / 180)
-				bullet12.angle = unit.angle - 30
-				bullet12.unitAcelerated = unit.acelerated
+				// let projetil12 = ProjetilFactory.newLaser(unit.username)
+				// projetil12.x = unit.x + Math.floor(115 * Math.cos((unit.angle - 115) * Math.PI / 180))
+				// projetil12.y = unit.y + Math.floor(115 * Math.sin((unit.angle - 115 ) * Math.PI / 180))
+				// projetil12.angle = unit.angle - 30
+				// projetil12.unitAcelerated = unit.acelerated
 
-				global.gameObjects.projetils[bullet.id] = bullet
-				global.gameObjects.projetils[bullet2.id] = bullet2
-				global.gameObjects.projetils[bullet3.id] = bullet3
-				global.gameObjects.projetils[bullet4.id] = bullet4
-				global.gameObjects.projetils[bullet5.id] = bullet5
-				global.gameObjects.projetils[bullet6.id] = bullet6
-				global.gameObjects.projetils[bullet7.id] = bullet7
-				global.gameObjects.projetils[bullet8.id] = bullet8
-				global.gameObjects.projetils[bullet9.id] = bullet9
-				global.gameObjects.projetils[bullet10.id] = bullet10
-				global.gameObjects.projetils[bullet11.id] = bullet11
-				global.gameObjects.projetils[bullet12.id] = bullet12
+				global.gameObjects.projetils[projetil.id] = projetil
+				global.gameObjects.projetils[projetil2.id] = projetil2
+				// global.gameObjects.projetils[projetil3.id] = projetil3
+				// global.gameObjects.projetils[projetil4.id] = projetil4
+				// global.gameObjects.projetils[projetil5.id] = projetil5
+				// global.gameObjects.projetils[projetil6.id] = projetil6
+				// global.gameObjects.projetils[projetil7.id] = projetil7
+				// global.gameObjects.projetils[projetil8.id] = projetil8
+				// global.gameObjects.projetils[projetil9.id] = projetil9
+				// global.gameObjects.projetils[projetil10.id] = projetil10
+				// global.gameObjects.projetils[projetil11.id] = projetil11
+				// global.gameObjects.projetils[projetil12.id] = projetil12
+
+				global.gameObjects.newObjects.projetils[projetil.id] = projetil
+				global.gameObjects.newObjects.projetils[projetil2.id] = projetil2
+				// global.gameObjects.newObjects.projetils[projetil3.id] = projetil3
+				// global.gameObjects.newObjects.projetils[projetil4.id] = projetil4
+				// global.gameObjects.newObjects.projetils[projetil5.id] = projetil5
+				// global.gameObjects.newObjects.projetils[projetil6.id] = projetil6
+				// global.gameObjects.newObjects.projetils[projetil7.id] = projetil7
+				// global.gameObjects.newObjects.projetils[projetil8.id] = projetil8
+				// global.gameObjects.newObjects.projetils[projetil9.id] = projetil9
+				// global.gameObjects.newObjects.projetils[projetil10.id] = projetil10
+				// global.gameObjects.newObjects.projetils[projetil11.id] = projetil11
+				// global.gameObjects.newObjects.projetils[projetil12.id] = projetil12
 				
 				weapon.active = false
 				

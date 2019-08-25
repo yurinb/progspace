@@ -12,7 +12,7 @@ module.exports = {
 			h: 10,
 			angle: 0,
 			state: 'alive',
-			lifeTime: 3000,
+			isVanish: false,
 			dies: function() {
 				this.state = 'dead'
 				this.animation = this.animations.dead
@@ -25,8 +25,10 @@ module.exports = {
 				if (this.isPlayer) this.propulsor.state = 'removible'
 			},
 			vanishIn: function(ms) {
-				const reducerW = this.w / (ms / 100)
-				const reducerH = this.h / (ms / 100)
+				if (this.isVanish) return
+				this.isVanish = true
+				const reducerW = Math.floor(this.w / (ms / 100))
+				const reducerH = Math.floor(this.h / (ms / 100))
 				const intervalID = setInterval(() => {
 					this.w -= reducerW
 					this.h -= reducerH

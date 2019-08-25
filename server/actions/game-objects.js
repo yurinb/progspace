@@ -1,9 +1,14 @@
-global.gameObjects = {}
-
-global.gameObjects.clients = []
-
-global.gameObjects.units = []
-
-global.gameObjects.projetils = {}
-
-global.gameObjects.starsQuadrant = []
+global.gameObjects = {
+    clients: [],
+    units: {},
+    projetils: {},
+    starsQuadrant: [],
+    newObjects: {
+        units: {},
+        projetils: {}
+    },
+    removeObjects: {
+        units: [],
+        projetils: []
+    }
+}

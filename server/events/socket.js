@@ -1,8 +1,6 @@
 const PlayerFactory = require('../models/Player')
-const BulletFactory = require('../models/Bullet')
 
 module.exports = function (client) {
-
 
 	client.socket.on('disconnect', () => {
 		console.log('-Client disconnected')
@@ -32,21 +30,21 @@ module.exports = function (client) {
 			client.player = player
 			client.player.screenResolution = {w: clientData.screenResolution.w * 15, h: clientData.screenResolution.h * 15}
 			client.online = true
-			global.gameObjects.units.push(player.unit)
+			global.gameObjects.units[player.unit.id] = player.unit
 			client.socket.emit('player', client.player)
 		}
-	})
-
-	// update units state
-
-	client.socket.on('units', (data, callback) => {
-		callback(global.gameObjects.units)
-	})
-
-	// update projetils state
-
-	client.socket.on('projetils', (data, callback) => {
-		callback(global.gameObjects.projetils)
+		const units = {}
+		for (id in global.gameObjects.units) {
+			units[id] = global.gameObjects.units[id].getClientVariables()
+		}
+		const projetils = {}
+		for (id in global.gameObjects.projetils) {
+			projetils[id] = global.gameObjects.projetils[id].getClientVariables()
+		}
+		
+		client.socket.emit('init', {
+			units, projetils
+		})
 	})
 
 	// angle
@@ -61,21 +59,20 @@ module.exports = function (client) {
 	client.socket.on('playerFires', (data, callback) => {
 		if (client.player) {
 			const unit = client.player.unit
-			if (unit.state != 'dead' && unit.state != 'removible') {
-
+			if (unit.state == 'alive') {
 				if (!unit.shooting) {
 					unit.angle = data.angle
 					unit.shooting = true;
-				(function shootLoop() {
-					setTimeout(() => {
-						if (unit.shooting == true && unit.state != 'dead' && unit.state != 'removible') {
-							unit.weapons[unit.currentWeaponIndex].shoot(unit)
-							setTimeout(() => {
-								shootLoop()
-							}, unit.weapons[unit.currentWeaponIndex].cooldawn)
-						}
-					}, unit.weapons[unit.currentWeaponIndex].canalizeTime)
-				})()
+					(function shootLoop() {
+						setTimeout(() => {
+							if (unit.shooting == true && unit.state == 'alive') {
+								unit.weapons[unit.currentWeaponIndex].shoot(unit)
+								setTimeout(() => {
+									shootLoop()
+								}, unit.weapons[unit.currentWeaponIndex].cooldawn)
+							}
+						}, unit.weapons[unit.currentWeaponIndex].canalizeTime)
+					})()
 				}
 			}
 			callback()

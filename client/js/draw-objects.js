@@ -1,6 +1,6 @@
 const primaryColor = '#42f4c5'
 
-const images = []
+const images = {}
 
 loadImages()
 
@@ -16,6 +16,9 @@ function drawAnimatedObjectsLoop() {
 	drawProjetils()
 
 	requestAnimationFrame(drawAnimatedObjectsLoop)
+	// setTimeout(() => {
+	// 	drawAnimatedObjectsLoop()
+	// }, 50);
 }
 
 function drawStars() {
@@ -47,13 +50,12 @@ function drawMeteors() {
 		if (units.length > 0 && !isEmpty(player)) {
 			meteorsC.clearRect(0, 0, screenWidth, screenHeight)
 			units.filter(el => el.isMeteor).forEach(elem => {
-
 				if (elem.id == player.unit.id) {
 					player.unit = elem
 				}
 
 				let screenPosition = convertPosToPixel(elem.x, elem.y, player.unit)
-				let unitFrame = getImgBySrc(elem.animation.frame)
+				let unitFrame = getImgBySrc(elem.frame)
 				meteorsC.save()
 				meteorsC.translate(screenPosition.x, screenPosition.y)
 				meteorsC.rotate(elem.angle * Math.PI / 180)
@@ -73,28 +75,27 @@ function drawUnits() {
 		if (units.length > 0 && !isEmpty(player)) {
 			unitsC.clearRect(0, 0, screenWidth, screenHeight)
 			units.filter(el => !el.isMeteor).forEach(elem => {
-
 				if (elem.id == player.unit.id) {
 					player.unit = elem
 				}
 				let screenPosition = convertPosToPixel(elem.x, elem.y, player.unit)
 
 				// unit
-				let unitFrame = getImgBySrc(elem.animation.frame)
+				let unitFrame = getImgBySrc(elem.frame)
 				unitsC.save()
 				unitsC.translate(screenPosition.x, screenPosition.y)
 				unitsC.rotate(elem.angle * Math.PI / 180)
 				try {
 					unitsC.drawImage(unitFrame, -(elem.w * 2 * zoom / 2), -(elem.h * 2 * zoom / 2), elem.w * 2 * zoom, elem.h * 2 * zoom)
-				} catch (error) {}
+				} catch (error) {console.log(error)}
 				unitsC.restore()
 
 				// username
 				drawUsernameAboveShip(unitsC, elem)
 
 				// propulsor
-				let propulsorFrame = getImgBySrc(elem.propulsor.animation.frame)
-				if (elem.propulsor.on && elem.state != 'dead') {
+				let propulsorFrame = getImgBySrc(elem.prop_frame)
+				if (elem.prop_on) {
 					let newX = screenPosition.x - 160 * zoom * Math.cos((elem.angle + 0) * Math.PI / 180)
 					let newY = screenPosition.y - 160 * zoom * Math.sin((elem.angle + 0) * Math.PI / 180)
 					unitsC.save()
@@ -118,14 +119,14 @@ function drawProjetils() {
 			projetilsC.clearRect(0, 0, screenWidth, screenHeight)
 			Object.keys(projetils).forEach(key => {
 				const elem = projetils[key];
-				let projetilImg = getImgBySrc(elem.animation.frame)
+				let projetilImg = getImgBySrc(elem.frame)
 				projetilsC.save()
 				projetilsC.beginPath()
 				let screenPosition = convertPosToPixel(elem.x, elem.y, player.unit)
 				projetilsC.translate(screenPosition.x, screenPosition.y)
 				projetilsC.rotate(elem.angle * Math.PI / 180)
 				try {
-					projetilsC.drawImage(projetilImg, -(projetilImg.width * zoom / 2), -(projetilImg.height * zoom / 2), projetilImg.width * zoom, projetilImg.height * zoom)
+					projetilsC.drawImage(projetilImg, -(elem.w * 2 * zoom / 2), -(elem.h * 2 * zoom / 2), elem.w * 2 * zoom, elem.h * 2 * zoom)
 				} catch (error) {}
 				projetilsC.restore()
 			})
@@ -213,7 +214,7 @@ function loadImages() {
 	for (let i = 1; i <= 6; i++) {
 		let unit = new Image()
 		unit.src = '../img/units/unit' + i + '.png'
-		images.push(unit)
+		images['../img/units/unit' + i + '.png'] = unit
 	}
 	// PROJETILS
 	for (let i = 1; i <= 1; i++) {
@@ -223,7 +224,7 @@ function loadImages() {
 			projetil.width = 150
 			projetil.height = 100
 		}
-		images.push(projetil)
+		images['../img/projetils/projetil' + i + '.png'] = projetil
 	}
 	// PROPULSOR
 	for (let i = 1; i <= 2; i++) {
@@ -233,13 +234,13 @@ function loadImages() {
 			propulsor.width = 200
 			propulsor.height = 200
 		}
-		images.push(propulsor)
+		images['../img/sfx/propulsor' + i + '.png'] = propulsor
 	}
 	// METEORS
 	for (let i = 1; i <= 30; i++) {
 		let meteor = new Image()
 		meteor.src = '../img/meteor/meteor' + i + '.png'
-		images.push(meteor)
+		images['../img/meteor/meteor' + i + '.png'] = meteor
 	}
 	// EXPLOSION
 	for (let i = 1; i <= 13; i++) {
@@ -249,19 +250,20 @@ function loadImages() {
 			explosion.width = 500
 			explosion.height = 500
 		}
-		images.push(explosion)
+		images['../img/sfx/explosion' + i + '.png'] = explosion
 	}
 }
 
 function getImgBySrc(src) {
-	for (let index = 0; index < images.length; index++) {
-		let element = images[index]
-		try {
-			if (element.src.endsWith(src.substring(3))) {
-				return element
-			}
-		} catch (error) {
-			return error
-		}
-	}
+	return images[src]
+	// for (let index = 0; index < images.length; index++) {
+	// 	let element = images[index]
+	// 	try {
+	// 		if (element.src.endsWith(src.substring(3))) {
+	// 			return element
+	// 		}
+	// 	} catch (error) {
+	// 		return error
+	// 	}
+	// }
 }

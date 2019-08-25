@@ -5,20 +5,18 @@ window.oncontextmenu = function () {
 }
 
 //-----------------------------//-------------------------------
-//----- Activate propulsors & Player Shoot ---------------------
+//----- Disable propulsors & Player Shoot ---------------------
 window.onmousedown = function (eventData) {
 	if (eventData.button == 0) {
 		if (!isEmpty(player)) {
-			if (player.unit.energy >= player.unit.weapons[player.unit.currentWeaponIndex].bullet.energyCost) {
 				emitFire()
-			}
 		}
 		// return false
 	}
 }
 
 //-----------------------------//-------------------------------
-//----- Disable propulsors & Player Stops Shoot ----------------
+//----- Activate propulsors & Player Stops Shoot ----------------
 window.onmouseup = function (eventData) {
 	if (eventData.button == 0) {
 		if (!isEmpty(player)) {

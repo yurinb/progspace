@@ -12,19 +12,40 @@ socket.on('player', function (data) {
 })
 
 //-----------------------------//----------------------------------
-//----- Client receives new units data(position, angle, etc) ------
-socket.on('units_position', function (data) {
-	units = units.map(unit => {
-		const found = data.find(el => el.id == unit.id)
-		if (found) unit = {...unit, ...found}
-		return unit
-	})
+//----- Client receives new objects data(position, state, etc) --
+socket.on('init', function (data) {
+	for (id in data.projetils) {
+		projetils[id] = data.projetils[id]
+	}
+	for (id in data.units) {
+		units[id] = data.units[id]
+	}
 })
 
 //-----------------------------//----------------------------------
-//----- Client receives new projetils data(position, state, etc) --
-socket.on('projetils_position', function (data) {
-	projetils = data
+//----- Client receives updates data(position, state, etc) --
+socket.on('update', function (data) {
+	for (id in data.projetils) {
+		if (projetils[id]) {
+			projetils[id] = {...projetils[id], ...data.projetils[id]}
+		}
+	}
+	for (id in data.units) {
+		if (units[id]) {
+			units[id] = {...units[id], ...data.units[id]}
+		}
+	}
+})
+
+//-----------------------------//----------------------------------
+//----- Client receives objects that where removed ----------------
+socket.on('remove', function (data) {
+	data.projetils.forEach(id => {
+		delete projetils[id]
+	})
+	data.units.forEach(id => {
+		delete units[id]
+	})
 })
 
 //-----------------------------//----------------------------------
@@ -39,10 +60,4 @@ socket.on('stars', function (data) {
 			player.stars.unshift(element)
 		})
 	}
-})
-
-//-----------------------------//----------------------------------
-//----- Client receives current score rank (kills) ----------------
-socket.on('score', function (data) {
-	score = data
 })

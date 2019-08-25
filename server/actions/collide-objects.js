@@ -5,23 +5,24 @@ function elementCollidesWithShip(element, collidedWith) {
 		y: element.y,
 		r: (element.w + element.h) / 2
 	}
-	for (let i = 0; i < global.gameObjects.units.length; i++) {
-		let unit = global.gameObjects.units[i]
+
+	for (id in global.gameObjects.units) {
+		let unit = global.gameObjects.units[id]
 		let verify = true
-		if (unit.state == 'dead' || unit.state == 'removible') verify = false
-
+		if (unit.state != 'alive') verify = false
+	
 		if (verify && element.username != unit.username || unit.isMeteor || element.isMeteor && unit.isPlayer) {
-
+	
 			if (element.isMeteor && unit.isMeteor && unit.id == element.id) verify = false
-
+	
 			if (verify) {
-
+	
 				let sC = {
 					x: unit.x,
 					y: unit.y,
 					r: (unit.w + unit.h) / 2
 				}
-
+	
 				if (collision(eC.x, eC.y, eC.r, sC.x, sC.y, sC.r)) {
 					collidedWith(unit)
 					return true
@@ -29,6 +30,7 @@ function elementCollidesWithShip(element, collidedWith) {
 			}
 		}
 	}
+
 	return false
 }
 

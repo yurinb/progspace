@@ -8,37 +8,15 @@ function emitReady() {
 		password,
 		screenResolution: {w: screen.width, h: screen.height}
 	})
-	getUnits()
-	getProjetils()
-}
-
-//-----------------------------//-------------------------------
-//------------------- Get units state --------------------------
-function getUnits() {
-	setInterval(() => {
-		socket.emit('units', {}, (data) => {
-			units = data
-		})
-	}, 200)
-}
-
-//-----------------------------//-------------------------------
-//------------------- Get projetils state --------------------------
-function getProjetils() {
-	setInterval(() => {
-		socket.emit('projetils', {}, (data) => {
-			projetils = data
-		})
-	}, 200)
 }
 
 //-----------------------------//-------------------------------
 //----- Sends angle from unit to mouse-canvas position ---------
 function emitAngle() {
 	setInterval(() => {
-		if (player.unit.shooting) {
+		// if (player.unit.shooting) {
 			socket.emit('playerAngle', getPlayerAngle())
-		}
+		// }
 	}, 50)
 }
 
