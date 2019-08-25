@@ -23,7 +23,7 @@ socket.on('units_position', function (data) {
 
 //-----------------------------//----------------------------------
 //----- Client receives new projetils data(position, state, etc) --
-socket.on('projetils', function (data) {
+socket.on('projetils_position', function (data) {
 	projetils = data
 })
 

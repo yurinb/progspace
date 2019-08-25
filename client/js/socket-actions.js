@@ -9,6 +9,7 @@ function emitReady() {
 		screenResolution: {w: screen.width, h: screen.height}
 	})
 	getUnits()
+	getProjetils()
 }
 
 //-----------------------------//-------------------------------
@@ -17,6 +18,16 @@ function getUnits() {
 	setInterval(() => {
 		socket.emit('units', {}, (data) => {
 			units = data
+		})
+	}, 200)
+}
+
+//-----------------------------//-------------------------------
+//------------------- Get projetils state --------------------------
+function getProjetils() {
+	setInterval(() => {
+		socket.emit('projetils', {}, (data) => {
+			projetils = data
 		})
 	}, 200)
 }

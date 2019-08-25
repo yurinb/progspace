@@ -43,6 +43,12 @@ module.exports = function (client) {
 		callback(global.gameObjects.units)
 	})
 
+	// update projetils state
+
+	client.socket.on('projetils', (data, callback) => {
+		callback(global.gameObjects.projetils)
+	})
+
 	// angle
 	client.socket.on('playerAngle', angle => {
 		if (client.player) {

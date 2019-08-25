@@ -1,7 +1,7 @@
 const spawnStars = require('./spawn-stars')
 const collideObjects = require('./collide-objects')
 
-const intervalMS = 30
+const intervalMS = 50
 
 // Units
 setTimeout(() => {
@@ -10,40 +10,52 @@ setTimeout(() => {
 			if (element.isPlayer) moveUnits(element)
 			if (element.isMeteor) moveMeteors(element)
 		})
-		global.gameObjects.units = global.gameObjects.units.filter( unit => unit.state != 'removible')
-		global.io.emit('units_position', global.gameObjects.units.map( unit => ({id: unit.id, animation: unit.animation, x: unit.x, y: unit.y, angle: unit.angle})))
+		global.gameObjects.units = global.gameObjects.units.filter(unit => unit.state != 'removible')
+		global.io.emit('units_position', global.gameObjects.units.map(unit => ({
+			id: unit.id,
+			animation: {
+				frame: unit.animation.frame
+			},
+			x: unit.x,
+			y: unit.y,
+			angle: unit.angle
+		})))
 	}, intervalMS)
 }, 0)
 
 // Projetils
-let sendEmptyProjetilsCount = false
 setTimeout(() => {
 	setInterval(() => {
-		global.gameObjects.projetils.forEach(element => {
+		Object.keys(global.gameObjects.projetils).forEach(id => {
+			const element = global.gameObjects.projetils[id];
 			if (element.lifeTime <= 0 && element.state == 'idle') {
 				element.dies()
+				// element.vanishIn(3000)
 			}
-			
+
 			if (element.lifeTime > 0 && element.state == 'idle') {
 				moveProjetils(element)
 			}
-		})
-		let updatedProjetils = global.gameObjects.projetils.filter((projetil) => {
-			if (projetil.state == 'removible') {
-				return false
+
+			if (element.state == 'removible') {
+				delete global.gameObjects.projetils[id]
 			}
-			return true
 		})
-		global.gameObjects.projetils = updatedProjetils
-		if (updatedProjetils.length > 0) {
-			global.io.emit('projetils', updatedProjetils)
-			if (sendEmptyProjetilsCount) sendEmptyProjetilsCount = false
-		} else {
-			if (!sendEmptyProjetilsCount) {
-				global.io.emit('projetils', updatedProjetils)
-				sendEmptyProjetilsCount = true
+
+		const positions = {}
+		Object.keys(global.gameObjects.projetils).forEach(id => {
+			positions[id] = {
+				id: global.gameObjects.projetils[id].id,
+				animation: {
+					frame: global.gameObjects.projetils[id].animation.frame
+				},
+				x: global.gameObjects.projetils[id].x,
+				y: global.gameObjects.projetils[id].y,
+				angle: global.gameObjects.projetils[id].angle
 			}
-		}
+		})
+		global.io.emit('projetils_position', positions)
+
 	}, intervalMS)
 }, 10)
 
@@ -78,7 +90,7 @@ function moveProjetils(element) {
 				element.y += (element.speed + element.unitAcelerated) * Math.sin(element.angle * Math.PI / 180)
 			}
 		}
-		
+
 	}
 	if (element.lifeTime > 0) {
 		element.lifeTime -= intervalMS
@@ -113,10 +125,10 @@ function moveUnits(element) {
 	if (length != 0) {
 		velX /= length;
 		velY /= length;
-		
+
 		velX *= element.acelerated
 		velY *= element.acelerated
-		
+
 		if (!element.shooting) {
 			let angle = Math.atan2(element.y - (element.y += velY), element.x - (element.x += velX)) * 180 / Math.PI
 			angle += 180
@@ -128,8 +140,8 @@ function moveUnits(element) {
 		} else {
 			element.propulsor.on = false
 		}
-		element.x += velX
-		element.y += velY
+		element.x = Math.ceil(element.x + velX)
+		element.y = Math.ceil(element.y + velY)
 	} else {
 		element.propulsor.on = false
 	}

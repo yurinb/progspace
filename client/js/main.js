@@ -1,15 +1,14 @@
 //-----------------------------//-------------------------------
 //----- Server socket to connect at browser --------------------
-const socket = io.connect('http://localhost:9000')
+const socket = io.connect('ws://192.168.15.7:9000')
 //const socket = io.connect("http://192.168.15.15:9000");
 //const socket = io.connect("http://outspace.herokuapp.com");
 //const socket = io.connect("http://mussum.ddns.net:9000");
 
 // game objects
-let score     = {}
 let player    = {}
 let units     = []
-let projetils = []
+let projetils = {}
 let stars     = []
 let particles = []
 
@@ -130,7 +129,7 @@ function userLoggedIn() {
 	setCanvasElementsPropValue('y', 0)
 
 	setTimeout(() => {
-		writeObjects()
+		drawObjects()
 	}, 10)
 	
 	setTimeout(() => {

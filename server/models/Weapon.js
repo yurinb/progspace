@@ -27,7 +27,7 @@ function laser() {
 				bullet.angle = unit.angle
 				bullet.unitAcelerated = unit.acelerated
 				
-				global.gameObjects.projetils.push(bullet)
+				global.gameObjects.projetils[bullet.id] = bullet
 				
 				weapon.active = false
 				
@@ -127,7 +127,18 @@ function laser2() {
 				bullet12.angle = unit.angle - 30
 				bullet12.unitAcelerated = unit.acelerated
 
-				global.gameObjects.projetils.push(bullet, bullet2, bullet3, bullet4, bullet5, bullet6, bullet7, bullet8, bullet9, bullet10, bullet11, bullet12)
+				global.gameObjects.projetils[bullet.id] = bullet
+				global.gameObjects.projetils[bullet2.id] = bullet2
+				global.gameObjects.projetils[bullet3.id] = bullet3
+				global.gameObjects.projetils[bullet4.id] = bullet4
+				global.gameObjects.projetils[bullet5.id] = bullet5
+				global.gameObjects.projetils[bullet6.id] = bullet6
+				global.gameObjects.projetils[bullet7.id] = bullet7
+				global.gameObjects.projetils[bullet8.id] = bullet8
+				global.gameObjects.projetils[bullet9.id] = bullet9
+				global.gameObjects.projetils[bullet10.id] = bullet10
+				global.gameObjects.projetils[bullet11.id] = bullet11
+				global.gameObjects.projetils[bullet12.id] = bullet12
 				
 				weapon.active = false
 				

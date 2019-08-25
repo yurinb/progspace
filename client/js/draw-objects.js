@@ -4,26 +4,22 @@ const images = []
 
 loadImages()
 
-function writeObjects() {
-	setTimeout(() => {
-		drawStars()
-	}, 0)
-	setTimeout(() => {
-		drawMeteors()
-	}, 7.5)
-	setTimeout(() => {
-		drawUnits()
-	}, 15)
-	setTimeout(() => {
-		drawProjetils()
-	}, 22.5)
-	setTimeout(() => {
-		drawInterface()
-	}, 30)
+function drawObjects() {
+	drawInterface()
+	drawAnimatedObjectsLoop()
+}
+
+function drawAnimatedObjectsLoop() {
+	drawStars()
+	drawMeteors()
+	drawUnits()
+	drawProjetils()
+
+	requestAnimationFrame(drawAnimatedObjectsLoop)
 }
 
 function drawStars() {
-	setInterval(() => {
+	// setInterval(() => {
 		if (!isEmpty(player)) {
 			backgroundC.clearRect(0, 0, screenWidth, screenHeight)
 			player.stars.forEach(elem => {
@@ -43,11 +39,11 @@ function drawStars() {
 				})
 			})
 		}
-	}, 30)
+	// }, 50)
 }
 
 function drawMeteors() {
-	setInterval(() => {
+	// setInterval(() => {
 		if (units.length > 0 && !isEmpty(player)) {
 			meteorsC.clearRect(0, 0, screenWidth, screenHeight)
 			units.filter(el => el.isMeteor).forEach(elem => {
@@ -69,11 +65,11 @@ function drawMeteors() {
 		} else {
 			meteorsC.clearRect(0, 0, screenWidth, screenHeight)
 		}
-	}, 30)
+	// }, 50)
 }
 
 function drawUnits() {
-	setInterval(() => {
+	// setInterval(() => {
 		if (units.length > 0 && !isEmpty(player)) {
 			unitsC.clearRect(0, 0, screenWidth, screenHeight)
 			units.filter(el => !el.isMeteor).forEach(elem => {
@@ -113,14 +109,15 @@ function drawUnits() {
 		} else {
 			unitsC.clearRect(0, 0, screenWidth, screenHeight)
 		}
-	}, 30)
+	// }, 50)
 }
 
 function drawProjetils() {
-	setInterval(() => {
+	// setInterval(() => {
 		if (!isEmpty(player) && !isEmpty(projetils)) {
 			projetilsC.clearRect(0, 0, screenWidth, screenHeight)
-			projetils.forEach(elem => {
+			Object.keys(projetils).forEach(key => {
+				const elem = projetils[key];
 				let projetilImg = getImgBySrc(elem.animation.frame)
 				projetilsC.save()
 				projetilsC.beginPath()
@@ -135,7 +132,7 @@ function drawProjetils() {
 		} else {
 			projetilsC.clearRect(0, 0, screenWidth, screenHeight)
 		}
-	}, 30)
+	// }, 50)
 
 }
 
@@ -155,7 +152,7 @@ function drawInterface() {
 		} else {
 			interfaceC.clearRect(0, 0, screenWidth, screenHeight)
 		}
-	}, 100)
+	}, 150)
 
 }
 
