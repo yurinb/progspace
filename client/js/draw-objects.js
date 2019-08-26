@@ -9,16 +9,28 @@ function drawObjects() {
 	drawAnimatedObjectsLoop()
 }
 
-function drawAnimatedObjectsLoop() {
+let previousFrameTime = 0
+let FPS = 0
+function drawAnimatedObjectsLoop(time) {
+	FPS = Math.floor(1000/(time - previousFrameTime))
+	previousFrameTime = time
+
 	drawStars()
-	drawMeteors()
 	drawUnits()
 	drawProjetils()
+	drawFPS(FPS)
 
 	requestAnimationFrame(drawAnimatedObjectsLoop)
 	// setTimeout(() => {
 	// 	drawAnimatedObjectsLoop()
 	// }, 50);
+}
+
+function drawFPS(FPS) {
+	interfaceC.clearRect(0, 0, 30, 30)
+	interfaceC.textAlign = 'center'
+	interfaceC.fillStyle = primaryColor
+	interfaceC.fillText(FPS + ' fps', 25 , 25)
 }
 
 function drawStars() {
@@ -45,43 +57,17 @@ function drawStars() {
 	// }, 50)
 }
 
-function drawMeteors() {
-	// setInterval(() => {
-		if (units.length > 0 && !isEmpty(player)) {
-			meteorsC.clearRect(0, 0, screenWidth, screenHeight)
-			units.filter(el => el.isMeteor).forEach(elem => {
-				if (elem.id == player.unit.id) {
-					player.unit = elem
-				}
-
-				let screenPosition = convertPosToPixel(elem.x, elem.y, player.unit)
-				let unitFrame = getImgBySrc(elem.frame)
-				meteorsC.save()
-				meteorsC.translate(screenPosition.x, screenPosition.y)
-				meteorsC.rotate(elem.angle * Math.PI / 180)
-				try {
-					meteorsC.drawImage(unitFrame, -(elem.w * 2 * zoom / 2), -(elem.h * 2 * zoom / 2), elem.w * 2 * zoom, elem.h * 2 * zoom)
-				} catch (error) {}
-				meteorsC.restore()
-			})
-		} else {
-			meteorsC.clearRect(0, 0, screenWidth, screenHeight)
-		}
-	// }, 50)
-}
-
 function drawUnits() {
-	// setInterval(() => {
 		if (units.length > 0 && !isEmpty(player)) {
 			unitsC.clearRect(0, 0, screenWidth, screenHeight)
-			units.filter(el => !el.isMeteor).forEach(elem => {
+			units.forEach(elem => {
 				if (elem.id == player.unit.id) {
 					player.unit = elem
 				}
 				let screenPosition = convertPosToPixel(elem.x, elem.y, player.unit)
 
 				// unit
-				let unitFrame = getImgBySrc(elem.frame)
+				let unitFrame = getImgFrameByIndex(elem)
 				unitsC.save()
 				unitsC.translate(screenPosition.x, screenPosition.y)
 				unitsC.rotate(elem.angle * Math.PI / 180)
@@ -91,11 +77,12 @@ function drawUnits() {
 				unitsC.restore()
 
 				// username
-				drawUsernameAboveShip(unitsC, elem)
+				if (elem.username)
+					drawUsernameAboveShip(unitsC, elem)
 
 				// propulsor
-				let propulsorFrame = getImgBySrc(elem.prop_frame)
-				if (elem.prop_on) {
+				if (elem.propulsor && elem.propulsor.on) {
+					let propulsorFrame = getImgFrameByIndex(elem.propulsor)
 					let newX = screenPosition.x - 160 * zoom * Math.cos((elem.angle + 0) * Math.PI / 180)
 					let newY = screenPosition.y - 160 * zoom * Math.sin((elem.angle + 0) * Math.PI / 180)
 					unitsC.save()
@@ -110,16 +97,14 @@ function drawUnits() {
 		} else {
 			unitsC.clearRect(0, 0, screenWidth, screenHeight)
 		}
-	// }, 50)
 }
 
 function drawProjetils() {
-	// setInterval(() => {
 		if (!isEmpty(player) && !isEmpty(projetils)) {
 			projetilsC.clearRect(0, 0, screenWidth, screenHeight)
 			Object.keys(projetils).forEach(key => {
 				const elem = projetils[key];
-				let projetilImg = getImgBySrc(elem.frame)
+				let projetilImg = getImgFrameByIndex(elem)
 				projetilsC.save()
 				projetilsC.beginPath()
 				let screenPosition = convertPosToPixel(elem.x, elem.y, player.unit)
@@ -133,8 +118,6 @@ function drawProjetils() {
 		} else {
 			projetilsC.clearRect(0, 0, screenWidth, screenHeight)
 		}
-	// }, 50)
-
 }
 
 function drawInterface() {
@@ -161,7 +144,7 @@ function drawShipCoords(c) {
 	// c.font = "15px Lucida Console, Monaco, monospace'";
 	c.textAlign = 'center'
 	c.fillStyle = primaryColor
-	c.fillText('x ' + (player.unit.x | 0) + ' y ' + (player.unit.y | 0), screenWidth / 2, 25)
+	c.fillText('[ x ' + (player.unit.x | 0) + ' y ' + (player.unit.y | 0) + ' ]', screenWidth / 2, 25)
 }
 
 function drawEnergyBar(c) {
@@ -172,7 +155,7 @@ function drawEnergyBar(c) {
 	let y = screenHeight / 2 + screenHeight / 2.25
 
 	c.fillStyle = primaryColor
-	c.fillText('[energy shield]', x, y - 10)
+	c.fillText('[ Energy Shield ]', x, y - 10)
 	let energyBarSize = screenWidth / 4
 
 
@@ -254,8 +237,8 @@ function loadImages() {
 	}
 }
 
-function getImgBySrc(src) {
-	return images[src]
+function getImgFrameByIndex(elem) {
+	return images[elem.animations[elem.ai] + [elem.fi] + '.png']
 	// for (let index = 0; index < images.length; index++) {
 	// 	let element = images[index]
 	// 	try {

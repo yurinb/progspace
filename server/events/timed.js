@@ -1,48 +1,49 @@
 const UnitsFactory = require('../models/Units')
 const SpawnStars = require('../actions/spawn-stars')
 
-const units = {}
-const projetils = {}
+let units = {}
+let projetils = {}
 
 
-function keepOnlyChanges(lastSendedObj, globalObj) {
+function keepOnlyChanges(lastSendedObj, initObj, globalObj) {
+	for (id in initObj) {
+		lastSendedObj[id] = JSON.parse(JSON.stringify(initObj[id]))
+	}
 	let newSendObj = JSON.parse(JSON.stringify(lastSendedObj))
-
 	for (lastID in lastSendedObj) {
 		if (!globalObj[lastID]) {
 			delete lastSendedObj[lastID]
 		}
 	}
+	
 	for (currentID in globalObj) {
+		let globalObjClientVariables = JSON.parse(JSON.stringify(globalObj[currentID].getClientVariables()))
 		if (lastSendedObj[currentID]) {
 			for (sendedProperty in lastSendedObj[currentID]) {
 				if (lastSendedObj[currentID][sendedProperty]) {
-					if (lastSendedObj[currentID][sendedProperty] == globalObj[currentID].getClientVariables()[sendedProperty]) {
+					if (JSON.stringify(lastSendedObj[currentID][sendedProperty]) == JSON.stringify(globalObjClientVariables[sendedProperty])) {
+						// delete newSendObj[currentID][sendedProperty]
 						newSendObj[currentID][sendedProperty] = undefined
 					} else {
-						newSendObj[currentID][sendedProperty] = JSON.parse(JSON.stringify(globalObj[currentID].getClientVariables()))[sendedProperty]
-						lastSendedObj[currentID][sendedProperty] = JSON.parse(JSON.stringify(globalObj[currentID].getClientVariables()))[sendedProperty]
+						newSendObj[currentID][sendedProperty] = JSON.parse(JSON.stringify(globalObjClientVariables[sendedProperty]))
+						lastSendedObj[currentID][sendedProperty] = JSON.parse(JSON.stringify(globalObjClientVariables[sendedProperty]))
 					}
 				} else {
-					newSendObj[currentID][sendedProperty] = JSON.parse(JSON.stringify(globalObj[currentID].getClientVariables()))[sendedProperty]
-					lastSendedObj[currentID][sendedProperty] = JSON.parse(JSON.stringify(globalObj[currentID].getClientVariables()))[sendedProperty]
+					newSendObj[currentID][sendedProperty] = JSON.parse(JSON.stringify(globalObjClientVariables[sendedProperty]))
+					lastSendedObj[currentID][sendedProperty] = JSON.parse(JSON.stringify(globalObjClientVariables[sendedProperty]))
 				}
 			}
 		} else {
-			lastSendedObj[currentID] = JSON.parse(JSON.stringify(globalObj[currentID].getClientVariables()))
-			newSendObj[currentID] = JSON.parse(JSON.stringify(globalObj[currentID].getClientVariables()))
+			lastSendedObj[currentID] = JSON.parse(JSON.stringify(globalObjClientVariables))
+			newSendObj[currentID] = JSON.parse(JSON.stringify(globalObjClientVariables))
 		}
 	}
+
 	return newSendObj
 }
 
 function emitGameStateToClients() {
 	
-	global.io.emit('update', {
-		units: keepOnlyChanges(units, global.gameObjects.units),
-		projetils: keepOnlyChanges(projetils, global.gameObjects.projetils)
-	})
-
 	const newUnits = {}
 	for (id in global.gameObjects.newObjects.units) {
 		newUnits[id] = global.gameObjects.newObjects.units[id].getClientVariables()
@@ -61,6 +62,11 @@ function emitGameStateToClients() {
 		global.gameObjects.newObjects.units = {}
 		global.gameObjects.newObjects.projetils = {}
 	}
+
+	global.io.emit('update', {
+		units: keepOnlyChanges(units, newUnits, global.gameObjects.units),
+		projetils: keepOnlyChanges(projetils, newProjetils, global.gameObjects.projetils)
+	})
 
 	const removeUnits = global.gameObjects.removeObjects.units
 	const removeProjetils = global.gameObjects.removeObjects.projetils
@@ -100,15 +106,28 @@ function unitsGenerateEnergy() {
 function spawnMeteors() {
 	for (id in global.gameObjects.units) {
 		if (global.gameObjects.units[id].isPlayer) {
-			const meteor = UnitsFactory.newMeteor(global.gameObjects.units[id].x + Math.floor((-25000 + Math.random() * 25000)), global.gameObjects.units[id].y + Math.floor((-15000 + Math.random() * 15000)))
-			meteor.appearIn(10000)
-		
-			setTimeout(() => {
-				meteor.vanishIn(10000)
-			}, 60000)
-		
-			global.gameObjects.units[meteor.id] = meteor
-			global.gameObjects.newObjects.units[meteor.id] = meteor
+			const x = global.gameObjects.units[id].x + Math.floor((-25000 + Math.random() * 50000))
+			const y = global.gameObjects.units[id].y + Math.floor((-15000 + Math.random() * 30000))
+			let nearMeteors = 0
+			for (unitID in global.gameObjects.units) {
+				if (global.gameObjects.units[unitID].isMeteor) {
+					const length = Math.sqrt(x * x + global.gameObjects.units[unitID].y * global.gameObjects.units[unitID].y);
+					if (length <= 15000) {
+						nearMeteors++
+					}
+				}
+			}
+
+			if (nearMeteors < 10) {
+				const meteor = UnitsFactory.newMeteor(x, y)
+				meteor.appearIn(10000)
+				
+				setTimeout(() => {
+					meteor.vanishIn(15000)
+				}, 45000)
+				global.gameObjects.units[meteor.id] = meteor
+				global.gameObjects.newObjects.units[meteor.id] = meteor
+			}
 		}
 	}
 }
@@ -128,5 +147,5 @@ setTimeout(() => {
 setTimeout(() => {
 	setInterval(() => {
 		spawnMeteors()
-	}, 5000)
+	}, 1000)
 }, 1000)

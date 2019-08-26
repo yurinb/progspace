@@ -1,49 +1,25 @@
 // circle collider
 function elementCollidesWithShip(element, collidedWith) {
-	let eC = {
-		x: element.x,
-		y: element.y,
-		r: (element.w + element.h) / 2
-	}
-
 	for (id in global.gameObjects.units) {
-		let unit = global.gameObjects.units[id]
-		let verify = true
-		if (unit.state != 'alive') verify = false
+		if (global.gameObjects.units[id].state != 'alive') continue
 	
-		if (verify && element.username != unit.username || unit.isMeteor || element.isMeteor && unit.isPlayer) {
+		if (element.username != global.gameObjects.units[id].username || global.gameObjects.units[id].isMeteor || element.isMeteor && global.gameObjects.units[id].isPlayer) {
 	
-			if (element.isMeteor && unit.isMeteor && unit.id == element.id) verify = false
+			if (element.isMeteor && global.gameObjects.units[id].isMeteor && global.gameObjects.units[id].id == element.id)
+				continue
 	
-			if (verify) {
-	
-				let sC = {
-					x: unit.x,
-					y: unit.y,
-					r: (unit.w + unit.h) / 2
-				}
-	
-				if (collision(eC.x, eC.y, eC.r, sC.x, sC.y, sC.r)) {
-					collidedWith(unit)
+				if (collision(element.x, element.y, (element.w + element.h) / 2, global.gameObjects.units[id].x, global.gameObjects.units[id].y, (global.gameObjects.units[id].w + global.gameObjects.units[id].h) / 2)) {
+					collidedWith(global.gameObjects.units[id])
 					return true
 				}
 			}
 		}
-	}
 
 	return false
 }
 
 function collision(p1x, p1y, r1, p2x, p2y, r2) {
-	var a
-	var x
-	var y
-
-	a = r1 + r2
-	x = p1x - p2x
-	y = p1y - p2y
-
-	if (a > Math.sqrt((x * x) + (y * y))) {
+	if (r1 + r2 > Math.sqrt(((p1x - p2x) * (p1x - p2x)) + ((p1y - p2y) * (p1y - p2y)))) {
 		return true
 	} else {
 		return false

@@ -4,25 +4,22 @@ const collideObjects = require('../actions/collide-objects')
 const WeaponFactory = require('./Weapon')
 const AnimationsFactory = require('./Animation')
 
-
 module.exports = {
 
 
 	newShip: function (username) {
-		let iddleAnimation = AnimationsFactory.newAnimation('idle', ['../img/units/unit4.png'], 9999, true)
-		let deadAnimation = AnimationsFactory.newAnimation('dead',
-			['../img/sfx/explosion1.png', '../img/sfx/explosion2.png', '../img/sfx/explosion3.png', '../img/sfx/explosion4.png', '../img/sfx/explosion5.png', '../img/sfx/explosion6.png',
-				'../img/sfx/explosion7.png', '../img/sfx/explosion8.png', '../img/sfx/explosion9.png', '../img/sfx/explosion10.png', '../img/sfx/explosion11.png', '../img/sfx/explosion12.png', '../img/sfx/explosion13.png'
-			], 200, false)
-		let propulsorAnimation = AnimationsFactory.newAnimation('idle', ['../img/sfx/propulsor1.png', '../img/sfx/propulsor2.png'], 200, true)
+		let iddleAnimation = AnimationsFactory.newAnimation('idle', '../img/units/unit', 9999, 0, true, 0)
+		let deadAnimation = AnimationsFactory.newAnimation('dead', '../img/sfx/explosion', 200, 13, false, 1)
+
+		let propulsorAnimation = AnimationsFactory.newAnimation('idle', '../img/sfx/propulsor', 200, 2, true, 0)
 
 		let objectProperties = {
 			username: username,
 			isPlayer: true,
 			w: 100,
 			h: 100,
-			speed: 100,
-			aceleration: 1,
+			speed: 50,
+			aceleration: 5,
 			acelerated: 0,
 			velY: 0,
 			velX: 0,
@@ -65,10 +62,9 @@ module.exports = {
 					this.velY = tempVelY;
 					this.velX = tempVelX;
 				}
-				console.log(this.velX ,this.velY )
 				const length = Math.sqrt(this.velX * this.velX + this.velY * this.velY);
 
-				let moveAngle = Math.atan2(this.y - (this.y += this.velY), this.x - (this.x += this.velX)) * 180 / Math.PI
+				let moveAngle = Math.atan2(this.y - (this.y + this.velY), this.x - (this.x + this.velX)) * 180 / Math.PI
 				moveAngle += 180
 				
 				if (moveAngle < 0) {
@@ -88,10 +84,11 @@ module.exports = {
 								this.acelerated += this.aceleration
 							}
 						} else {
-							console.log('off1')
 							this.propulsor.on = false
 							if (this.acelerated >= this.speed * 0.50) {
 								this.acelerated -= this.aceleration
+							} else {
+								this.acelerated += this.aceleration
 							}
 						}
 					} else {
@@ -110,14 +107,14 @@ module.exports = {
 				} else {
 					this.propulsor.on = false
 					if (this.acelerated > 0) {
-						this.acelerated -= this.aceleration
+						this.acelerated -= this.aceleration * 2
 					} else {
 						this.acelerated = 0
 					}
 				}
 
-				this.x = Math.ceil(this.x + this.velX * this.acelerated)
-				this.y = Math.ceil(this.y + this.velY * this.acelerated)
+				this.x = this.x + Math.floor(this.velX * this.acelerated)
+				this.y = this.y + Math.floor(this.velY * this.acelerated)
 			},
 			getClientVariables: function() {
 				return {
@@ -131,11 +128,17 @@ module.exports = {
 					angle: this.angle,
 					maxEnergy: this.maxEnergy,
 					energy: this.energy,
-					frame: this.animation.frame,
-					prop_frame: this.propulsor.animation.frame,
-					prop_on: this.propulsor.on,
+					animations: Object.keys(this.animations).map( key => this.animations[key].frame ),
+					ai: this.animation.animationIndex,
+					fi: this.animation.frameIndex,
+					propulsor: {
+						on: this.propulsor.on,
+						animations: Object.keys(this.propulsor.animations).map( key => this.propulsor.animations[key].frame ),
+						ai: this.propulsor.animation.animationIndex,
+						fi: this.propulsor.animation.frameIndex,
+					},
 					weapon: this.currentWeaponIndex,
-					shooting: this.shooting
+					shooting: this.shooting,
 				}
 			}
 		}
@@ -151,12 +154,8 @@ module.exports = {
 
 
 	newMeteor: function (x, y) {
-		let iddleAnimation = AnimationsFactory.newAnimation('idle', ['../img/meteor/meteor1.png', '../img/meteor/meteor2.png', '../img/meteor/meteor3.png', '../img/meteor/meteor4.png', '../img/meteor/meteor5.png', '../img/meteor/meteor6.png', '../img/meteor/meteor7.png', '../img/meteor/meteor8.png', '../img/meteor/meteor9.png', '../img/meteor/meteor10.png', '../img/meteor/meteor11.png', '../img/meteor/meteor12.png', '../img/meteor/meteor13.png', '../img/meteor/meteor14.png', '../img/meteor/meteor15.png', '../img/meteor/meteor16.png', '../img/meteor/meteor17.png', '../img/meteor/meteor18.png', '../img/meteor/meteor19.png', '../img/meteor/meteor20.png', '../img/meteor/meteor21.png', '../img/meteor/meteor22.png', '../img/meteor/meteor23.png', '../img/meteor/meteor24.png', '../img/meteor/meteor25.png', '../img/meteor/meteor26.png', '../img/meteor/meteor27.png', '../img/meteor/meteor28.png', '../img/meteor/meteor29.png', '../img/meteor/meteor30.png'
-			], 100, true)
-		let deadAnimation = AnimationsFactory.newAnimation('dead',
-			['../img/sfx/explosion1.png', '../img/sfx/explosion2.png', '../img/sfx/explosion3.png', '../img/sfx/explosion4.png', '../img/sfx/explosion5.png', '../img/sfx/explosion6.png',
-				'../img/sfx/explosion7.png', '../img/sfx/explosion8.png', '../img/sfx/explosion9.png', '../img/sfx/explosion10.png', '../img/sfx/explosion11.png', '../img/sfx/explosion12.png', '../img/sfx/explosion13.png'
-			], 150, false)
+		let iddleAnimation = AnimationsFactory.newAnimation('idle', '../img/meteor/meteor', 100, 30, true, 0)
+		let deadAnimation = AnimationsFactory.newAnimation('dead', '../img/sfx/explosion', 150, 13, false, 1)
 
 		const size = 250 + Math.random() * 1000
 
@@ -201,7 +200,9 @@ module.exports = {
 					w: this.h,
 					angle: this.angle,
 					isMeteor: this.isMeteor,
-					frame: this.animation.frame,
+					animations: Object.keys(this.animations).map( key => this.animations[key].frame ),
+					ai: this.animation.animationIndex,
+					fi: this.animation.frameIndex
 				}
 			}
 		}

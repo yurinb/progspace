@@ -52,14 +52,14 @@ function laser2() {
 		// if (unit.energy >= energyCost) {
 			if (weapon.active) {
 				let projetil = ProjetilFactory.newLaser(unit.username)
-				projetil.x = unit.x + Math.floor(75 * Math.cos((unit.angle + 75) * Math.PI / 180))
-				projetil.y = unit.y + Math.floor(75 * Math.sin((unit.angle + 75) * Math.PI / 180))
+				projetil.x = unit.x + Math.floor(150 * Math.cos((unit.angle + 25) * Math.PI / 180))
+				projetil.y = unit.y + Math.floor(150 * Math.sin((unit.angle + 25) * Math.PI / 180))
 				projetil.angle = unit.angle
 				projetil.unitAcelerated = unit.acelerated
 				
 				let projetil2 = ProjetilFactory.newLaser(unit.username)
-				projetil2.x = unit.x + Math.floor(75 * Math.cos((unit.angle - 75) * Math.PI / 180))
-				projetil2.y = unit.y + Math.floor(75 * Math.sin((unit.angle - 75 ) * Math.PI / 180))
+				projetil2.x = unit.x + Math.floor(150 * Math.cos((unit.angle - 25) * Math.PI / 180))
+				projetil2.y = unit.y + Math.floor(150 * Math.sin((unit.angle - 25 ) * Math.PI / 180))
 				projetil2.angle = unit.angle
 				projetil2.unitAcelerated = unit.acelerated
 				

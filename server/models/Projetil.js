@@ -9,11 +9,8 @@ module.exports = {
     
 	newLaser: function (username) {
 		let physicProjetil = PhysicObjectFactory.newPhysicObject()
-		let idleProjetilAnimation = AnimationsFactory.newAnimation('idle', ['../img/projetils/projetil1.png'], 100, true)
-		let deadProjetilAnimation = AnimationsFactory.newAnimation('dead',
-			['../img/sfx/explosion1.png', '../img/sfx/explosion2.png', '../img/sfx/explosion3.png', '../img/sfx/explosion4.png', '../img/sfx/explosion5.png', '../img/sfx/explosion6.png',
-				'../img/sfx/explosion7.png', '../img/sfx/explosion8.png', '../img/sfx/explosion9.png', '../img/sfx/explosion10.png', '../img/sfx/explosion11.png', '../img/sfx/explosion12.png', '../img/sfx/explosion13.png'
-			], 50, false)
+		let idleProjetilAnimation = AnimationsFactory.newAnimation('idle', '../img/projetils/projetil', 100, 1, true, 0)
+		let deadProjetilAnimation = AnimationsFactory.newAnimation('dead', '../img/sfx/explosion', 50, 13, false, 1)
 
 		let objectProperties = {
 			damage: 25,
@@ -21,8 +18,8 @@ module.exports = {
 			energy: 5000,
 			color: '#ffffff',
 			modelImg: 1,
-			w: 50,
-			h: 100,
+			w: 35,
+			h: 85,
 			energyCost: 5,
 			username,
 			unitAcelerated: 0,
@@ -47,7 +44,7 @@ module.exports = {
 						}
 					})
 					
-					if (this.energy > 0) {
+					if (this.energy > 0 || this.isVanish) {
 						this.energy -= this.speed + this.unitAcelerated
 						if (this.speed > 0) {
 							this.x += Math.floor((this.speed + this.unitAcelerated) * Math.cos(this.angle * Math.PI / 180))
@@ -56,7 +53,7 @@ module.exports = {
 					} else {
 						if (this.state == 'alive')
 						// this.dies()
-						this.vanishIn(200)
+						this.vanishIn(500)
 					}
 				}
 			},
@@ -68,7 +65,9 @@ module.exports = {
 					h: this.w,
 					w: this.h,
 					angle: this.angle,
-					frame: this.animation.frame,
+					animations: Object.keys(this.animations).map( key => this.animations[key].frame ),
+					ai: this.animation.animationIndex,
+					fi: this.animation.frameIndex,
 				}
 			}
 		}

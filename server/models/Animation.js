@@ -1,13 +1,14 @@
 module.exports = {
 
 
-	newAnimation: function (state, frames, interval, repeat) {
+	newAnimation: function (state, frame, interval, maxIndex, repeat, animationIndex) {
 
 		let animation = {
 			state,
-			frames,
-			frame:{},
+			frame,
+			animationIndex,
 			frameIndex: 0,
+			maxIndex,
 			interval,
 			repeat
 		}

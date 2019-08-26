@@ -33,6 +33,9 @@ module.exports = function (client) {
 			global.gameObjects.units[player.unit.id] = player.unit
 			client.socket.emit('player', client.player)
 		}
+
+		global.gameObjects.newObjects.units[client.player.unit.id] = client.player.unit
+
 		const units = {}
 		for (id in global.gameObjects.units) {
 			units[id] = global.gameObjects.units[id].getClientVariables()
@@ -41,7 +44,7 @@ module.exports = function (client) {
 		for (id in global.gameObjects.projetils) {
 			projetils[id] = global.gameObjects.projetils[id].getClientVariables()
 		}
-		
+
 		client.socket.emit('init', {
 			units, projetils
 		})
