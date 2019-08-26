@@ -5,7 +5,6 @@
   border: none;
   color: rgb(236, 236, 236);
   font-family: 'Courier New', Courier, monospace;
-  width: 150px;
 }
 
 html,
@@ -26,6 +25,7 @@ input {
   background-color:#020202 !important;
   border-bottom: 1px;
   border-bottom-color: whitesmoke;
+  width: 100%;
 }
 
 #login-container {
@@ -52,4 +52,56 @@ button {
   color: aqua;
   background-color:#020202 !important;
 
+}
+
+.ranking-container {
+  position: absolute;
+  /* flex-direction: column; */
+  align-items: center;
+  right: 0;
+  width: 300px;
+  /* height: 25%; */
+  display: flex;
+  flex: 1;
+  z-index: 60;
+  font-size: 11px;
+}
+
+.ranking-players-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  margin-top: 10px;
+  justify-content: space-around;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.ranking-player {
+  display: flex;
+}
+
+.ranking-username {
+  display: flex;
+  color: #42f4c5;
+}
+
+.ranking-asteroids {
+  display: flex;
+  color: #42f4c5;
+}
+
+.ranking-kills {
+  display: flex;
+  color: #42f4c5;
+}
+
+.ranking-score {
+  display: flex;
+  color: #42f4c5;
 }
