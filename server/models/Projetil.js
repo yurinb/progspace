@@ -36,11 +36,11 @@ module.exports = {
 					collideObjects.elementCollidesWithShip(this, unitCollided => {
 						if (unitCollided.state == 'alive') {
 							this.dies()
-							this.w = this.h * 3
-							this.h = this.h * 3
+							this.w = this.h * 1.5
+							this.h = this.h * 1.5
 							this.unitCollided = unitCollided
-							this.unitCollided.diffX = this.unitCollided.x - this.x
-							this.unitCollided.diffY = this.unitCollided.y - this.y
+							this.unitCollidedDiffX = this.unitCollided.x - this.x
+							this.unitCollidedDiffY = this.unitCollided.y - this.y
 							unitCollided.energy -= this.damage
 							if (unitCollided.energy <= 0) {
 								unitCollided.dies()
@@ -48,7 +48,7 @@ module.exports = {
 						}
 					})
 					
-					if (this.energy > 0 || this.isVanish) {
+					if (this.state == 'alive' && this.energy > 0 || this.isVanish) {
 						this.energy -= this.speed + this.unitAcelerated
 						if (this.speed > 0) {
 							this.x += Math.floor((this.speed + this.unitAcelerated) * Math.cos(this.angle * Math.PI / 180))
@@ -60,8 +60,8 @@ module.exports = {
 						this.vanishIn(500)
 					}
 				} else if (this.unitCollided) {
-					this.x = this.unitCollided.x - this.unitCollided.diffX
-					this.y = this.unitCollided.y - this.unitCollided.diffY
+					this.x = this.unitCollided.x - this.unitCollidedDiffX
+					this.y = this.unitCollided.y - this.unitCollidedDiffY
 				}
 			},
 			getClientVariables: function() {
