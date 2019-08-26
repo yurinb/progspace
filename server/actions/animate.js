@@ -7,17 +7,19 @@ function animateLoop(elem, intervalID, setCurrentState) {
 			clearInterval(intervalID)
 		}
 
+
 		if (elem.animation.frameIndex >= elem.animation.maxIndex) {
 			if (elem.animation.repeat) {
-				elem.animation.frameIndex = 0
+				elem.animation.frameIndex = 1
 			} else {
-				elem.animation.frameIndex = elem.animation.maxIndex
 				clearInterval(intervalID)
 			}
+		} else {
+			elem.animation.frameIndex++
 		}
 
+
 		// elem.animation.frame = elem.animation.frames[elem.animation.frameIndex]
-		elem.animation.frameIndex++
 	}
 }
 

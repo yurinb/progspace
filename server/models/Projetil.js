@@ -29,6 +29,7 @@ module.exports = {
 				idle: idleProjetilAnimation, 
 				dead: deadProjetilAnimation
 			},
+			unitCollided: null,
 			move: function () {
 				if (this.state == 'alive') {
 			
@@ -37,6 +38,9 @@ module.exports = {
 							this.dies()
 							this.w = this.h * 3
 							this.h = this.h * 3
+							this.unitCollided = unitCollided
+							this.unitCollided.diffX = this.unitCollided.x - this.x
+							this.unitCollided.diffY = this.unitCollided.y - this.y
 							unitCollided.energy -= this.damage
 							if (unitCollided.energy <= 0) {
 								unitCollided.dies()
@@ -55,6 +59,9 @@ module.exports = {
 						// this.dies()
 						this.vanishIn(500)
 					}
+				} else if (this.unitCollided) {
+					this.x = this.unitCollided.x - this.unitCollided.diffX
+					this.y = this.unitCollided.y - this.unitCollided.diffY
 				}
 			},
 			getClientVariables: function() {

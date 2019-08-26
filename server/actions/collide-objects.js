@@ -1,4 +1,3 @@
-// circle collider
 function elementCollidesWithShip(element, collidedWith) {
 	for (id in global.gameObjects.units) {
 		if (global.gameObjects.units[id].state != 'alive') continue
@@ -25,32 +24,6 @@ function collision(p1x, p1y, r1, p2x, p2y, r2) {
 		return false
 	}
 }
-
-// rectangle collider
-// function elementCollidesWithShip(element) {
-
-//     let units = global.gameObjects.units
-//     let eMinX = element.x - element.w / 2
-//     let eMaxX = element.x + element.w / 2
-//     let eMinY = element.y - element.h / 2
-//     let eMaxY = element.y + element.h / 2
-//     for (let index = 0; index < units.length; index++) {
-//         let sMinX = units[index].x - units[index].w / 2
-//         let sMaxX = units[index].x + units[index].w / 2
-//         let sMinY = units[index].y - units[index].h / 2
-//         let sMaxY = units[index].y + units[index].h / 2
-//         if (
-//             eMaxX >= sMinX &&
-//             eMinX <= sMaxX &&
-//             eMaxY >= sMinY &&
-//             eMinY <= sMaxY
-//         ) {
-//             return true
-//         }
-//     }
-//     return false
-// }
-
 
 module.exports = {
 	elementCollidesWithShip

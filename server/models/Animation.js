@@ -7,7 +7,7 @@ module.exports = {
 			state,
 			frame,
 			animationIndex,
-			frameIndex: 0,
+			frameIndex: 1,
 			maxIndex,
 			interval,
 			repeat

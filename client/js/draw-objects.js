@@ -73,7 +73,7 @@ function drawUnits() {
 				unitsC.rotate(elem.angle * Math.PI / 180)
 				try {
 					unitsC.drawImage(unitFrame, -(elem.w * 2 * zoom / 2), -(elem.h * 2 * zoom / 2), elem.w * 2 * zoom, elem.h * 2 * zoom)
-				} catch (error) {console.log(error)}
+				} catch (error) {}
 				unitsC.restore()
 
 				// username
@@ -238,6 +238,7 @@ function loadImages() {
 }
 
 function getImgFrameByIndex(elem) {
+	if (elem.fi == 0) console.log(elem)
 	return images[elem.animations[elem.ai] + [elem.fi] + '.png']
 	// for (let index = 0; index < images.length; index++) {
 	// 	let element = images[index]

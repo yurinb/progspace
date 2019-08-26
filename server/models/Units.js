@@ -8,7 +8,7 @@ module.exports = {
 
 
 	newShip: function (username) {
-		let iddleAnimation = AnimationsFactory.newAnimation('idle', '../img/units/unit', 9999, 0, true, 0)
+		let iddleAnimation = AnimationsFactory.newAnimation('idle', '../img/units/unit', 9999, 1, true, 0)
 		let deadAnimation = AnimationsFactory.newAnimation('dead', '../img/sfx/explosion', 200, 13, false, 1)
 
 		let propulsorAnimation = AnimationsFactory.newAnimation('idle', '../img/sfx/propulsor', 200, 2, true, 0)
