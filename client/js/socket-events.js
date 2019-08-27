@@ -9,6 +9,7 @@ socket.on('connect', function () {
 socket.on('player', function (data) {
 	player = data
 	userLoggedIn()
+	startScore(units)
 })
 
 //-----------------------------//----------------------------------

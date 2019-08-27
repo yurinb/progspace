@@ -5,6 +5,14 @@
   border: none;
   color: rgb(236, 236, 236);
   font-family: 'Courier New', Courier, monospace;
+  
+}
+
+* ::selection {
+  background: transparent; /* WebKit/Blink Browsers */
+}
+* ::-moz-selection {
+  background: transparent; /* Gecko Browsers */
 }
 
 html,
@@ -59,7 +67,7 @@ button {
   /* flex-direction: column; */
   align-items: center;
   right: 0;
-  width: 300px;
+  width: fit-content;
   /* height: 25%; */
   display: flex;
   flex: 1;
@@ -72,7 +80,7 @@ button {
   width: 100%;
   height: 100%;
   margin-top: 10px;
-  justify-content: space-around;
+  justify-content: space-evenly;
 }
 
 .column {
@@ -80,10 +88,21 @@ button {
   flex-direction: column;
   align-items: center;
   text-align: center;
+  margin-right: 10px;
+}
+
+.ranking-username-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .ranking-player {
   display: flex;
+}
+
+.ranking-username-title {
+  align-self: center;
 }
 
 .ranking-username {

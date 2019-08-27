@@ -15,7 +15,7 @@ setTimeout(() => {
 		}
 
 		for (id in global.gameObjects.projetils) {
-			global.gameObjects.projetils[id].move()
+		global.gameObjects.projetils[id].move()
 		}
 
 		for (id in global.gameObjects.projetils) {

@@ -15,7 +15,7 @@ let particles = []
 // canvas layers (ordered)
 const canvasElements = {
 	canvas          : document.querySelector('canvas'),
-	meteorsCanvas   : document.createElement('canvas'),
+	asteroidsCanvas   : document.createElement('canvas'),
 	unitsCanvas     : document.createElement('canvas'),
 	projetilsCanvas : document.createElement('canvas'),
 	interfaceCanvas : document.createElement('canvas'),
@@ -25,14 +25,14 @@ canvasElements.canvas.style.backgroundColor = '#020202'
 
 // get canvas layer contexts
 const backgroundC = canvasElements.canvas.getContext('2d')
-const meteorsC    = canvasElements.meteorsCanvas.getContext('2d')
+const asteroidsC    = canvasElements.asteroidsCanvas.getContext('2d')
 const unitsC      = canvasElements.unitsCanvas.getContext('2d')
 const projetilsC  = canvasElements.projetilsCanvas.getContext('2d')
 const interfaceC  = canvasElements.interfaceCanvas.getContext('2d')
 
 // something like anti-aliasing effect
 backgroundC.imageSmoothingEnabled = false
-meteorsC.imageSmoothingEnabled    = false
+asteroidsC.imageSmoothingEnabled    = false
 unitsC.imageSmoothingEnabled      = false
 projetilsC.imageSmoothingEnabled  = false
 interfaceC.imageSmoothingEnabled  = false

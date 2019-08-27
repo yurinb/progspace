@@ -103,30 +103,30 @@ function unitsGenerateEnergy() {
 	}
 }
 
-function spawnMeteors() {
+function spawnAsteroids() {
 	for (id in global.gameObjects.units) {
 		if (global.gameObjects.units[id].isPlayer) {
 			const x = global.gameObjects.units[id].x + Math.floor((-25000 + Math.random() * 50000))
 			const y = global.gameObjects.units[id].y + Math.floor((-15000 + Math.random() * 30000))
-			let nearMeteors = 0
+			let nearAsteroids = 0
 			for (unitID in global.gameObjects.units) {
-				if (global.gameObjects.units[unitID].isMeteor) {
+				if (global.gameObjects.units[unitID].isAsteroid) {
 					const length = Math.sqrt(x * x + global.gameObjects.units[unitID].y * global.gameObjects.units[unitID].y);
 					if (length <= 15000) {
-						nearMeteors++
+						nearAsteroids++
 					}
 				}
 			}
 
-			if (nearMeteors < 10) {
-				const meteor = UnitsFactory.newMeteor(x, y)
-				meteor.appearIn(10000)
+			if (nearAsteroids < 10) {
+				const asteroid = UnitsFactory.newAsteroid(x, y)
+				asteroid.appearIn(10000)
 				
 				setTimeout(() => {
-					meteor.vanishIn(15000)
+					asteroid.vanishIn(15000)
 				}, 45000)
-				global.gameObjects.units[meteor.id] = meteor
-				global.gameObjects.newObjects.units[meteor.id] = meteor
+				global.gameObjects.units[asteroid.id] = asteroid
+				global.gameObjects.newObjects.units[asteroid.id] = asteroid
 			}
 		}
 	}
@@ -146,6 +146,6 @@ setTimeout(() => {
 
 setTimeout(() => {
 	setInterval(() => {
-		spawnMeteors()
+		spawnAsteroids()
 	}, 1000)
 }, 1000)

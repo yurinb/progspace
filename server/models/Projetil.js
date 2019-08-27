@@ -3,12 +3,12 @@ const collideObjects = require('../actions/collide-objects')
 const AnimationsFactory = require('./Animation')
 const Animate = require('../actions/animate')
 
-function newProjetil(username) {
+function newProjetil(ownerID) {
 	let physicProjetil = PhysicObjectFactory.newPhysicObject()
 	
 	let objectProperties = {
 		state: 'alive',
-		username,
+		ownerID,
 		damage: 10,
 		speed: 100,
 		energy: 5000,
@@ -31,6 +31,14 @@ function newProjetil(username) {
 						unitCollided.energy -= this.damage
 						if (unitCollided.energy <= 0) {
 							unitCollided.dies()
+							if (unitCollided.isAsteroid) {
+								global.gameObjects.units[this.ownerID].score.asteroids++
+								global.gameObjects.units[this.ownerID].score.score+= 50
+							}
+							if (unitCollided.isPlayer) {
+								global.gameObjects.units[this.ownerID].score.kills++
+								global.gameObjects.units[this.ownerID].score.score+= 1000
+							}
 						}
 					}
 				})
@@ -75,11 +83,11 @@ function newProjetil(username) {
 module.exports = {
     
     
-	newLaser: function (username) {
+	newLaser: function (ownerID) {
 		let idleProjetilAnimation = AnimationsFactory.newAnimation('idle', '../img/projetils/projetil', 100, 1, true, 0)
 		let deadProjetilAnimation = AnimationsFactory.newAnimation('dead', '../img/sfx/explosion', 50, 13, false, 1)
 
-		let projetil = newProjetil(username)
+		let projetil = newProjetil(ownerID)
 		
 		let objectProperties = {
 			damage: 25,

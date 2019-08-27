@@ -8,13 +8,15 @@ module.exports = {
 
 
 	newShip: function (username) {
-		let iddleAnimation = AnimationsFactory.newAnimation('idle', '../img/units/unit', 9999, 1, true, 0)
-		let deadAnimation = AnimationsFactory.newAnimation('dead', '../img/sfx/explosion', 200, 13, false, 1)
+		let physicObject = PhysicObjectFactory.newPhysicObject()
 
-		let propulsorAnimation = AnimationsFactory.newAnimation('idle', '../img/sfx/propulsor', 200, 2, true, 0)
+		let iddleAnimation = AnimationsFactory.newAnimation('idle', '../img/units/unit', 9999, 1, true, 0)
+		let deadAnimation = AnimationsFactory.newAnimation('dead', '../img/sfx/explosion', 150, 13, false, 1)
+
+		let propulsorAnimation = AnimationsFactory.newAnimation('idle', '../img/sfx/propulsor', 150, 2, true, 0)
 
 		let objectProperties = {
-			username: username,
+			username,
 			isPlayer: true,
 			w: 100,
 			h: 100,
@@ -25,6 +27,7 @@ module.exports = {
 			velX: 0,
 			engineOn: false,
 			shooting: false,
+			score: {asteroids: 0, kills: 0, score: 0},
 			propulsor: {
 				isPropulsor: true,
 				on: false,
@@ -34,7 +37,7 @@ module.exports = {
 			maxEnergy: 1000,
 			energy: 1000,
 			reactorSpeed: 1,
-			weapons: [WeaponFactory.laser2()],
+			weapons: [WeaponFactory.laser2(physicObject.id)],
 			currentWeaponIndex: 0,
 			state: 'alive',
 			animation: iddleAnimation,
@@ -42,6 +45,7 @@ module.exports = {
 				iddle: iddleAnimation,
 				dead: deadAnimation
 			},
+			asteroidCollided: null,
 			move: function () {
 				if (this.state != 'alive') return
 			
@@ -78,7 +82,7 @@ module.exports = {
 				if (length != 0) {
 
 					if (isMoving) {
-						if (this.angle - moveAngle < 30 && this.angle - moveAngle > -30) {
+						if (this.angle - moveAngle < 60 && this.angle - moveAngle > -60) {
 							this.propulsor.on = true
 							if (this.acelerated <= this.speed) {
 								this.acelerated += this.aceleration
@@ -121,6 +125,7 @@ module.exports = {
 					id: this.id,
 					username: this.username,
 					isPlayer: this.isPlayer,
+					state: this.state,
 					x: this.x,
 					y: this.y,
 					h: this.w,
@@ -128,6 +133,7 @@ module.exports = {
 					angle: this.angle,
 					maxEnergy: this.maxEnergy,
 					energy: this.energy,
+					score: this.score,
 					animations: Object.keys(this.animations).map( key => this.animations[key].frame ),
 					ai: this.animation.animationIndex,
 					fi: this.animation.frameIndex,
@@ -142,7 +148,6 @@ module.exports = {
 				}
 			}
 		}
-		let physicObject = PhysicObjectFactory.newPhysicObject()
 
 		let unit = Object.assign(physicObject, objectProperties)
 
@@ -153,15 +158,15 @@ module.exports = {
 	},
 
 
-	newMeteor: function (x, y) {
-		let iddleAnimation = AnimationsFactory.newAnimation('idle', '../img/meteor/meteor', 100, 30, true, 0)
+	newAsteroid: function (x, y) {
+		let iddleAnimation = AnimationsFactory.newAnimation('idle', '../img/asteroid/asteroid', 100, 30, true, 0)
 		let deadAnimation = AnimationsFactory.newAnimation('dead', '../img/sfx/explosion', 150, 13, false, 1)
 
 		const size = 250 + Math.random() * 1000
 
 		let objectProperties = {
 			username: '',
-			isMeteor: true,
+			isAsteroid: true,
 			w: size,
 			h: size,
 			angle: Math.floor(Math.random() * 360),
@@ -174,14 +179,32 @@ module.exports = {
 				iddle: iddleAnimation,
 				dead: deadAnimation
 			},
+			// move dead unit together with asteroid
+			// unitsCollided: [],
 			move: function () {
 				if (this.state != 'alive') return
 
 				const collided = collideObjects.elementCollidesWithShip(this, unitCollided => {
 					if (unitCollided.state == 'alive') {
-						unitCollided.dies()
-						if (unitCollided.isMeteor) {
-							this.dies()
+						// move dead unit together with asteroid
+						// if (unitCollided.isPlayer) {
+							// 	unitCollided.unitCollidedDiffX = this.x - unitCollided.x
+						// 	unitCollided.unitCollidedDiffY = this.y - unitCollided.y
+						// 	this.unitsCollided.push(unitCollided)
+						// }
+						if (unitCollided.isAsteroid) {
+							let thisSize = this.w + this.h
+							collidedSize = unitCollided.w + unitCollided.h
+							if (collidedSize > thisSize * 2)  // die if another asteroid is 2x bigger
+								this.dies()
+							else if (collidedSize < thisSize / 2) 
+								unitCollided.dies()
+							else {
+								this.dies()
+								unitCollided.dies()
+							}
+						} else {
+							unitCollided.dies()
 						}
 					}
 				})
@@ -189,6 +212,15 @@ module.exports = {
 				if (!collided) {
 					this.x += Math.floor(this.speed * Math.cos(this.angle * Math.PI / 180))
 					this.y += Math.floor(this.speed * Math.sin(this.angle * Math.PI / 180))
+					// move dead unit together with asteroid
+					// this.unitsCollided.forEach((unit, i) => {
+					// 	if (unit.state == 'dead') {
+					// 		unit.x = this.x - unit.unitCollidedDiffX
+					// 		unit.y = this.y - unit.unitCollidedDiffY
+					// 	} else {
+					// 		delete this.unitsCollided[i]
+					// 	}
+					// })
 				}
 			},
 			getClientVariables: function() {
@@ -199,7 +231,7 @@ module.exports = {
 					h: this.w,
 					w: this.h,
 					angle: this.angle,
-					isMeteor: this.isMeteor,
+					isAsteroid: this.isAsteroid,
 					animations: Object.keys(this.animations).map( key => this.animations[key].frame ),
 					ai: this.animation.animationIndex,
 					fi: this.animation.frameIndex

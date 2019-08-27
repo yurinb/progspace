@@ -19,6 +19,8 @@ module.exports = {
 				this.animation.animationIndex = Object.keys(this.animations).map(key => this.animations[key]).indexOf(this.animation)
 				if (this.isPlayer) {
 					console.log('Player', this.username, 'Dies.')
+					this.w = this.h * 5
+					this.h = this.h * 5
 					this.propulsor.on = false
 					this.propulsor.state = 'removible'
 				}

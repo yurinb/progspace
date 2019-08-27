@@ -60,7 +60,28 @@ function drawStars() {
 function drawUnits() {
 		if (units.length > 0 && !isEmpty(player)) {
 			unitsC.clearRect(0, 0, screenWidth, screenHeight)
+			
+			const otherUnits = []
+			
 			units.forEach(elem => {
+				if (!elem.isAsteroid) {
+					otherUnits.push(elem)
+					return
+				}
+				let screenPosition = convertPosToPixel(elem.x, elem.y, player.unit)
+				let unitFrame = getImgFrameByIndex(elem)
+				
+				unitsC.save()
+				unitsC.translate(screenPosition.x, screenPosition.y)
+				unitsC.rotate(elem.angle * Math.PI / 180)
+				try {
+					unitsC.drawImage(unitFrame, -(elem.w * 2 * zoom / 2), -(elem.h * 2 * zoom / 2), elem.w * 2 * zoom, elem.h * 2 * zoom)
+				} catch (error) {}
+				unitsC.restore()
+			})
+			
+			otherUnits.forEach(elem => {
+				// player ship
 				if (elem.id == player.unit.id) {
 					player.unit = elem
 				}
@@ -219,11 +240,11 @@ function loadImages() {
 		}
 		images['../img/sfx/propulsor' + i + '.png'] = propulsor
 	}
-	// METEORS
+	// asteroidS
 	for (let i = 1; i <= 30; i++) {
-		let meteor = new Image()
-		meteor.src = '../img/meteor/meteor' + i + '.png'
-		images['../img/meteor/meteor' + i + '.png'] = meteor
+		let asteroid = new Image()
+		asteroid.src = '../img/asteroid/asteroid' + i + '.png'
+		images['../img/asteroid/asteroid' + i + '.png'] = asteroid
 	}
 	// EXPLOSION
 	for (let i = 1; i <= 13; i++) {

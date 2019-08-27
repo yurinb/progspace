@@ -2,9 +2,9 @@ function elementCollidesWithShip(element, collidedWith) {
 	for (id in global.gameObjects.units) {
 		if (global.gameObjects.units[id].state != 'alive') continue
 	
-		if (element.username != global.gameObjects.units[id].username || global.gameObjects.units[id].isMeteor || element.isMeteor && global.gameObjects.units[id].isPlayer) {
+		if (element.ownerID != global.gameObjects.units[id].id || global.gameObjects.units[id].isAsteroid || element.isAsteroid && global.gameObjects.units[id].isPlayer) {
 	
-			if (element.isMeteor && global.gameObjects.units[id].isMeteor && global.gameObjects.units[id].id == element.id)
+			if (element.isAsteroid && global.gameObjects.units[id].isAsteroid && global.gameObjects.units[id].id == element.id)
 				continue
 	
 				if (collision(element.x, element.y, (element.w + element.h) / 2, global.gameObjects.units[id].x, global.gameObjects.units[id].y, (global.gameObjects.units[id].w + global.gameObjects.units[id].h) / 2)) {
