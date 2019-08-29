@@ -1,8 +1,8 @@
 //-----------------------------//-------------------------------
 //----- Server socket to connect at browser --------------------
-const socket = io.connect('ws://progspace.herokuapp.com')
+const socket = io.connect('ws://localhost:9000')
 //const socket = io.connect("http://192.168.15.15:9000");
-//const socket = io.connect("http://outspace.herokuapp.com");
+// const socket = io.connect('ws://progspace.herokuapp.com')
 //const socket = io.connect("http://mussum.ddns.net:9000");
 
 // game objects
@@ -15,7 +15,6 @@ let particles = []
 // canvas layers (ordered)
 const canvasElements = {
 	canvas          : document.querySelector('canvas'),
-	asteroidsCanvas   : document.createElement('canvas'),
 	unitsCanvas     : document.createElement('canvas'),
 	projetilsCanvas : document.createElement('canvas'),
 	interfaceCanvas : document.createElement('canvas'),
@@ -25,14 +24,12 @@ canvasElements.canvas.style.backgroundColor = '#020202'
 
 // get canvas layer contexts
 const backgroundC = canvasElements.canvas.getContext('2d')
-const asteroidsC    = canvasElements.asteroidsCanvas.getContext('2d')
 const unitsC      = canvasElements.unitsCanvas.getContext('2d')
 const projetilsC  = canvasElements.projetilsCanvas.getContext('2d')
 const interfaceC  = canvasElements.interfaceCanvas.getContext('2d')
 
 // something like anti-aliasing effect
 backgroundC.imageSmoothingEnabled = false
-asteroidsC.imageSmoothingEnabled    = false
 unitsC.imageSmoothingEnabled      = false
 projetilsC.imageSmoothingEnabled  = false
 interfaceC.imageSmoothingEnabled  = false
@@ -52,19 +49,14 @@ let screenWidth  = window.innerWidth
 function resizeCanvas() {
 	screenHeight = window.innerHeight
 	screenWidth  = window.innerWidth
-
+	
 	setCanvasElementsPropValue('height', screenHeight)
 	setCanvasElementsPropValue('width', screenWidth)
 }
 
 resizeCanvas()
 
-// periodically check if screen size changed to resize canvas
-setInterval(() => {
-	if (screenHeight != window.innerHeight || screenWidth  != window.innerWidth) {
-		resizeCanvas()
-	}
-}, 250)
+window.onresize = resizeCanvas
 
 // order canvas to act like layers
 let index = 0

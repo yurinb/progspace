@@ -33,8 +33,8 @@ module.exports = {
 			vanishIn: function(ms) {
 				if (this.isVanish) return
 				this.isVanish = true
-				const reducerW = this.w / (ms / 100)
-				const reducerH = this.h / (ms / 100)
+				const reducerW = Math.floor(this.w / (ms / 100))
+				const reducerH = Math.floor(this.h / (ms / 100))
 				// const reducerW = Math.floor(this.w / (ms / 100))
 				// const reducerH = Math.floor(this.h / (ms / 100))
 				const intervalID = setInterval(() => {

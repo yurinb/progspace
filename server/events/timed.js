@@ -21,7 +21,7 @@ function keepOnlyChanges(lastSendedObj, initObj, globalObj) {
 		if (lastSendedObj[currentID]) {
 			for (sendedProperty in lastSendedObj[currentID]) {
 				if (lastSendedObj[currentID][sendedProperty]) {
-					if (JSON.stringify(lastSendedObj[currentID][sendedProperty]) == JSON.stringify(globalObjClientVariables[sendedProperty])) {
+					if (JSON.stringify(lastSendedObj[currentID][sendedProperty]) === JSON.stringify(globalObjClientVariables[sendedProperty])) {
 						// delete newSendObj[currentID][sendedProperty]
 						newSendObj[currentID][sendedProperty] = undefined
 					} else {
@@ -53,40 +53,45 @@ function emitGameStateToClients() {
 		newProjetils[id] = global.gameObjects.newObjects.projetils[id].getClientVariables()
 	}
 	if (Object.keys(newUnits).length > 0 || Object.keys(newProjetils).length > 0) {
-
-		global.io.emit('init', {
-			units: newUnits,
-			projetils: newProjetils,
-		})
-
+		setTimeout(() => {
+			global.io.compress(true).emit('init', {
+				units: newUnits,
+				projetils: newProjetils,
+			})
+		}, 10)
+			
 		global.gameObjects.newObjects.units = {}
 		global.gameObjects.newObjects.projetils = {}
 	}
 
-	global.io.emit('update', {
-		units: keepOnlyChanges(units, newUnits, global.gameObjects.units),
-		projetils: keepOnlyChanges(projetils, newProjetils, global.gameObjects.projetils)
-	})
+	setTimeout(() => {
+		global.io.compress(true).emit('update', {
+			units: keepOnlyChanges(units, newUnits, global.gameObjects.units),
+			projetils: keepOnlyChanges(projetils, newProjetils, global.gameObjects.projetils)
+		})
+	}, 15)
 
 	const removeUnits = global.gameObjects.removeObjects.units
 	const removeProjetils = global.gameObjects.removeObjects.projetils
 	if (removeUnits.length > 0 || removeProjetils.length > 0) {
-
-		global.io.emit('remove', {
-			units: removeUnits,
-			projetils: removeProjetils,
-		})
-
+		setTimeout(() => {
+			global.io.compress(true).emit('remove', {
+				units: removeUnits,
+				projetils: removeProjetils,
+			})
+		}, 20)
+			
 		global.gameObjects.removeObjects.units = []
 		global.gameObjects.removeObjects.projetils = []
 	}
-
-	for (id in global.gameObjects.clients) {
-		if (global.gameObjects.clients[id].player) {
-			const stars = SpawnStars.getNewVisibleQuadrants(global.gameObjects.clients[id].player.unit.x, global.gameObjects.clients[id].player.unit.y, global.gameObjects.clients[id].player.stars, global.gameObjects.clients[id].player.screenResolution)
-			if (stars.length > 0) global.gameObjects.clients[id].socket.emit('stars', stars)
+	setTimeout(() => {
+		for (id in global.gameObjects.clients) {
+			if (global.gameObjects.clients[id].player) {
+				const stars = SpawnStars.getNewVisibleQuadrants(global.gameObjects.clients[id].player.unit.x, global.gameObjects.clients[id].player.unit.y, global.gameObjects.clients[id].player.stars, global.gameObjects.clients[id].player.screenResolution)
+				if (stars.length > 0) global.gameObjects.clients[id].socket.compress(true).emit('stars', stars)
+			}
 		}
-	}
+	}, 30)
 }
 
 function unitsGenerateEnergy() {
