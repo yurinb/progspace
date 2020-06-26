@@ -10,7 +10,7 @@ module.exports = function (client) {
 	// player logged in
 
 	client.socket.on('playerReady', clientData => {
-		//console.log('*Player Ready');
+		console.log('*Player Ready -', clientData.username);
 		let clients = global.gameObjects.clients
 		let playerFound = false
 		for (let index = 0; index < clients.length; index++) {
@@ -19,7 +19,7 @@ module.exports = function (client) {
 					playerFound = true
 					client.player = clients[index].player
 					client.online = true
-					client.socket.emit('player', client.player)
+					client.socket.emit('player', global.encode(client.player))
 					break
 				}
 			}
@@ -31,7 +31,7 @@ module.exports = function (client) {
 			client.player.screenResolution = {w: clientData.screenResolution.w * 15, h: clientData.screenResolution.h * 15}
 			client.online = true
 			global.gameObjects.units[player.unit.id] = player.unit
-			client.socket.emit('player', client.player)
+			client.socket.emit('player', global.encode(client.player))
 		}
 
 		global.gameObjects.newObjects.units[client.player.unit.id] = client.player.unit
@@ -45,9 +45,9 @@ module.exports = function (client) {
 			projetils[id] = global.gameObjects.projetils[id].getClientVariables()
 		}
 
-		client.socket.emit('init', {
+		client.socket.emit('init', global.encode({
 			units, projetils
-		})
+		}))
 	})
 
 	// angle

@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const http = require('http').Server(app)
 const io = require('socket.io')(http)
+const msgpack = require('msgpack5')()
 const EventEmitter = require('events')
 
 class MyEmitter extends EventEmitter {}
@@ -12,6 +13,10 @@ io.on('error', err => {
 
 global.io = io
 global.gameEvents = new MyEmitter()
+
+global.encode  = msgpack.encode
+global.decode  = msgpack.decode
+
 
 app.use(express.static('client'))
 

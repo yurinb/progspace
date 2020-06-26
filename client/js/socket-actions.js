@@ -3,11 +3,11 @@
 function emitReady() {
 	let username = document.querySelector('#username').value
 	let password = document.querySelector('#password').value
-	socket.emit('playerReady', {
+	socket.emit('playerReady', encode({
 		username,
 		password,
 		screenResolution: {w: screen.width, h: screen.height}
-	})
+	}))
 }
 
 //-----------------------------//-------------------------------
@@ -15,7 +15,7 @@ function emitReady() {
 function emitAngle() {
 	setInterval(() => {
 		// if (player.unit.shooting) {
-			socket.emit('playerAngle', getPlayerAngle())
+			socket.emit('playerAngle', encode(getPlayerAngle()))
 		// }
 	}, 50)
 }
@@ -36,7 +36,7 @@ function emitKeyRelease(key) {
 //----- Sends fire action to server ----------------------------
 function emitFire() {
 	// let emitted = performance.now()
-	socket.emit('playerFires', { angle: getPlayerAngle() }, () => {
+	socket.emit('playerFires', encode({ angle: getPlayerAngle() }), () => {
 		// console.log('FIRES TOOK ', performance.now() - emitted)
 		// playShotSound()
 	})

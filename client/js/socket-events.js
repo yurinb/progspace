@@ -7,6 +7,7 @@ socket.on('connect', function () {
 //-----------------------------//-------------------------------
 //----- Client receives player data after login ----------------
 socket.on('player', function (data) {
+	data = decode(data);
 	player = data
 	userLoggedIn()
 	startScore(units)
@@ -15,6 +16,7 @@ socket.on('player', function (data) {
 //-----------------------------//----------------------------------
 //----- Client receives new objects data(position, state, etc) --
 socket.on('init', function (data) {
+	data = decode(data);
 	for (id in data.projetils) {
 		projetils[id] = data.projetils[id]
 	}
@@ -26,6 +28,7 @@ socket.on('init', function (data) {
 //-----------------------------//----------------------------------
 //----- Client receives updates data(position, state, etc) --
 socket.on('update', function (data) {
+	data = decode(data);
 	for (id in data.projetils) {
 		if (projetils[id]) {
 			projetils[id] = {...projetils[id], ...data.projetils[id]}
@@ -41,6 +44,7 @@ socket.on('update', function (data) {
 //-----------------------------//----------------------------------
 //----- Client receives objects that where removed ----------------
 socket.on('remove', function (data) {
+	data = decode(data);
 	data.projetils.forEach(id => {
 		delete projetils[id]
 	})
@@ -53,6 +57,7 @@ socket.on('remove', function (data) {
 //----- Client receives new stars quadrant (10000 x 10000) ----------
 const cache = 10
 socket.on('stars', function (data) {
+	data = decode(data);
 	if (data.length > 0) {
 		data.forEach(element => {
 			if (player.stars.length >= cache) {

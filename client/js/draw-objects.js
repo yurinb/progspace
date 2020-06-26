@@ -37,22 +37,27 @@ function drawStars() {
 	// setInterval(() => {
 		if (!isEmpty(player)) {
 			backgroundC.clearRect(0, 0, screenWidth, screenHeight)
+			// let renderedStars = 0
+			// let total = 0
 			player.stars.forEach(elem => {
+				// total+=elem.stars.length
 				elem.stars.forEach(ele => {
 					let r = 0.75 + Math.random() * 1
 					let screenPosition = convertPosToPixel(ele.x, ele.y, player.unit, ele.z)
 					// is star on screen?
-					if (true || screenPosition.x <= screenWidth && screenPosition.y <= screenHeight) {
+					if (screenPosition.x <= screenWidth && screenPosition.y <= screenHeight) {
+						// renderedStars++
 						let z = r > 1 ? ele.z * r : ele.z
 						// backgroundC.shadowOffsetX = 0;
 						// backgroundC.shadowOffsetY = 0;
-						// backgroundC.shadowBlur = 4;
+						// backgroundC.shadowBlur = 10;
 						// backgroundC.shadowColor = "rgba(" + ele.r + ", " + ele.g + ", " + ele.b + ", " + z + ")"
 						backgroundC.fillStyle = 'rgba(' + ele.r + ', ' + ele.g + ', ' + ele.b + ', ' + z + ')'
 						backgroundC.fillRect(screenPosition.x, screenPosition.y, ele.s, ele.s)
 					}
 				})
 			})
+			// console.log({renderedStars, of: total});
 		}
 	// }, 50)
 }

@@ -53,9 +53,10 @@ function convertPosToPixel(x, y, playerShip, parallax = 1) { //
 	return {
 		//x: diffX + canvasCenterX,
 		//y: diffY + canvasCenterY
-		x: Math.floor(diffX + canvasCenterX),
+		// x: Math.floor(diffX + canvasCenterX),
+		x: diffX + canvasCenterX,
 		// x: Math.floor(Math.round( (diffX + canvasCenterX) * 100 + Number.EPSILON ) / 100),
-		y: Math.floor(diffY + canvasCenterY)
+		y: diffY + canvasCenterY
 		// y: Math.floor(Math.round( (diffY + canvasCenterY) * 100 + Number.EPSILON ) / 100)
 	}
 }

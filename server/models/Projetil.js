@@ -91,11 +91,11 @@ module.exports = {
 		
 		let objectProperties = {
 			damage: 25,
-			speed: 125,
+			speed: 200,
 			energy: 5000,
 			energyCost: 5,
-			w: 35,
-			h: 85,
+			w: 25,
+			h: 60,
 			animation: idleProjetilAnimation,
 			animations: {
 				idle: idleProjetilAnimation, 

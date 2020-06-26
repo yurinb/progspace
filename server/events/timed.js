@@ -54,10 +54,10 @@ function emitGameStateToClients() {
 	}
 	if (Object.keys(newUnits).length > 0 || Object.keys(newProjetils).length > 0) {
 		setTimeout(() => {
-			global.io.compress(true).emit('init', {
+			global.io.compress(true).emit('init', global.encode({
 				units: newUnits,
 				projetils: newProjetils,
-			})
+			}))
 		}, 10)
 			
 		global.gameObjects.newObjects.units = {}
@@ -65,20 +65,20 @@ function emitGameStateToClients() {
 	}
 
 	setTimeout(() => {
-		global.io.compress(true).emit('update', {
+		global.io.compress(true).emit('update', global.encode({
 			units: keepOnlyChanges(units, newUnits, global.gameObjects.units),
 			projetils: keepOnlyChanges(projetils, newProjetils, global.gameObjects.projetils)
-		})
+		}))
 	}, 15)
 
 	const removeUnits = global.gameObjects.removeObjects.units
 	const removeProjetils = global.gameObjects.removeObjects.projetils
 	if (removeUnits.length > 0 || removeProjetils.length > 0) {
 		setTimeout(() => {
-			global.io.compress(true).emit('remove', {
+			global.io.compress(true).emit('remove', global.encode({
 				units: removeUnits,
 				projetils: removeProjetils,
-			})
+			}))
 		}, 20)
 			
 		global.gameObjects.removeObjects.units = []
@@ -88,7 +88,7 @@ function emitGameStateToClients() {
 		for (id in global.gameObjects.clients) {
 			if (global.gameObjects.clients[id].player) {
 				const stars = SpawnStars.getNewVisibleQuadrants(global.gameObjects.clients[id].player.unit.x, global.gameObjects.clients[id].player.unit.y, global.gameObjects.clients[id].player.stars, global.gameObjects.clients[id].player.screenResolution)
-				if (stars.length > 0) global.gameObjects.clients[id].socket.compress(true).emit('stars', stars)
+				if (stars.length > 0) global.gameObjects.clients[id].socket.compress(true).emit('stars', global.encode(stars))
 			}
 		}
 	}, 30)
@@ -129,7 +129,7 @@ function spawnAsteroids() {
 				
 				setTimeout(() => {
 					asteroid.vanishIn(15000)
-				}, 45000)
+				}, 30000)
 				global.gameObjects.units[asteroid.id] = asteroid
 				global.gameObjects.newObjects.units[asteroid.id] = asteroid
 			}
@@ -140,7 +140,7 @@ function spawnAsteroids() {
 setTimeout(() => {
 	setInterval(() => {
 		emitGameStateToClients()
-	}, 50)
+	}, 30)
 }, 1000)
 
 setTimeout(() => {
