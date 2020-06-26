@@ -1,17 +1,46 @@
 //-----------------------------//-------------------------------
 //----- Server socket to connect at browser --------------------
-const socket = io.connect('http://localhost:9000')
+const socket = io.connect('ws://localhost:9000')
 //const socket = io.connect("http://192.168.15.15:9000");
-//const socket = io.connect("http://outspace.herokuapp.com");
+// const socket = io.connect('ws://progspace.herokuapp.com')
 //const socket = io.connect("http://mussum.ddns.net:9000");
 
+// game objects
+let player    = {}
+let units     = []
+let projetils = {}
+let stars     = []
+let particles = []
 
-const canvas          = document.querySelector('canvas')
-const bulletsCanvas   = document.createElement('canvas')
-const shipsCanvas     = document.createElement('canvas')
-const interfaceCanvas = document.createElement('canvas')
+// canvas layers (ordered)
+const canvasElements = {
+	canvas          : document.querySelector('canvas'),
+	unitsCanvas     : document.createElement('canvas'),
+	projetilsCanvas : document.createElement('canvas'),
+	interfaceCanvas : document.createElement('canvas'),
+}
 
-canvas.style.backgroundColor = '#020202'
+canvasElements.canvas.style.backgroundColor = '#020202'
+
+// get canvas layer contexts
+const backgroundC = canvasElements.canvas.getContext('2d')
+const unitsC      = canvasElements.unitsCanvas.getContext('2d')
+const projetilsC  = canvasElements.projetilsCanvas.getContext('2d')
+const interfaceC  = canvasElements.interfaceCanvas.getContext('2d')
+
+// something like anti-aliasing effect
+backgroundC.imageSmoothingEnabled = false
+unitsC.imageSmoothingEnabled      = false
+projetilsC.imageSmoothingEnabled  = false
+interfaceC.imageSmoothingEnabled  = false
+
+function setCanvasElementsPropValue(prop, value) {
+	for (const key in canvasElements) {
+		if (canvasElements.hasOwnProperty(key)) {
+			canvasElements[key][prop] = value
+		}
+	}
+}
 
 // get screen size
 let screenHeight = window.innerHeight
@@ -20,45 +49,23 @@ let screenWidth  = window.innerWidth
 function resizeCanvas() {
 	screenHeight = window.innerHeight
 	screenWidth  = window.innerWidth
-
-	canvas.height          = screenHeight
-	bulletsCanvas.height   = screenHeight
-	shipsCanvas.height     = screenHeight
-	interfaceCanvas.height = screenHeight
-    
-	canvas.width          = screenWidth
-	bulletsCanvas.width   = screenWidth
-	shipsCanvas.width     = screenWidth
-	interfaceCanvas.width = screenWidth
+	
+	setCanvasElementsPropValue('height', screenHeight)
+	setCanvasElementsPropValue('width', screenWidth)
 }
+
 resizeCanvas()
 
-// periodically check if screen size changed
-// resize canvas if true
-setInterval(() => {
-	if (screenHeight != window.innerHeight || screenWidth  != window.innerWidth) {
-		resizeCanvas()
-	}
-}, 250)
+window.onresize = resizeCanvas
 
 // order canvas to act like layers
-canvas.style.zIndex          = '1'
-shipsCanvas.style.zIndex     = '2'
-bulletsCanvas.style.zIndex   = '3'
-interfaceCanvas.style.zIndex = '4'
-
-// get canvas layer contexts
-const backgroundC = canvas.getContext('2d')
-const bulletsC    = bulletsCanvas.getContext('2d')
-const shipsC      = shipsCanvas.getContext('2d')
-const interfaceC  = interfaceCanvas.getContext('2d')
-
-// something like anti-aliasing effect
-backgroundC.imageSmoothingEnabled = false
-bulletsC.imageSmoothingEnabled    = false
-shipsC.imageSmoothingEnabled      = false
-interfaceC.imageSmoothingEnabled  = false
-
+let index = 0
+for (const key in canvasElements) {
+	if (canvasElements.hasOwnProperty(key)) {
+		index++
+		canvasElements[key].style.zIndex = index
+	}
+}
 
 // setting some game variables
 let mousePosition = {
@@ -66,26 +73,18 @@ let mousePosition = {
 	y: 0
 }
 
-let score     = {}
-let player    = {}
-let ships     = []
-let bullets   = []
-let stars     = []
-let particles = []
-// ----------------------------
-
 // capture mouse move event and update mouse position variables
 document.body.addEventListener('mousemove', function (evt) {
-	var mousePos = getMousePos(shipsCanvas, evt)
+	var mousePos = getMousePos(canvasElements.unitsCanvas, evt)
 
 	mousePosition.x = mousePos.x
 	mousePosition.y = mousePos.y
 
-	if (!player.ship) {
+	if (!player.unit) {
 		return
 	}
 	//realtime angle
-	//player.ship.angle = getPlayerAngle()
+	//player.unit.angle = getPlayerAngle()
 }, false)
 
 
@@ -107,14 +106,24 @@ showLoginModal()
 let debbugingOnScreen = false
 
 function userLoggedIn() {
+
 	hideLoginModal()
-	document.body.appendChild(shipsCanvas)
-	document.body.appendChild(bulletsCanvas)
-	document.body.appendChild(interfaceCanvas)
-	canvas.x = 0
+
+	for (const key in canvasElements) {
+		if (canvasElements.hasOwnProperty(key)) {
+			document.body.appendChild(canvasElements[key])
+		}
+	}
+
+	// canvasElements.canvas.x = 0
+
+	setCanvasElementsPropValue('x', 0)
+	setCanvasElementsPropValue('y', 0)
+
 	setTimeout(() => {
-		writeObjects()
+		drawObjects()
 	}, 10)
+	
 	setTimeout(() => {
 		emitAngle()
 	}, 20)

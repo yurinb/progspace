@@ -1,77 +1,29 @@
 function elementCollidesWithShip(element, collidedWith) {
-	let eC = {
-		x: element.x,
-		y: element.y,
-		r: (element.w + element.h) / 2
-	}
-	for (let i = 0; i < global.gameObjects.ships.length; i++) {
-		let ship = global.gameObjects.ships[i]
-		let verify = true
-		if (ship.state == 'dead' || ship.state == 'removible') verify = false
-
-		if (verify && element.username != ship.username || ship.isMeteor || element.isMeteor && ship.isPlayer) {
-
-			if (element.isMeteor && ship.isMeteor && ship.id == element.id) verify = false
-
-			if (verify) {
-
-				let sC = {
-					x: ship.x,
-					y: ship.y,
-					r: (ship.w + ship.h) / 2
-				}
-
-				if (collision(eC.x, eC.y, eC.r, sC.x, sC.y, sC.r)) {
-					collidedWith(ship)
+	for (id in global.gameObjects.units) {
+		if (global.gameObjects.units[id].state != 'alive') continue
+	
+		if (element.ownerID != global.gameObjects.units[id].id || global.gameObjects.units[id].isAsteroid || element.isAsteroid && global.gameObjects.units[id].isPlayer) {
+	
+			if (element.isAsteroid && global.gameObjects.units[id].isAsteroid && global.gameObjects.units[id].id == element.id)
+				continue
+	
+				if (collision(element.x, element.y, (element.w + element.h) / 2, global.gameObjects.units[id].x, global.gameObjects.units[id].y, (global.gameObjects.units[id].w + global.gameObjects.units[id].h) / 2)) {
+					collidedWith(global.gameObjects.units[id])
 					return true
 				}
 			}
 		}
-	}
+
 	return false
 }
 
 function collision(p1x, p1y, r1, p2x, p2y, r2) {
-	var a
-	var x
-	var y
-
-	a = r1 + r2
-	x = p1x - p2x
-	y = p1y - p2y
-
-	if (a > Math.sqrt((x * x) + (y * y))) {
+	if (r1 + r2 > Math.sqrt(((p1x - p2x) * (p1x - p2x)) + ((p1y - p2y) * (p1y - p2y)))) {
 		return true
 	} else {
 		return false
 	}
 }
-
-//collides rectangle
-// function elementCollidesWithShip(element) {
-
-//     let ships = global.gameObjects.ships
-//     let eMinX = element.x - element.w / 2
-//     let eMaxX = element.x + element.w / 2
-//     let eMinY = element.y - element.h / 2
-//     let eMaxY = element.y + element.h / 2
-//     for (let index = 0; index < ships.length; index++) {
-//         let sMinX = ships[index].x - ships[index].w / 2
-//         let sMaxX = ships[index].x + ships[index].w / 2
-//         let sMinY = ships[index].y - ships[index].h / 2
-//         let sMaxY = ships[index].y + ships[index].h / 2
-//         if (
-//             eMaxX >= sMinX &&
-//             eMinX <= sMaxX &&
-//             eMaxY >= sMinY &&
-//             eMinY <= sMaxY
-//         ) {
-//             return true
-//         }
-//     }
-//     return false
-// }
-
 
 module.exports = {
 	elementCollidesWithShip

@@ -7,12 +7,12 @@
     <title>progspace</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="css/main.css" />
-    
+
 </head>
 
 <body>
-    <canvas onmousedown="mouseDown(e)" ></canvas>
-    
+    <canvas onmousedown="mouseDown(e)"></canvas>
+
     <!-- Login -->
     <div id="login-container">
         <div id="login-input">
@@ -21,9 +21,36 @@
             <button onclick="emitReady()">login</button>
         </div>
     </div>
-    
+
+    <!-- Ranking Top 10 -->
+    <div class="ranking-container">
+        <div class="ranking-players-container">
+            <div class="column ranking-username-column">
+                <div class="ranking-username-title">
+                    username
+                </div>
+            </div>
+            <div class="column ranking-asteroids-column">
+                <div class="ranking-asteroids-title">
+                    asteroids
+                </div>
+            </div>
+            <div class="column ranking-kills-column">
+                <div class="ranking-kills-title">
+                    kills
+                </div>
+            </div>
+            <div class="column ranking-score-column">
+                <div class="ranking-score-title">
+                    score
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/bundle.js"></script>
     <script src="/js/canvas-util.js"></script>
+    <script src="/js/html-generator.js"></script>
     <script src="/js/draw-objects.js"></script>
     <script src="/js/main.js"></script>
     <script src="/js/socket-events.js"></script>
@@ -31,7 +58,7 @@
     <script src="/js/player-actions.js"></script>
     <script>
         document.querySelectorAll("#username, #password").forEach(el => el.addEventListener("keyup", event => {
-            if(event.key !== "Enter") return;
+            if (event.key !== "Enter") return;
             emitReady()
         }))
     </script>

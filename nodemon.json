@@ -1,0 +1,10 @@
+{
+    "verbose": true,
+    "events": {
+        "start": "browserify ./client/js/node_modules.js > ./client/js/bundle.js",
+        "restart": "browserify ./client/js/node_modules.js > ./client/js/bundle.js"
+    },
+    "ignore": [
+        "bundle.js"
+      ]
+}

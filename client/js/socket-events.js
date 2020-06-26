@@ -7,42 +7,63 @@ socket.on('connect', function () {
 //-----------------------------//-------------------------------
 //----- Client receives player data after login ----------------
 socket.on('player', function (data) {
+	data = decode(data);
 	player = data
 	userLoggedIn()
+	startScore(units)
 })
 
 //-----------------------------//----------------------------------
-//----- Client receives new ships data(position, angle, etc) ------
-socket.on('ships_position', function (data) {
-	ships = ships.map(ship => {
-		const found = data.find(el => el.id == ship.id)
-		if (found) ship = {...ship, ...found}
-		return ship
+//----- Client receives new objects data(position, state, etc) --
+socket.on('init', function (data) {
+	data = decode(data);
+	for (id in data.projetils) {
+		projetils[id] = data.projetils[id]
+	}
+	for (id in data.units) {
+		units[id] = data.units[id]
+	}
+})
+
+//-----------------------------//----------------------------------
+//----- Client receives updates data(position, state, etc) --
+socket.on('update', function (data) {
+	data = decode(data);
+	for (id in data.projetils) {
+		if (projetils[id]) {
+			projetils[id] = {...projetils[id], ...data.projetils[id]}
+		}
+	}
+	for (id in data.units) {
+		if (units[id]) {
+			units[id] = {...units[id], ...data.units[id]}
+		}
+	}
+})
+
+//-----------------------------//----------------------------------
+//----- Client receives objects that where removed ----------------
+socket.on('remove', function (data) {
+	data = decode(data);
+	data.projetils.forEach(id => {
+		delete projetils[id]
 	})
-})
-
-//-----------------------------//----------------------------------
-//----- Client receives new projetils data(position, state, etc) --
-socket.on('bullets', function (data) {
-	bullets = data
+	data.units.forEach(id => {
+		delete units[id]
+	})
 })
 
 //-----------------------------//----------------------------------
 //----- Client receives new stars quadrant (10000 x 10000) ----------
 const cache = 10
 socket.on('stars', function (data) {
+	data = decode(data);
 	if (data.length > 0) {
-		data.slice().forEach(element => {
+		data.forEach(element => {
 			if (player.stars.length >= cache) {
 				player.stars.pop()
 			}
 			player.stars.unshift(element)
 		})
 	}
-})
-
-//-----------------------------//----------------------------------
-//----- Client receives current score rank (kills) ----------------
-socket.on('score', function (data) {
-	score = data
 })
