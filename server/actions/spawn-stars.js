@@ -1,7 +1,7 @@
 const StarFactory = require('../models/Star')
 
-const starsByQuadrantDivisor = 200 // more stars when less number
-const cache = 15
+const starsByQuadrantDivisor = 100 // more stars when less number
+const cache = 30
 
 // creates a quadrant to be used to fit stars in
 function getQuadrantPositionBy(x, y, playerResolution) {

@@ -125,11 +125,11 @@ function spawnAsteroids() {
 
 			if (nearAsteroids < 10) {
 				const asteroid = UnitsFactory.newAsteroid(x, y)
-				asteroid.appearIn(10000)
+				asteroid.appearIn(7500)
 				
 				setTimeout(() => {
 					asteroid.vanishIn(15000)
-				}, 30000)
+				}, 25000)
 				global.gameObjects.units[asteroid.id] = asteroid
 				global.gameObjects.newObjects.units[asteroid.id] = asteroid
 			}
@@ -140,7 +140,7 @@ function spawnAsteroids() {
 setTimeout(() => {
 	setInterval(() => {
 		emitGameStateToClients()
-	}, 30)
+	}, 20)
 }, 1000)
 
 setTimeout(() => {

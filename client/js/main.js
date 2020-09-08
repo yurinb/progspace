@@ -1,7 +1,8 @@
 //-----------------------------//-------------------------------
 //----- Server socket to connect at browser --------------------
 const socket = io.connect('ws://localhost:9000')
-//const socket = io.connect("http://192.168.15.15:9000");
+// const socket = io.connect('ws://192.168.1.67:9000')
+// const socket = io.connect("http://192.168.15.15:9000");
 // const socket = io.connect('ws://progspace.herokuapp.com')
 //const socket = io.connect("http://mussum.ddns.net:9000");
 
@@ -20,7 +21,7 @@ const canvasElements = {
 	interfaceCanvas : document.createElement('canvas'),
 }
 
-canvasElements.canvas.style.backgroundColor = '#020202'
+canvasElements.canvas.style.backgroundColor = 'rgb(0, 0, 15)'
 
 // get canvas layer contexts
 const backgroundC = canvasElements.canvas.getContext('2d')

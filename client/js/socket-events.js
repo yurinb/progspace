@@ -31,12 +31,18 @@ socket.on('update', function (data) {
 	data = decode(data);
 	for (id in data.projetils) {
 		if (projetils[id]) {
-			projetils[id] = {...projetils[id], ...data.projetils[id]}
+			Object.keys(data.projetils[id]).forEach(attribute => {
+				projetils[id][attribute] = data.projetils[id][attribute]
+			})
+			// projetils[id] = {...projetils[id], ...data.projetils[id]}
 		}
 	}
 	for (id in data.units) {
 		if (units[id]) {
-			units[id] = {...units[id], ...data.units[id]}
+			Object.keys(data.units[id]).forEach(attribute => {
+				units[id][attribute] = data.units[id][attribute]
+			})
+			// units[id] = {...units[id], ...data.units[id]}
 		}
 	}
 })
@@ -55,7 +61,7 @@ socket.on('remove', function (data) {
 
 //-----------------------------//----------------------------------
 //----- Client receives new stars quadrant (10000 x 10000) ----------
-const cache = 10
+const cache = 30
 socket.on('stars', function (data) {
 	data = decode(data);
 	if (data.length > 0) {

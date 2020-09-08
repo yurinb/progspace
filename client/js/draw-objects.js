@@ -11,16 +11,17 @@ function drawObjects() {
 
 let previousFrameTime = 0
 let FPS = 0
+
 function drawAnimatedObjectsLoop(time) {
-	FPS = Math.floor(1000/(time - previousFrameTime))
-	previousFrameTime = time
+	// FPS = Math.floor(1000/(time - previousFrameTime))
+	// previousFrameTime = time
 
 	drawStars()
 	drawUnits()
 	drawProjetils()
-	drawFPS(FPS)
+	// drawFPS(FPS)
 
-	requestAnimationFrame(drawAnimatedObjectsLoop)
+	requestAnimationFrame(drawAnimatedObjectsLoop) // loops every 17ms (+-) (60fps)
 	// setTimeout(() => {
 	// 	drawAnimatedObjectsLoop()
 	// }, 50);
@@ -34,7 +35,6 @@ function drawFPS(FPS) {
 }
 
 function drawStars() {
-	// setInterval(() => {
 		if (!isEmpty(player)) {
 			backgroundC.clearRect(0, 0, screenWidth, screenHeight)
 			// let renderedStars = 0
@@ -59,7 +59,6 @@ function drawStars() {
 			})
 			// console.log({renderedStars, of: total});
 		}
-	// }, 50)
 }
 
 function drawUnits() {

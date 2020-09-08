@@ -20,7 +20,7 @@ module.exports = {
 			isPlayer: true,
 			w: 100,
 			h: 100,
-			speed: 75,
+			speed: 150,
 			aceleration: 5,
 			acelerated: 0,
 			velY: 0,
@@ -159,7 +159,7 @@ module.exports = {
 
 
 	newAsteroid: function (x, y) {
-		let iddleAnimation = AnimationsFactory.newAnimation('idle', '../img/asteroid/asteroid', 100, 30, true, 0)
+		let iddleAnimation = AnimationsFactory.newAnimation('idle', '../img/asteroid/asteroid', 125, 30, true, 0)
 		let deadAnimation = AnimationsFactory.newAnimation('dead', '../img/sfx/explosion', 150, 13, false, 1)
 
 		const size = 350 + Math.random() * 1000
@@ -170,7 +170,7 @@ module.exports = {
 			w: size,
 			h: size,
 			angle: Math.floor(Math.random() * 360),
-			speed: 10 + Math.random() * 50,
+			speed: 25 + Math.random() * 100,
 			energy: 250 + size,
 			reactorSpeed: 0,
 			state: 'alive',
