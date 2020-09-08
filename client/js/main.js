@@ -9,7 +9,7 @@ const socket = io.connect('ws://localhost:9000')
 // game objects
 let player    = {}
 let units     = []
-let projetils = {}
+let projectiles = {}
 let stars     = []
 let particles = []
 
@@ -17,7 +17,7 @@ let particles = []
 const canvasElements = {
 	canvas          : document.querySelector('canvas'),
 	unitsCanvas     : document.createElement('canvas'),
-	projetilsCanvas : document.createElement('canvas'),
+	projectilesCanvas : document.createElement('canvas'),
 	interfaceCanvas : document.createElement('canvas'),
 }
 
@@ -26,13 +26,13 @@ canvasElements.canvas.style.backgroundColor = 'rgb(0, 0, 15)'
 // get canvas layer contexts
 const backgroundC = canvasElements.canvas.getContext('2d')
 const unitsC      = canvasElements.unitsCanvas.getContext('2d')
-const projetilsC  = canvasElements.projetilsCanvas.getContext('2d')
+const projectilesC  = canvasElements.projectilesCanvas.getContext('2d')
 const interfaceC  = canvasElements.interfaceCanvas.getContext('2d')
 
 // something like anti-aliasing effect
 backgroundC.imageSmoothingEnabled = false
 unitsC.imageSmoothingEnabled      = false
-projetilsC.imageSmoothingEnabled  = false
+projectilesC.imageSmoothingEnabled  = false
 interfaceC.imageSmoothingEnabled  = false
 
 function setCanvasElementsPropValue(prop, value) {
@@ -85,7 +85,7 @@ document.body.addEventListener('mousemove', function (evt) {
 		return
 	}
 	//realtime angle
-	//player.unit.angle = getPlayerAngle()
+	//player.unit.a = getPlayerAngle()
 }, false)
 
 

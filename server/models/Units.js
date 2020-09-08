@@ -8,14 +8,36 @@ module.exports = {
 
 
 	newShip: function (username) {
-		let physicObject = PhysicObjectFactory.newPhysicObject()
+		const physicObject = PhysicObjectFactory.newPhysicObject()
 
-		let iddleAnimation = AnimationsFactory.newAnimation('idle', '../img/units/unit', 9999, 1, true, 0)
-		let deadAnimation = AnimationsFactory.newAnimation('dead', '../img/sfx/explosion', 150, 13, false, 1)
+		const iddleAnimation = AnimationsFactory.newAnimation({
+			state: 'idle', 
+			frame: '../img/units/unit', 
+			interval: 9999, 
+			maxIndex: 1, 
+			repeat: true, 
+			animationIndex: 0
+		})
+			
+		const deadAnimation = AnimationsFactory.newAnimation({
+			state: 'dead', 
+			frame: '../img/sfx/explosion', 
+			interval: 150, 
+			maxIndex: 13, 
+			repeat: false, 
+			animationIndex: 1
+		})
+			
+		const propulsorAnimation = AnimationsFactory.newAnimation({
+			state: 'idle', 
+			frame: '../img/sfx/propulsor', 
+			interval: 150, 
+			maxIndex: 2, 
+			repeat: true, 
+			animationIndex: 0
+		})
 
-		let propulsorAnimation = AnimationsFactory.newAnimation('idle', '../img/sfx/propulsor', 150, 2, true, 0)
-
-		let objectProperties = {
+		const objectProperties = {
 			username,
 			isPlayer: true,
 			w: 100,
@@ -130,7 +152,7 @@ module.exports = {
 					y: this.y,
 					h: this.w,
 					w: this.h,
-					angle: this.angle,
+					a: this.angle,
 					maxEnergy: this.maxEnergy,
 					energy: this.energy,
 					score: this.score,
@@ -149,7 +171,7 @@ module.exports = {
 			}
 		}
 
-		let unit = Object.assign(physicObject, objectProperties)
+		const unit = Object.assign(physicObject, objectProperties)
 
 		Animate.animate(unit)
 		Animate.animate(unit.propulsor)
@@ -159,12 +181,27 @@ module.exports = {
 
 
 	newAsteroid: function (x, y) {
-		let iddleAnimation = AnimationsFactory.newAnimation('idle', '../img/asteroid/asteroid', 125, 30, true, 0)
-		let deadAnimation = AnimationsFactory.newAnimation('dead', '../img/sfx/explosion', 150, 13, false, 1)
-
+		const iddleAnimation = AnimationsFactory.newAnimation({
+			state: 'idle', 
+			frame: '../img/asteroid/asteroid', 
+			interval: 125, 
+			maxIndex: 30, 
+			repeat: true, 
+			animationIndex: 0
+		})
+		
+		const deadAnimation = AnimationsFactory.newAnimation({
+			state: 'dead', 
+			frame: '../img/sfx/explosion', 
+			interval: 150, 
+			maxIndex: 13, 
+			repeat: false, 
+			animationIndex: 1
+		})
+			
 		const size = 350 + Math.random() * 1000
 
-		let objectProperties = {
+		const objectProperties = {
 			username: '',
 			isAsteroid: true,
 			w: size,
@@ -230,7 +267,7 @@ module.exports = {
 					y: this.y,
 					h: this.w,
 					w: this.h,
-					angle: this.angle,
+					a: this.angle,
 					isAsteroid: this.isAsteroid,
 					animations: Object.keys(this.animations).map( key => this.animations[key].frame ),
 					ai: this.animation.animationIndex,
@@ -238,9 +275,9 @@ module.exports = {
 				}
 			}
 		}
-		let physicObject = PhysicObjectFactory.newPhysicObject()
+		const physicObject = PhysicObjectFactory.newPhysicObject()
 
-		let unit = Object.assign(physicObject, objectProperties)
+		const unit = Object.assign(physicObject, objectProperties)
 
 		unit.x = x
 		unit.y = y

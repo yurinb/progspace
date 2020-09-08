@@ -77,7 +77,7 @@ function drawUnits() {
 				
 				unitsC.save()
 				unitsC.translate(screenPosition.x, screenPosition.y)
-				unitsC.rotate(elem.angle * Math.PI / 180)
+				unitsC.rotate(elem.a * Math.PI / 180)
 				try {
 					unitsC.drawImage(unitFrame, -(elem.w * 2 * zoom / 2), -(elem.h * 2 * zoom / 2), elem.w * 2 * zoom, elem.h * 2 * zoom)
 				} catch (error) {}
@@ -95,7 +95,7 @@ function drawUnits() {
 				let unitFrame = getImgFrameByIndex(elem)
 				unitsC.save()
 				unitsC.translate(screenPosition.x, screenPosition.y)
-				unitsC.rotate(elem.angle * Math.PI / 180)
+				unitsC.rotate(elem.a * Math.PI / 180)
 				try {
 					unitsC.drawImage(unitFrame, -(elem.w * 2 * zoom / 2), -(elem.h * 2 * zoom / 2), elem.w * 2 * zoom, elem.h * 2 * zoom)
 				} catch (error) {}
@@ -108,11 +108,11 @@ function drawUnits() {
 				// propulsor
 				if (elem.propulsor && elem.propulsor.on) {
 					let propulsorFrame = getImgFrameByIndex(elem.propulsor)
-					let newX = screenPosition.x - 160 * zoom * Math.cos((elem.angle + 0) * Math.PI / 180)
-					let newY = screenPosition.y - 160 * zoom * Math.sin((elem.angle + 0) * Math.PI / 180)
+					let newX = screenPosition.x - 160 * zoom * Math.cos((elem.a + 0) * Math.PI / 180)
+					let newY = screenPosition.y - 160 * zoom * Math.sin((elem.a + 0) * Math.PI / 180)
 					unitsC.save()
 					unitsC.translate(newX, newY)
-					unitsC.rotate(elem.angle * Math.PI / 180)
+					unitsC.rotate(elem.a * Math.PI / 180)
 					try {
 						unitsC.drawImage(propulsorFrame, -(elem.w * 2 * zoom / 2), -(elem.h * 2 * zoom / 2), elem.w * 2 * zoom, elem.h * 2 * zoom)
 					} catch (error) {}
@@ -125,23 +125,96 @@ function drawUnits() {
 }
 
 function drawProjetils() {
-		if (!isEmpty(player) && !isEmpty(projetils)) {
-			projetilsC.clearRect(0, 0, screenWidth, screenHeight)
-			Object.keys(projetils).forEach(key => {
-				const elem = projetils[key];
-				let projetilImg = getImgFrameByIndex(elem)
-				projetilsC.save()
-				projetilsC.beginPath()
+		if (!isEmpty(player) && !isEmpty(projectiles)) {
+			projectilesC.clearRect(0, 0, screenWidth, screenHeight)
+			Object.keys(projectiles).forEach(key => {
+				const elem = projectiles[key];
+				let projectileImg = getImgFrameByIndex(elem)
 				let screenPosition = convertPosToPixel(elem.x, elem.y, player.unit)
-				projetilsC.translate(screenPosition.x, screenPosition.y)
-				projetilsC.rotate(elem.angle * Math.PI / 180)
+				projectilesC.save()
+				projectilesC.beginPath()
+				projectilesC.translate(screenPosition.x, screenPosition.y)
+				projectilesC.rotate(elem.a * Math.PI / 180)
 				try {
-					projetilsC.drawImage(projetilImg, -(elem.w * 2 * zoom / 2), -(elem.h * 2 * zoom / 2), elem.w * 2 * zoom, elem.h * 2 * zoom)
-				} catch (error) {}
-				projetilsC.restore()
+					projectilesC.drawImage(projectileImg, -(elem.w * 2 * zoom / 2), -(elem.h * 2 * zoom / 2), elem.w * 2 * zoom, elem.h * 2 * zoom)
+				} catch (error) {
+					console.log({ error })
+				}
+				projectilesC.restore()
+
+				// DRAW TRAIL
+
+				if (elem.name != 'plasma') return
+				
+				if (!elem.trail) {
+					elem.trail = {
+						starts: {
+							x: elem.x, 
+							y: elem.y
+						}
+					}
+				}
+
+				if (elem.state != 'dead') {
+					elem.trail.ends = {
+						x: elem.x,
+						y: elem.y
+					}
+				} 
+
+				const trail = {
+					starts: convertPosToPixel(elem.trail.starts.x, elem.trail.starts.y, player.unit),
+					ends: convertPosToPixel(elem.trail.ends.x, elem.trail.ends.y, player.unit),
+				}
+
+				projectilesC.save()
+				projectilesC.beginPath();
+				try {
+					if (!elem.opacity) {
+						elem.opacity = 0
+					}
+					if (elem.isVanish || elem.state == 'dead' && elem.opacity < 0.25) {
+						elem.opacity += 0.025
+					}
+
+					let grad = projectilesC.createLinearGradient(trail.starts.x, trail.starts.y, trail.ends.x, trail.ends.y);
+					grad.addColorStop(0, 'black');
+					grad.addColorStop(0 + elem.opacity * 4, 'black');
+					grad.addColorStop(0.25 + elem.opacity * 3, '#980000');
+					grad.addColorStop(0.5 + elem.opacity * 2, '#c10000');
+					grad.addColorStop(0.75 + elem.opacity, '#8f0047');
+					grad.addColorStop(1, '#ff8585');
+
+					projectilesC.strokeStyle = grad;	
+					projectilesC.lineWidth = 2
+					
+					projectilesC.moveTo(trail.starts.x, trail.starts.y);
+					projectilesC.lineTo(trail.ends.x, trail.ends.y);
+					projectilesC.stroke();
+
+					grad = projectilesC.createLinearGradient(trail.starts.x, trail.starts.y, trail.ends.x, trail.ends.y);
+					grad.addColorStop(0, 'black');
+					grad.addColorStop(0 + elem.opacity * 4, 'black');
+					grad.addColorStop(0.25 + elem.opacity * 3, '#9800ff');
+					grad.addColorStop(0.5 + elem.opacity * 2, '#c100ff');
+					grad.addColorStop(0.75 + elem.opacity, '#8f00ff');
+					grad.addColorStop(1, '#ff85ff');
+
+					projectilesC.strokeStyle = grad;	
+					projectilesC.lineWidth = 1
+					
+					projectilesC.moveTo(trail.starts.x, trail.starts.y);
+					projectilesC.lineTo(trail.ends.x, trail.ends.y);
+					projectilesC.stroke();
+					projectilesC.closePath();       
+				} catch (error) {
+					console.log({ error })
+				}
+
+				projectilesC.restore()
 			})
 		} else {
-			projetilsC.clearRect(0, 0, screenWidth, screenHeight)
+			projectilesC.clearRect(0, 0, screenWidth, screenHeight)
 		}
 }
 
@@ -226,13 +299,13 @@ function loadImages() {
 	}
 	// PROJETILS
 	for (let i = 1; i <= 1; i++) {
-		let projetil = new Image()
-		projetil.src = '../img/projetils/projetil' + i + '.png'
-		projetil.onload = function () {
-			projetil.width = 150
-			projetil.height = 100
+		let projectile = new Image()
+		projectile.src = '../img/projectiles/projectile' + i + '.png'
+		projectile.onload = function () {
+			projectile.width = 150
+			projectile.height = 100
 		}
-		images['../img/projetils/projetil' + i + '.png'] = projetil
+		images['../img/projectiles/projectile' + i + '.png'] = projectile
 	}
 	// PROPULSOR
 	for (let i = 1; i <= 2; i++) {
@@ -263,7 +336,6 @@ function loadImages() {
 }
 
 function getImgFrameByIndex(elem) {
-	if (elem.fi == 0) console.log(elem)
 	return images[elem.animations[elem.ai] + [elem.fi] + '.png']
 	// for (let index = 0; index < images.length; index++) {
 	// 	let element = images[index]

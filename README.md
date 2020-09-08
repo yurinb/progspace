@@ -7,7 +7,7 @@ Current game state:
 * [x] Almost Infinite world (it keeps continue until integer limit broke - not tested)
 * [x] Player can join game with username/password(no registration needed)
 * [x] Player can move ASDW
-* [x] Player can attack with basic projetils (mouse hold)
+* [x] Player can attack with basic projectiles (mouse hold)
 * [x] Player loses energy shield when attacked
 * [x] Player dies if energy shield is destroyed
 * [x] Player unit turns angle to mouse position when attacking

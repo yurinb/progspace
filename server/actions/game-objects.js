@@ -1,14 +1,14 @@
 global.gameObjects = {
     clients: [],
     units: {},
-    projetils: {},
+    projectiles: {},
     starsQuadrant: [],
     newObjects: {
         units: {},
-        projetils: {}
+        projectiles: {}
     },
     removeObjects: {
         units: [],
-        projetils: []
+        projectiles: []
     }
 }

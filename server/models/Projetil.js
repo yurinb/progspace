@@ -7,6 +7,7 @@ function newProjetil(ownerID) {
 	let physicProjetil = PhysicObjectFactory.newPhysicObject()
 	
 	let objectProperties = {
+		name: 'projectile',
 		state: 'alive',
 		ownerID,
 		damage: 10,
@@ -62,11 +63,15 @@ function newProjetil(ownerID) {
 		getClientVariables: function() {
 			return {
 				id: this.id,
+				name: this.name,
 				x: this.x,
 				y: this.y,
 				h: this.w,
 				w: this.h,
-				angle: this.angle,
+				isVanish: this.isVanish,
+				state: this.state,
+				owner: this.ownerID,
+				a: this.angle,
 				animations: Object.keys(this.animations).map( key => this.animations[key].frame ),
 				ai: this.animation.animationIndex,
 				fi: this.animation.frameIndex,
@@ -74,22 +79,38 @@ function newProjetil(ownerID) {
 		}
 	}
 
-	let projetil = Object.assign(physicProjetil, objectProperties)
+	let projectile = Object.assign(physicProjetil, objectProperties)
 
 
-	return projetil
+	return projectile
 }
 
 module.exports = {
     
     
-	newLaser: function (ownerID) {
-		let idleProjetilAnimation = AnimationsFactory.newAnimation('idle', '../img/projetils/projetil', 100, 1, true, 0)
-		let deadProjetilAnimation = AnimationsFactory.newAnimation('dead', '../img/sfx/explosion', 50, 13, false, 1)
+	plasma: function (ownerID) {
+		const idleProjetilAnimation = AnimationsFactory.newAnimation({
+			state: 'idle', 
+			frame: '../img/projectiles/projectile', 
+			interval: 100, 
+			maxIndex: 1, 
+			repeat: true, 
+			animationIndex: 0
+		})
 
-		let projetil = newProjetil(ownerID)
+		const deadProjetilAnimation = AnimationsFactory.newAnimation({
+			state: 'dead', 
+			frame: '../img/sfx/explosion', 
+			interval: 50, 
+			maxIndex: 13, 
+			repeat: false, 
+			animationIndex: 1
+		})
+			
+		let projectile = newProjetil(ownerID)
 		
-		let objectProperties = {
+		const objectProperties = {
+			name: 'plasma',
 			damage: 25,
 			speed: 200,
 			energy: 5000,
@@ -104,12 +125,57 @@ module.exports = {
 			
 		}
 
-		projetil = {...projetil, ...objectProperties}
+		projectile = {...projectile, ...objectProperties}
 
-		Animate.animate(projetil)
+		Animate.animate(projectile)
 
-		return projetil
+		return projectile
 	},
+
+
+	laser: function (ownerID) {
+		const idleProjetilAnimation = AnimationsFactory.newAnimation({
+			state: 'idle', 
+			frame: '../img/projectiles/projectile', 
+			interval: 100, 
+			maxIndex: 1, 
+			repeat: true, 
+			animationIndex: 0
+		})
+		const deadProjetilAnimation = AnimationsFactory.newAnimation({
+			state: 'dead', 
+			frame: '../img/sfx/explosion', 
+			interval: 50, 
+			maxIndex: 13, 
+			repeat: false, 
+			animationIndex: 1
+		})
+
+		let projectile = newProjetil(ownerID)
+		
+		const objectProperties = {
+			name: 'laser',
+			damage: 25,
+			speed: 200,
+			energy: 5000,
+			energyCost: 5,
+			w: 25,
+			h: 60,
+			animation: idleProjetilAnimation,
+			animations: {
+				idle: idleProjetilAnimation, 
+				dead: deadProjetilAnimation
+			},
+			
+		}
+
+		projectile = {...projectile, ...objectProperties}
+
+		Animate.animate(projectile)
+
+		return projectile
+	},
+
 
 
 

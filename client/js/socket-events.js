@@ -17,8 +17,8 @@ socket.on('player', function (data) {
 //----- Client receives new objects data(position, state, etc) --
 socket.on('init', function (data) {
 	data = decode(data);
-	for (id in data.projetils) {
-		projetils[id] = data.projetils[id]
+	for (id in data.projectiles) {
+		projectiles[id] = data.projectiles[id]
 	}
 	for (id in data.units) {
 		units[id] = data.units[id]
@@ -29,12 +29,12 @@ socket.on('init', function (data) {
 //----- Client receives updates data(position, state, etc) --
 socket.on('update', function (data) {
 	data = decode(data);
-	for (id in data.projetils) {
-		if (projetils[id]) {
-			Object.keys(data.projetils[id]).forEach(attribute => {
-				projetils[id][attribute] = data.projetils[id][attribute]
+	for (id in data.projectiles) {
+		if (projectiles[id]) {
+			Object.keys(data.projectiles[id]).forEach(attribute => {
+				projectiles[id][attribute] = data.projectiles[id][attribute]
 			})
-			// projetils[id] = {...projetils[id], ...data.projetils[id]}
+			// projectiles[id] = {...projectiles[id], ...data.projectiles[id]}
 		}
 	}
 	for (id in data.units) {
@@ -51,8 +51,8 @@ socket.on('update', function (data) {
 //----- Client receives objects that where removed ----------------
 socket.on('remove', function (data) {
 	data = decode(data);
-	data.projetils.forEach(id => {
-		delete projetils[id]
+	data.projectiles.forEach(id => {
+		delete projectiles[id]
 	})
 	data.units.forEach(id => {
 		delete units[id]

@@ -40,13 +40,13 @@ module.exports = function (client) {
 		for (id in global.gameObjects.units) {
 			units[id] = global.gameObjects.units[id].getClientVariables()
 		}
-		const projetils = {}
-		for (id in global.gameObjects.projetils) {
-			projetils[id] = global.gameObjects.projetils[id].getClientVariables()
+		const projectiles = {}
+		for (id in global.gameObjects.projectiles) {
+			projectiles[id] = global.gameObjects.projectiles[id].getClientVariables()
 		}
 
 		client.socket.emit('init', global.encode({
-			units, projetils
+			units, projectiles
 		}))
 	})
 
@@ -64,7 +64,7 @@ module.exports = function (client) {
 			const unit = client.player.unit
 			if (unit.state == 'alive') {
 				if (!unit.shooting) {
-					unit.angle = data.angle
+					unit.angle = data.a
 					unit.shooting = true;
 					(function shootLoop() {
 						setTimeout(() => {

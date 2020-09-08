@@ -36,7 +36,7 @@ function emitKeyRelease(key) {
 //----- Sends fire action to server ----------------------------
 function emitFire() {
 	// let emitted = performance.now()
-	socket.emit('playerFires', encode({ angle: getPlayerAngle() }), () => {
+	socket.emit('playerFires', encode({ a: getPlayerAngle() }), () => {
 		// console.log('FIRES TOOK ', performance.now() - emitted)
 		// playShotSound()
 	})

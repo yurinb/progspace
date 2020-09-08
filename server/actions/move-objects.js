@@ -14,14 +14,14 @@ setTimeout(() => {
 			}
 		}
 
-		for (id in global.gameObjects.projetils) {
-		global.gameObjects.projetils[id].move()
+		for (id in global.gameObjects.projectiles) {
+		global.gameObjects.projectiles[id].move()
 		}
 
-		for (id in global.gameObjects.projetils) {
-			if (global.gameObjects.projetils[id].state == 'removible') {
-				global.gameObjects.removeObjects.projetils.push(id)
-				delete global.gameObjects.projetils[id]
+		for (id in global.gameObjects.projectiles) {
+			if (global.gameObjects.projectiles[id].state == 'removible') {
+				global.gameObjects.removeObjects.projectiles.push(id)
+				delete global.gameObjects.projectiles[id]
 			}
 		}
 	}, intervalMS)

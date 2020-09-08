@@ -2,7 +2,7 @@ const UnitsFactory = require('../models/Units')
 const SpawnStars = require('../actions/spawn-stars')
 
 let units = {}
-let projetils = {}
+let projectiles = {}
 
 
 function keepOnlyChanges(lastSendedObj, initObj, globalObj) {
@@ -49,40 +49,40 @@ function emitGameStateToClients() {
 		newUnits[id] = global.gameObjects.newObjects.units[id].getClientVariables()
 	}
 	const newProjetils = {}
-	for (id in global.gameObjects.newObjects.projetils) {
-		newProjetils[id] = global.gameObjects.newObjects.projetils[id].getClientVariables()
+	for (id in global.gameObjects.newObjects.projectiles) {
+		newProjetils[id] = global.gameObjects.newObjects.projectiles[id].getClientVariables()
 	}
 	if (Object.keys(newUnits).length > 0 || Object.keys(newProjetils).length > 0) {
 		setTimeout(() => {
 			global.io.compress(true).emit('init', global.encode({
 				units: newUnits,
-				projetils: newProjetils,
+				projectiles: newProjetils,
 			}))
 		}, 10)
 			
 		global.gameObjects.newObjects.units = {}
-		global.gameObjects.newObjects.projetils = {}
+		global.gameObjects.newObjects.projectiles = {}
 	}
 
 	setTimeout(() => {
 		global.io.compress(true).emit('update', global.encode({
 			units: keepOnlyChanges(units, newUnits, global.gameObjects.units),
-			projetils: keepOnlyChanges(projetils, newProjetils, global.gameObjects.projetils)
+			projectiles: keepOnlyChanges(projectiles, newProjetils, global.gameObjects.projectiles)
 		}))
 	}, 15)
 
 	const removeUnits = global.gameObjects.removeObjects.units
-	const removeProjetils = global.gameObjects.removeObjects.projetils
+	const removeProjetils = global.gameObjects.removeObjects.projectiles
 	if (removeUnits.length > 0 || removeProjetils.length > 0) {
 		setTimeout(() => {
 			global.io.compress(true).emit('remove', global.encode({
 				units: removeUnits,
-				projetils: removeProjetils,
+				projectiles: removeProjetils,
 			}))
 		}, 20)
 			
 		global.gameObjects.removeObjects.units = []
-		global.gameObjects.removeObjects.projetils = []
+		global.gameObjects.removeObjects.projectiles = []
 	}
 	setTimeout(() => {
 		for (id in global.gameObjects.clients) {
