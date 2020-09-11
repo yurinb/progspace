@@ -15,7 +15,7 @@ function laser(ownerID) {
 	let weapon = newWeapon()
 	weapon.name = 'laser'
 	weapon.canalizeTime = 0
-	weapon.cooldawn *= 0.30
+	weapon.cooldawn *= 0.15
 	weapon.active = true
 	weapon.shoot = (unit) => {
 		// let energyCost = unit.weapons[unit.currentWeaponIndex].projectile.energyCost
@@ -45,24 +45,36 @@ function laser2(ownerID) {
 	let weapon = newWeapon()
 	weapon.name = 'laser2'
 	weapon.canalizeTime = 0
-	weapon.cooldawn *= 0.35
+	weapon.cooldawn *= 0.40
+	weapon.lastShoot = 0
 	weapon.active = true
 	weapon.shoot = (unit) => {
 		// let energyCost = unit.weapons[unit.currentWeaponIndex].projectile.energyCost
 		// if (unit.energy >= energyCost) {
 			if (weapon.active) {
-				let projectile = ProjetilFactory.plasma(ownerID)
-				projectile.x = unit.x + Math.floor(150 * Math.cos((unit.angle + 25) * Math.PI / 180))
-				projectile.y = unit.y + Math.floor(150 * Math.sin((unit.angle + 25) * Math.PI / 180))
-				projectile.angle = unit.angle
-				projectile.unitAcelerated = unit.acelerated
-				
-				let projectile2 = ProjetilFactory.plasma(ownerID)
-				projectile2.x = unit.x + Math.floor(150 * Math.cos((unit.angle - 25) * Math.PI / 180))
-				projectile2.y = unit.y + Math.floor(150 * Math.sin((unit.angle - 25 ) * Math.PI / 180))
-				projectile2.angle = unit.angle
-				projectile2.unitAcelerated = unit.acelerated
-				
+				if (weapon.lastShoot == 0) {
+					const projectile = ProjetilFactory.plasma(ownerID)
+					projectile.x = unit.x + Math.floor(150 * Math.cos((unit.angle + 35) * Math.PI / 180))
+					projectile.y = unit.y + Math.floor(150 * Math.sin((unit.angle + 35) * Math.PI / 180))
+					projectile.angle = unit.angle
+					projectile.unitAcelerated = unit.acelerated
+					weapon.lastShoot = 1
+					global.gameObjects.projectiles[projectile.id] = projectile
+					global.gameObjects.newObjects.projectiles[projectile.id] = projectile
+					return
+				}
+					
+				if (weapon.lastShoot == 1) {
+					const projectile2 = ProjetilFactory.plasma(ownerID)
+					projectile2.x = unit.x + Math.floor(150 * Math.cos((unit.angle - 35) * Math.PI / 180))
+					projectile2.y = unit.y + Math.floor(150 * Math.sin((unit.angle - 35 ) * Math.PI / 180))
+					projectile2.angle = unit.angle
+					projectile2.unitAcelerated = unit.acelerated
+					weapon.lastShoot = 0
+					global.gameObjects.projectiles[projectile2.id] = projectile2
+					global.gameObjects.newObjects.projectiles[projectile2.id] = projectile2
+					return
+				}
 				// let projectile3 = ProjetilFactory.plasma(ownerID)
 				// projectile3.x = unit.x + Math.floor(125 * Math.cos((unit.angle + 125) * Math.PI / 180))
 				// projectile3.y = unit.y + Math.floor(125 * Math.sin((unit.angle + 125) * Math.PI / 180))
@@ -127,8 +139,6 @@ function laser2(ownerID) {
 				// projectile12.angle = unit.angle - 30
 				// projectile12.unitAcelerated = unit.acelerated
 
-				global.gameObjects.projectiles[projectile.id] = projectile
-				global.gameObjects.projectiles[projectile2.id] = projectile2
 				// global.gameObjects.projectiles[projectile3.id] = projectile3
 				// global.gameObjects.projectiles[projectile4.id] = projectile4
 				// global.gameObjects.projectiles[projectile5.id] = projectile5
@@ -140,8 +150,6 @@ function laser2(ownerID) {
 				// global.gameObjects.projectiles[projectile11.id] = projectile11
 				// global.gameObjects.projectiles[projectile12.id] = projectile12
 
-				global.gameObjects.newObjects.projectiles[projectile.id] = projectile
-				global.gameObjects.newObjects.projectiles[projectile2.id] = projectile2
 				// global.gameObjects.newObjects.projectiles[projectile3.id] = projectile3
 				// global.gameObjects.newObjects.projectiles[projectile4.id] = projectile4
 				// global.gameObjects.newObjects.projectiles[projectile5.id] = projectile5

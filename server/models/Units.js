@@ -199,7 +199,7 @@ module.exports = {
 			animationIndex: 1
 		})
 			
-		const size = 350 + Math.random() * 1000
+		const size = 350 + Math.floor(Math.random() * 1250)
 
 		const objectProperties = {
 			username: '',
@@ -207,8 +207,8 @@ module.exports = {
 			w: size,
 			h: size,
 			angle: Math.floor(Math.random() * 360),
-			speed: 25 + Math.random() * 100,
-			energy: 250 + size,
+			speed: 15 + Math.floor(Math.random() * 125),
+			energy: 250 + size * 2,
 			reactorSpeed: 0,
 			state: 'alive',
 			animation: iddleAnimation,

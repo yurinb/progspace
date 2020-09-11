@@ -1,8 +1,8 @@
 //-----------------------------//-------------------------------
 //----- Server socket to connect at browser --------------------
-// const socket = io.connect('ws://localhost:9000')
+const socket = io.connect('ws://localhost:9000')
 // const socket = io.connect('ws://192.168.1.67:9000')
-const socket = io.connect('ws://progspace.herokuapp.com')
+// const socket = io.connect('ws://progspace.herokuapp.com')
 
 // game objects
 let player    = {}

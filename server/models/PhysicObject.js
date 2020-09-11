@@ -10,15 +10,21 @@ module.exports = {
 			y: 0,
 			w: 10,
 			h: 10,
+			initialW: null,
+			initialH: null,
 			angle: 0,
 			state: 'alive',
 			isVanish: false,
 			dies: function() {
+				if (this.initialW) {
+					this.w = this.initialH 
+					this.h = this.initialH
+				}
 				this.state = 'dead'
 				this.animation = this.animations.dead
 				this.animation.animationIndex = Object.keys(this.animations).map(key => this.animations[key]).indexOf(this.animation)
 				if (this.isPlayer) {
-					console.log('Player', this.username, 'Dies.')
+					console.log('Player', this.username, 'has been destroyed by.')
 					this.w = this.h * 5
 					this.h = this.h * 5
 					this.propulsor.on = false
@@ -32,19 +38,28 @@ module.exports = {
 			},
 			vanishIn: function(ms) {
 				if (this.isVanish) return
-				this.isVanish = true
+				if (!this.initialW) {
+					this.initialW = this.w
+					this.initialH = this.h
+				}
 				const reducerW = Math.floor(this.w / (ms / 100))
 				const reducerH = Math.floor(this.h / (ms / 100))
-				// const reducerW = Math.floor(this.w / (ms / 100))
-				// const reducerH = Math.floor(this.h / (ms / 100))
 				const intervalID = setInterval(() => {
-					this.w -= reducerW
-					this.h -= reducerH
+					if (this.state == 'dead') {
+						// this.w -= this.initialW // explodes with full size
+						// this.h -= this.initialH // explodes with full size
+						clearInterval(intervalID)
+						return
+					}
 					if (this.w <= 0 && this.h <= 0) {
 						this.remove()
 						clearInterval(intervalID)
+						return
 					}
+					this.w -= reducerW
+					this.h -= reducerH
 				}, 100)
+				this.isVanish = true
 			},
 			appearIn: function(ms) {
 				const w = this.w

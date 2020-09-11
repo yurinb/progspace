@@ -80,7 +80,9 @@ function drawUnits() {
 				unitsC.rotate(elem.a * Math.PI / 180)
 				try {
 					unitsC.drawImage(unitFrame, -(elem.w * 2 * zoom / 2), -(elem.h * 2 * zoom / 2), elem.w * 2 * zoom, elem.h * 2 * zoom)
-				} catch (error) {}
+				} catch (error) {
+					console.log({error})
+				}
 				unitsC.restore()
 			})
 			
@@ -142,6 +144,8 @@ function drawProjetils() {
 				}
 				projectilesC.restore()
 
+				// printOnScreen(`x: ${elem.w} y: ${elem.h}`, elem.x, elem.y, projectilesC)
+
 				// DRAW TRAIL
 
 				if (elem.name != 'plasma') return
@@ -151,10 +155,14 @@ function drawProjetils() {
 						starts: {
 							x: elem.x, 
 							y: elem.y
+						},
+						ends: {
+							x: elem.x,
+							y: elem.y
 						}
 					}
 				}
-
+				
 				if (elem.state != 'dead') {
 					elem.trail.ends = {
 						x: elem.x,
@@ -173,17 +181,22 @@ function drawProjetils() {
 					if (!elem.opacity) {
 						elem.opacity = 0
 					}
-					if (elem.isVanish || elem.state == 'dead' && elem.opacity < 0.25) {
-						elem.opacity += 0.025
+					if ((elem.isVanish || elem.state == 'dead') && elem.opacity < 0.25) {
+						elem.opacity += 0.01
+					}
+
+					const normalize = (value) => {
+						if (value >= 1) return 1.0
+						return value
 					}
 
 					let grad = projectilesC.createLinearGradient(trail.starts.x, trail.starts.y, trail.ends.x, trail.ends.y);
-					grad.addColorStop(0, 'black');
-					grad.addColorStop(0 + elem.opacity * 4, 'black');
-					grad.addColorStop(0.25 + elem.opacity * 3, '#980000');
-					grad.addColorStop(0.5 + elem.opacity * 2, '#c10000');
-					grad.addColorStop(0.75 + elem.opacity, '#8f0047');
-					grad.addColorStop(1, '#ff8585');
+					grad.addColorStop(0, 'transparent');
+					grad.addColorStop(normalize(0 + elem.opacity * 4.0), 'transparent');
+					grad.addColorStop(normalize(0.25 + elem.opacity * 3.0), '#980000');
+					grad.addColorStop(normalize(0.5 + elem.opacity * 2.0), '#c10000');
+					grad.addColorStop(normalize(0.75 + elem.opacity), '#8f0047');
+					grad.addColorStop(normalize(1.0), '#ff8585');
 
 					projectilesC.strokeStyle = grad;	
 					projectilesC.lineWidth = 2
@@ -193,12 +206,12 @@ function drawProjetils() {
 					projectilesC.stroke();
 
 					grad = projectilesC.createLinearGradient(trail.starts.x, trail.starts.y, trail.ends.x, trail.ends.y);
-					grad.addColorStop(0, 'black');
-					grad.addColorStop(0 + elem.opacity * 4, 'black');
-					grad.addColorStop(0.25 + elem.opacity * 3, '#9800ff');
-					grad.addColorStop(0.5 + elem.opacity * 2, '#c100ff');
-					grad.addColorStop(0.75 + elem.opacity, '#8f00ff');
-					grad.addColorStop(1, '#ff85ff');
+					grad.addColorStop(0, 'transparent');
+					grad.addColorStop(normalize(0 + elem.opacity * 4.0), 'transparent');
+					grad.addColorStop(normalize(0.25 + elem.opacity * 3.0), '#9800ff');
+					grad.addColorStop(normalize(0.5 + elem.opacity * 2.0), '#c100ff');
+					grad.addColorStop(normalize(0.75 + elem.opacity), '#8f00ff');
+					grad.addColorStop(normalize(1.0), '#ff85ff');
 
 					projectilesC.strokeStyle = grad;	
 					projectilesC.lineWidth = 1
@@ -288,6 +301,18 @@ function drawUsernameAboveShip(c, unit) {
 		c.fillText(debbugingOnScreen, 0, -400 * zoom)
 		c.restore()
 	}
+}
+
+function printOnScreen(value, x, y, c) {
+	let screenPosition = convertPosToPixel(x, y, player.unit)
+	c.save()
+	c.beginPath()
+	c.font = '12px Lucida Console, Monaco, monospace'
+	c.fillStyle = primaryColor
+	c.translate((screenPosition.x), screenPosition.y)
+	c.textAlign = 'center'
+	c.fillText(value, 0, -200 * zoom)
+	c.restore()
 }
 
 function loadImages() {

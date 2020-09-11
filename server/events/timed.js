@@ -1,57 +1,45 @@
 const UnitsFactory = require('../models/Units')
 const SpawnStars = require('../actions/spawn-stars')
+const _ = require('lodash')
 
 let units = {}
 let projectiles = {}
 
-
-function keepOnlyChanges(lastSendedObj, initObj, globalObj) {
-	for (id in initObj) {
-		lastSendedObj[id] = JSON.parse(JSON.stringify(initObj[id]))
-	}
-	let newSendObj = JSON.parse(JSON.stringify(lastSendedObj))
-	for (lastID in lastSendedObj) {
-		if (!globalObj[lastID]) {
-			delete lastSendedObj[lastID]
-		}
-	}
-	
-	for (currentID in globalObj) {
-		let globalObjClientVariables = JSON.parse(JSON.stringify(globalObj[currentID].getClientVariables()))
-		if (lastSendedObj[currentID]) {
-			for (sendedProperty in lastSendedObj[currentID]) {
-				if (lastSendedObj[currentID][sendedProperty]) {
-					if (JSON.stringify(lastSendedObj[currentID][sendedProperty]) === JSON.stringify(globalObjClientVariables[sendedProperty])) {
-						// delete newSendObj[currentID][sendedProperty]
-						newSendObj[currentID][sendedProperty] = undefined
-					} else {
-						newSendObj[currentID][sendedProperty] = JSON.parse(JSON.stringify(globalObjClientVariables[sendedProperty]))
-						lastSendedObj[currentID][sendedProperty] = JSON.parse(JSON.stringify(globalObjClientVariables[sendedProperty]))
-					}
-				} else {
-					newSendObj[currentID][sendedProperty] = JSON.parse(JSON.stringify(globalObjClientVariables[sendedProperty]))
-					lastSendedObj[currentID][sendedProperty] = JSON.parse(JSON.stringify(globalObjClientVariables[sendedProperty]))
+function keepOnlyChanges(alreadySendedData, newData) {
+	const result = {}
+	for (newDataObjectID in newData) {
+		const alreadySendedDataObject = alreadySendedData[newDataObjectID]
+		if (alreadySendedDataObject) {
+			const newObjectDataResult = {}
+			const newClientData = newData[newDataObjectID].getClientVariables()
+			Object.keys(alreadySendedDataObject).forEach(key => {
+				if (newClientData[key] && JSON.stringify(alreadySendedDataObject[key]) != JSON.stringify(newClientData[key])) {
+					newObjectDataResult[key] = newClientData[key]
+					alreadySendedDataObject[key] = newClientData[key]
 				}
-			}
-		} else {
-			lastSendedObj[currentID] = JSON.parse(JSON.stringify(globalObjClientVariables))
-			newSendObj[currentID] = JSON.parse(JSON.stringify(globalObjClientVariables))
+			})
+			if(!_.isEmpty(newObjectDataResult)) result[newDataObjectID] = newObjectDataResult
 		}
 	}
 
-	return newSendObj
+	return result
 }
 
 function emitGameStateToClients() {
 	
+	// get new objects to send to all players
 	const newUnits = {}
 	for (id in global.gameObjects.newObjects.units) {
 		newUnits[id] = global.gameObjects.newObjects.units[id].getClientVariables()
+		units[id] = newUnits[id]
 	}
 	const newProjetils = {}
 	for (id in global.gameObjects.newObjects.projectiles) {
 		newProjetils[id] = global.gameObjects.newObjects.projectiles[id].getClientVariables()
+		projectiles[id] = newProjetils[id]
 	}
+
+	// send new objects to all players
 	if (Object.keys(newUnits).length > 0 || Object.keys(newProjetils).length > 0) {
 		setTimeout(() => {
 			global.io.compress(true).emit('init', global.encode({
@@ -64,15 +52,25 @@ function emitGameStateToClients() {
 		global.gameObjects.newObjects.projectiles = {}
 	}
 
+	// send updated objects to all players (only changes)
 	setTimeout(() => {
 		global.io.compress(true).emit('update', global.encode({
-			units: keepOnlyChanges(units, newUnits, global.gameObjects.units),
-			projectiles: keepOnlyChanges(projectiles, newProjetils, global.gameObjects.projectiles)
+			units: keepOnlyChanges(units, global.gameObjects.units),
+			projectiles: keepOnlyChanges(projectiles, global.gameObjects.projectiles)
 		}))
 	}, 15)
 
+	// remove itens from server memory
 	const removeUnits = global.gameObjects.removeObjects.units
 	const removeProjetils = global.gameObjects.removeObjects.projectiles
+	removeUnits.forEach(id => {
+		delete units[id]
+	})
+	removeProjetils.forEach(id => {
+		delete projectiles[id]
+	})
+
+	// send to all players objects that already have been removed (save memory client-side)
 	if (removeUnits.length > 0 || removeProjetils.length > 0) {
 		setTimeout(() => {
 			global.io.compress(true).emit('remove', global.encode({
@@ -84,6 +82,8 @@ function emitGameStateToClients() {
 		global.gameObjects.removeObjects.units = []
 		global.gameObjects.removeObjects.projectiles = []
 	}
+
+	// send to players new stars if needed
 	setTimeout(() => {
 		for (id in global.gameObjects.clients) {
 			if (global.gameObjects.clients[id].player) {
@@ -113,6 +113,7 @@ function spawnAsteroids() {
 		if (global.gameObjects.units[id].isPlayer) {
 			const x = global.gameObjects.units[id].x + Math.floor((-25000 + Math.random() * 50000))
 			const y = global.gameObjects.units[id].y + Math.floor((-15000 + Math.random() * 30000))
+			// TODO: not create if too close to player
 			let nearAsteroids = 0
 			for (unitID in global.gameObjects.units) {
 				if (global.gameObjects.units[unitID].isAsteroid) {
@@ -125,11 +126,11 @@ function spawnAsteroids() {
 
 			if (nearAsteroids < 10) {
 				const asteroid = UnitsFactory.newAsteroid(x, y)
-				asteroid.appearIn(7500)
+				asteroid.appearIn(5000)
 				
 				setTimeout(() => {
-					asteroid.vanishIn(15000)
-				}, 25000)
+					asteroid.vanishIn(20000)
+				}, 20000)
 				global.gameObjects.units[asteroid.id] = asteroid
 				global.gameObjects.newObjects.units[asteroid.id] = asteroid
 			}

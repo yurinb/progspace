@@ -12,7 +12,7 @@ function newProjetil(ownerID) {
 		ownerID,
 		damage: 10,
 		speed: 100,
-		energy: 5000,
+		energy: 5000, // lifetime
 		energyCost: 5,
 		w: 50,
 		h: 50,
@@ -29,9 +29,13 @@ function newProjetil(ownerID) {
 						this.unitCollided = unitCollided
 						this.unitCollidedDiffX = this.unitCollided.x - this.x
 						this.unitCollidedDiffY = this.unitCollided.y - this.y
+						
+						// inflict damage and conditionally kills collided object
 						unitCollided.energy -= this.damage
 						if (unitCollided.energy <= 0) {
 							unitCollided.dies()
+							
+							// score
 							if (unitCollided.isAsteroid) {
 								global.gameObjects.units[this.ownerID].score.asteroids++
 								global.gameObjects.units[this.ownerID].score.score+= 50
@@ -53,7 +57,7 @@ function newProjetil(ownerID) {
 				} else {
 					if (this.state == 'alive')
 					// this.dies()
-					this.vanishIn(500)
+					this.vanishIn(250)
 				}
 			} else if (this.unitCollided) {
 				this.x = this.unitCollided.x - this.unitCollidedDiffX
@@ -111,9 +115,9 @@ module.exports = {
 		
 		const objectProperties = {
 			name: 'plasma',
-			damage: 25,
-			speed: 200,
-			energy: 5000,
+			damage: 150,
+			speed: 250,
+			energy: 10000,
 			energyCost: 5,
 			w: 25,
 			h: 60,
