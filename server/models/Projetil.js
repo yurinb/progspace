@@ -8,6 +8,7 @@ function newProjetil(ownerID) {
 	
 	let objectProperties = {
 		name: 'projectile',
+		isProjectile: true,
 		state: 'alive',
 		ownerID,
 		damage: 10,

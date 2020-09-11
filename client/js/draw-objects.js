@@ -1,4 +1,4 @@
-const primaryColor = '#42f4c5'
+const primaryColor = 'rgba(66,244,197,1)'
 
 const images = {}
 
@@ -91,6 +91,7 @@ function drawUnits() {
 				if (elem.id == player.unit.id) {
 					player.unit = elem
 				}
+				
 				let screenPosition = convertPosToPixel(elem.x, elem.y, player.unit)
 
 				// unit
@@ -100,6 +101,32 @@ function drawUnits() {
 				unitsC.rotate(elem.a * Math.PI / 180)
 				try {
 					unitsC.drawImage(unitFrame, -(elem.w * 2 * zoom / 2), -(elem.h * 2 * zoom / 2), elem.w * 2 * zoom, elem.h * 2 * zoom)
+					
+					// render energy shield
+					if (elem.isPlayer && elem.state != 'dead' ) {
+						const radius = (125 + (Math.random() * 25)) * zoom;
+
+						const grd = unitsC.createRadialGradient(0, 0, radius, 0, 0, radius / 2);
+						grd.addColorStop(0, "rgba(100,255,255,0.8)");
+						grd.addColorStop(0.4, "rgba(20,200,255,0.8)");
+						grd.addColorStop(0.5, "rgba(0,100,255,0.25)");
+						grd.addColorStop(0.1, "transparent");
+
+						// Fill with gradient
+						unitsC.fillStyle = grd;
+						// unitsC.fillCircle(10, 10, 150, 100);
+
+						const centerX = 0;
+						const centerY = 0;
+
+						unitsC.beginPath();
+						unitsC.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+						unitsC.fillStyle = grd;
+						unitsC.fill();
+						// unitsC.lineWidth = 2;
+						// unitsC.strokeStyle = 'red';
+						// unitsC.stroke();	
+					}
 				} catch (error) {}
 				unitsC.restore()
 
@@ -139,6 +166,17 @@ function drawProjetils() {
 				projectilesC.rotate(elem.a * Math.PI / 180)
 				try {
 					projectilesC.drawImage(projectileImg, -(elem.w * 2 * zoom / 2), -(elem.h * 2 * zoom / 2), elem.w * 2 * zoom, elem.h * 2 * zoom)
+					
+					// if (elem.state == 'dead' || elem.state == 'removible') {
+					// 	const imgData = projectilesC.getImageData(screenPosition.x + -(elem.w * 2 * zoom / 2), screenPosition.y + -(elem.h * 2 * zoom / 2), elem.w * 2 * zoom, elem.h * 2 * zoom);
+					// 	for (let i = 0; i < imgData.data.length; i += 4) {
+					// 		// imgData.data[i] *= 1 // red
+					// 		imgData.data[i + 1] *= 0.25 // green
+					// 		// imgData.data[i + 2] *= 1  // blue
+					// 		// imgData.data[i + 3] *= 1 // alpha
+					// 	}
+					// 	projectilesC.putImageData(imgData, screenPosition.x + -(elem.w * 2 * zoom / 2), screenPosition.y + -(elem.h * 2 * zoom / 2));
+					// }
 				} catch (error) {
 					console.log({ error })
 				}

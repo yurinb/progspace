@@ -30,6 +30,10 @@ module.exports = {
 					this.propulsor.on = false
 					this.propulsor.state = 'removible'
 				}
+				if (this.isProjectile) {
+					this.w = this.h * 5
+					this.h = this.h * 5
+				}
 				setTimeout(() => this.state = 'removible', this.animation.interval * this.animation.maxIndex)
 			},
 			remove: function() {
