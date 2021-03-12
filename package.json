@@ -16,7 +16,7 @@
     "browserify": "^16.5.1",
     "express": "^4.17.1",
     "lodash": "^4.17.20",
-    "msgpack5": "^4.2.1",
+    "msgpack5": "^4.5.1",
     "socket.io": "^2.2.0",
     "ws": "^7.1.2"
   },
